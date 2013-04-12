@@ -10,7 +10,9 @@ description: "Kevoree Project : Blog"
 disqus_shortname: kevoree
 analytics: 
 gauges: 
+paginate: 5
 author :
   name : Francois Fouquet
   github : dukeboard
   twitter : kevoree
+ 
