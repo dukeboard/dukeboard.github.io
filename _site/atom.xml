@@ -4,12 +4,28 @@
  <title>Kevoree Project</title>
  <link href="http://blog.kevoree.org/atom.xml" rel="self"/>
  <link href="http://blog.kevoree.org/"/>
- <updated>2013-04-12T15:02:11+02:00</updated>
+ <updated>2013-04-16T12:24:03+02:00</updated>
  <id>http://blog.kevoree.org</id>
  <author>
    <name>Francois Fouquet</name>
  </author>
 
+ 
+ <entry>
+   <title>KMF 1.3.0 BETA1 is out</title>
+   <link href="http://blog.kevoree.org/posts/kmf-130-beta1-is-out"/>
+   <updated>2013-04-16T00:00:00+02:00</updated>
+   <id>http://blog.kevoree.org/posts/kmf-130-beta1-is-out</id>
+   <content type="html">&lt;p&gt;We have release the first beta of Kevoree Modeling Framework : 1.3.0-BETA1.
+The final version is planned for delivery before the end of this month so please help to test it and send feedbacks and bugs through the github tracker.&lt;/p&gt;
+
+&lt;p&gt;This new version mainly stabilize the Kotlin generator and add the JSON format support.
+Last but not last we had some special keywords like &amp;ldquo;contained&amp;rdquo;. Details can be found in the documentation.&lt;/p&gt;
+
+&lt;p&gt;Best Regards,
+Duke :&amp;ndash;)&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>KMF 1.3.0 soon to be released !</title>
