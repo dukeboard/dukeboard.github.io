@@ -4,12 +4,25 @@
  <title>Kevoree Project</title>
  <link href="http://blog.kevoree.org/atom.xml" rel="self"/>
  <link href="http://blog.kevoree.org/"/>
- <updated>2013-05-08T08:51:34+02:00</updated>
+ <updated>2013-06-04T15:43:59+02:00</updated>
  <id>http://blog.kevoree.org</id>
  <author>
    <name>Francois Fouquet</name>
  </author>
 
+ 
+ <entry>
+   <title>Kevoree Watchdog out</title>
+   <link href="http://blog.kevoree.org/posts/kevoree-watchdog-out"/>
+   <updated>2013-06-04T00:00:00+02:00</updated>
+   <id>http://blog.kevoree.org/posts/kevoree-watchdog-out</id>
+   <content type="html">&lt;p&gt;The Kevoree Watchdog project as been release under version 0.8.
+Avalaible under public maven repository, the watchdog allows better integration of Kevoree and OS services.
+Indeed, it is available as a simple Jar file for fine management but also as a standard debian .deb package for easier installation.&lt;/p&gt;
+
+&lt;p&gt;You can found all informatino about Kevoree Watchdog on the dedicated &lt;a href=&quot;https://github.com/dukeboard/kevoree-watchdog&quot;&gt;project github page&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>KMF BETA3</title>
