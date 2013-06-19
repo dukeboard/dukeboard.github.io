@@ -1,17 +1,64 @@
 ---
 layout: layout
-title: "Posts"
+title: "Kevoree"
 ---
 
 <section class="content">
-	
+		
+		
     <div style="text-align:center;">
-    <img  src="/images/kevoree-gris.png" alt="Kevoree Logo"
-          class="noclip" width="400" style="margin-bottom: 15px" />
-  	</div>
-	
-	
-  <h1 class="thin">POSTS</h1>
+  	  <img  src="/images/kevoree-gris.png" alt="Kevoree Logo" class="noclip" width="350" />
+    </div>
+		   
+<div class="row">
+		<div class="span6">
+			<h4>What is Kevoree?</h4>
+			<p>Kevoree project aims at enabling distributed reconfigurable software development. Build around a component model, Kevoree leverages model@runtime approach to offer tools to build, adapt and synchronize distributed systems.</p>
+
+        </div>
+		<div class="span6">
+			<h4>Why Kevoree?</h4>
+			<p>Extensible, this project already offers runtime for JVM, Android, Arduino but also for virtualization management such as VirtualBox. In short Kevoree helping you to develop your adaptable software from Cloud stack to embedded devices !</p>
+		</div>
+</div>
+        	
+<div class="row">
+    <div class="span4">
+        <h4><span class="icon-leaf"></span> Make it easy</h4>
+        <p>Kevoree offers an abstraction model that makes easier the manipulation of concepts such as Nodes, Components,
+            Synchronization groups and Communication channels in distributed software systems.</p>
+    </div>
+    <div class="span4">
+        <h4><span class="icon-sitemap"></span> Distributed modeling</h4>
+        <p>Modeling explicits the nodes and the topology of distributed systems. As a system representation, Kevoree
+            allows the model itself to be distributed
+            across the nodes to share the cluster oraganization.</p>
+    </div>
+    <div class="span4">
+        <h4><span class="icon-crop"></span> Event driven, scalable</h4>
+        <p>Build around asynchronous model, Kevoree allows design of asynchronous communication, asynchronous
+            synchronization.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span4">
+        <h4><span class="icon-github"></span> Open Source</h4>
+        <p>Licensed under LGPL and maintained by the community on <a target="_blank" href="https://github.com/dukeboard/kevoree">GitHub</a>.</p>
+    </div>
+    <div class="span4">
+        <h4><span class="icon-retweet"></span> Continuously design</h4>
+        <p>Because long living system must evolve while serving, our approach takes care about HotSwap
+            functionality.</p>
+    </div>
+    <div class="span4">
+        <h4><span class="icon-cloud"></span> Build your own cloud</h4>
+        <p>Particular software always need particular optimization. Embeddeding your own adaptation layer in Kevoree
+            cluster allows you to build your own cloud.</p>
+    </div>
+</div>
+		
+  <h1 class="thin">NEWS</h1>
   <ul class="listing">
     {% for post in site.posts limit:5 %}
     <li>
@@ -21,5 +68,20 @@ title: "Posts"
 	  </div>
     </li>
     {% endfor %}
-  </ul>
+  </ul>		
+  
+  <br/>
+  <h3>Acknowledgments</h3>
+  <div class="row">
+      <div class="span12">
+          <h4>Kevoree uses The YourKit Java Profiler for Performance Tuning.</h4>
+
+          <p>YourKit is kindly supporting open source projects with its full-featured Java Profiler.<br/>
+              YourKit, LLC is the creator of innovative and intelligent tools for profiling Java and .NET applications.
+              Take a look at YourKit's leading software products: <a
+                      href="http://www.yourkit.com/java/profiler/index.jsp">YourKit Java Profiler</a> and <a
+                      href="http://www.yourkit.com/.net/profiler/index.jsp">YourKit .NET Profiler</a></p>
+      </div>
+  </div>
+  
 </section>

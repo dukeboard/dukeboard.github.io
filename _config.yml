@@ -5,8 +5,8 @@ auto: true
 rdiscount:
   extensions: [smart]
 title : Kevoree Project
-production_url : http://blog.kevoree.org
-description: "Kevoree Project : Blog"
+production_url : http://kevoree.org
+description: "Kevoree Project"
 disqus_shortname: kevoree
 analytics: 
 gauges: 
