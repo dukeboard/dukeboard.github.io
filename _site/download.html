@@ -7,7 +7,7 @@
   <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />	
   
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <title>Kevoree 1.4.0 BETA 1</title>
+  <title>Download</title>
 
   <meta name="author" content="Francois Fouquet" />
   <meta name="description" content="Kevoree Project" />
@@ -54,48 +54,46 @@
   </div>
 
   <div class="container">
-    <section class="content">
-  <h1>
-    <a href="/posts/kevoree-1-4-0-beta-1">Kevoree 1.4.0 BETA 1</a>
-  </h1>
-
-  <section class="byline">
-    October 17, 2011
-  </section>
-
-  <p>First beta of Kevoreee 1.4 is out. Many new features are included, separation between nodes and groups is cleaner. Kevoree Modeling Framework allows a significant gain in memory footprint. More to come ...</p>
-
-  <div class="pull"></div>
-  <a  href="https://twitter.com/share" class="twitter-share-button"
-data-via="kevoree" data-lang="en" data-size="large">Tweet</a>
-<script>
-!function(d,s,id){
-  var js,fjs=d.getElementsByTagName(s)[0];
-  if(!d.getElementById(id)){
-    js=d.createElement(s);
-    js.id=id;
-    js.src="//platform.twitter.com/widgets.js";
-    fjs.parentNode.insertBefore(js,fjs);
-  }
-}(document,"script","twitter-wjs");
-</script>
-
-  <hr>
-  <div id="disqus_thread"></div>
-<script type="text/javascript">
-  var disqus_shortname = 'kevoree';
-  (function() {
-    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-    dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-
+    <section class="content download">
+	
+    <div class="hero-unit">
+	<h1>Download</h1>
+  	<p>Get the tools, last version : <span id="lastVersion"></span> !</p>
+	</div>
+    
+<h2>Java SE Runtime</h2>
+<p>Kevoree runtime is a standalone application running in a java virtual machine. Headless or with a graphical swing interface runtime is a container for your application.</p>
+<a id="javaseURL" href="#" class="thin icon-download btn btn-primary" > Get JavaSE runtime</a>
+    
+<h2>Android Runtime</h2>
+<p>Android Runtime is compatible to android OS from version 2.3 and later.</p> 
+<a href="#" class="thin icon-download btn btn-primary" > Get Android runtime</a>
+    
+<h2>Editor</h2>
+<p>Kevoree editor is a swing application allowing you to edit you model, push and read from Kevoree nodes. It's graphical syntaxe is the easiest way to begin your first kevoree application.</p>
+<a id="editorURL" href="#" class="thin icon-download btn btn-primary" > Get editor</a>
+    
+<h2>Project Sample</h2>    
+<p>Project sample contains various sample of kevoree usage (component definition, kevscript, ...)</p>  
+<a href="#" class="thin icon-download btn btn-primary" > Get sample</a>
+    
+<h2>Cloud virtual machine</h2>     
+<p>coming soon !</p>    
+    
 </section>
 
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/version.js"></script>
+<script language="javascript">
+    console.log($('#lastVersion'));
+    $('#lastVersion').text(lastVersion);
+    var javaseURL = "http://maven.kevoree.org/release/org/kevoree/platform/org.kevoree.platform.standalone/"+lastVersion+"/org.kevoree.platform.standalone-"+lastVersion+".jar";
+    $('#javaseURL').attr("href", javaseURL)
+
+    var editorURL = "http://maven.kevoree.org/release/org/kevoree/tools/org.kevoree.tools.ui.editor.standalone/"+lastVersion+"/org.kevoree.tools.ui.editor.standalone-"+lastVersion+".jar";
+    $('#editorURL').attr("href", editorURL)
+
+</script>
   </div>
 
   <div id="footer">

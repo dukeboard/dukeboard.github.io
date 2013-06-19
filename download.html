@@ -1,0 +1,45 @@
+---
+layout: layout
+title: "Download"
+---
+
+<section class="content download">
+	
+    <div class="hero-unit">
+	<h1>Download</h1>
+  	<p>Get the tools, last version : <span id="lastVersion"></span> !</p>
+	</div>
+    
+<h2>Java SE Runtime</h2>
+<p>Kevoree runtime is a standalone application running in a java virtual machine. Headless or with a graphical swing interface runtime is a container for your application.</p>
+<a id="javaseURL" href="#" class="thin icon-download btn btn-primary" > Get JavaSE runtime</a>
+    
+<h2>Android Runtime</h2>
+<p>Android Runtime is compatible to android OS from version 2.3 and later.</p> 
+<a href="#" class="thin icon-download btn btn-primary" > Get Android runtime</a>
+    
+<h2>Editor</h2>
+<p>Kevoree editor is a swing application allowing you to edit you model, push and read from Kevoree nodes. It's graphical syntaxe is the easiest way to begin your first kevoree application.</p>
+<a id="editorURL" href="#" class="thin icon-download btn btn-primary" > Get editor</a>
+    
+<h2>Project Sample</h2>    
+<p>Project sample contains various sample of kevoree usage (component definition, kevscript, ...)</p>  
+<a href="#" class="thin icon-download btn btn-primary" > Get sample</a>
+    
+<h2>Cloud virtual machine</h2>     
+<p>coming soon !</p>    
+    
+</section>
+
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/version.js"></script>
+<script language="javascript">
+    console.log($('#lastVersion'));
+    $('#lastVersion').text(lastVersion);
+    var javaseURL = "http://maven.kevoree.org/release/org/kevoree/platform/org.kevoree.platform.standalone/"+lastVersion+"/org.kevoree.platform.standalone-"+lastVersion+".jar";
+    $('#javaseURL').attr("href", javaseURL)
+
+    var editorURL = "http://maven.kevoree.org/release/org/kevoree/tools/org.kevoree.tools.ui.editor.standalone/"+lastVersion+"/org.kevoree.tools.ui.editor.standalone-"+lastVersion+".jar";
+    $('#editorURL').attr("href", editorURL)
+
+</script>
