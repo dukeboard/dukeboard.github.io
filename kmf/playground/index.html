@@ -67,11 +67,11 @@
 				<a class="button icon play-circle" onclick="executePlayGround();"> Execute</a>
 			</div>
 			<div class="column_4">
-			    <fieldset style="width:300px">
+			    <fieldset style="width:300px" id="snippetchange">
 			                        <label>Sample:<small>code snippet</small></label>
 			                        <span class="select">
-			                            <select>
-			                                <option value="1">Simple PrettyPrint</option>
+			                            <select id="snippetchangeSelect">
+			                                <option value="snippets/simplePP.js" selected>Simple PrettyPrint</option>
 			                                <option value="2">Two</option>
 			                                <option value="3">Three</option>
 			                            </select>
@@ -88,7 +88,7 @@ console.log("Hello");
 
 	<div id="output_banner">
 		<div class="bck color padding-left" style="padding-bottom:100%;">
-			<h3 class="color theme text bold"> Console result goes here : <span class="icon down-sign" style="font-size: 22pt;"></span></h3>
+			<h3 class="color theme text bold"> Result goes here : <span class="icon down-sign" style="font-size: 22pt;"></span></h3>
 		</div>
 	</div>
 	<pre id="output">
@@ -105,8 +105,9 @@ console.log("Hello");
 		var kevmod = Kotlin.modules['org.kevoree.modeling.sample.cloud.js'];
 		var saver = new kevmod.org.cloud.serializer.JSONModelSerializer();
 		var loader = new kevmod.org.cloud.loader.JSONModelLoader();
+		var cloner = new kevmod.org.cloud.cloner.ModelCloner();
 		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
-		//var actionTypes = kevmod.org.cloud.util.ActionType;
+		var ActionType = kevmod.org.cloud.util.ActionType;
 	
 	    var editor = ace.edit("editor");
 	    editor.setTheme("ace/theme/twilight");
@@ -118,16 +119,46 @@ console.log("Hello");
 		function executePlayGround(){
 			var code = editor.getSession().getValue();
 			output.getSession().setValue("");
-			eval(code);
+			try{eval(code);}
+			catch(err){console.error(err);}
 		}
 		var oldConsole = console;
 		var proxyConsole = {
 			log : function(data){
 				output.getSession().setValue(output.getSession().getValue()+data+"\n");
 				output.gotoPageDown();
+			},
+			error : function(data){
+				output.getSession().setValue(output.getSession().getValue()+"ERROR : "+data+"\n");
+				output.gotoPageDown();
 			}
 		};
 		console = proxyConsole;
+		
+		$("#snippetchange").change(function () {
+			var selectedValue = $('#snippetchangeSelect').val();
+			oldConsole.log(selectedValue);
+			$.ajax({
+			  url: selectedValue,
+			  dataType: 'text',
+			  success: function(data) {
+			    editor.getSession().setValue(data);
+			  }
+			});
+		 });
+		
+		 //init
+		var selectedValue = $('#snippetchangeSelect').val();
+		oldConsole.log(selectedValue);
+		$.ajax({
+		  url: selectedValue,
+		  dataType: 'text',
+		  success: function(data) {
+		    editor.getSession().setValue(data);
+		  }
+		});
+		
+		
 	</script>
 	
 </body>
