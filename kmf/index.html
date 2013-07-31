@@ -187,6 +187,11 @@ console.log(soft.path(););
 				</code></pre>				
 			</div>
 		</div>
+		
+		<div class="row text center book margin-bottom margin-top">
+			<p>Model elements selection using paths is way faster rather than iteration. It simpler but also way fatser because similarly to a database ID or NoSQL index, KMF generate behind your code hashtable to fast lookup elements.</p>
+		</div>
+		
 	</section>
 	
 	<section class="bck light padding" id="features5">
@@ -210,17 +215,29 @@ console.log(soft.path(););
 			<div class="column_6">
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code style="border-radius:8px;">
-//select your node by ID
-Node ec2node = cloud.findNodeByID("EC2_0");
-//or with XPath style
-ec2node = cloud.findByPath("nodes[EC2_0]");
-//then select a software
-Software soft = ec2node.findSoftwareByName("SRV0");
-//or by path
-soft=cloud.findByPath("nodes[EC2_0]/softwares[SRV0]");
-//print the path of any element
-System.out.println(soft.path(););
-//print on console : nodes[EC2_0]/softwares[SRV0]
+class ModelSyncListener implements ModelTreeListener {
+    @Override
+    public void elementChanged(ModelEvent event){
+	   switch(event.getType()){
+	     case ActionType.ADD:
+	       System.out.println("Add "+event);
+	       break;
+	     case ActionType.SET:
+	       System.out.println("Set "+event);
+               break;
+	   }
+    }
+}
+//Add as Tree (meaning global) listener
+cloud.addModelTreeListener(new ModelSyncListener());
+//Std listener only listen local event
+//cloud.addModelListener(new ModelSyncListener());
+Node node = factory.createNode();
+node.setID("EC1");
+//Trigger event ADD 
+cloud.addNodes(node);
+//Trigger event SET
+node.setID("EC2_1");
 				</code></pre>				
 			</div>
 			<div class="column_6">
@@ -238,9 +255,9 @@ var listener = { elementChanged : function(event){
  }
 }};
 //Add as Tree (meaning global) listener
-model.addModelTreeListener(listener);
+cloud.addModelTreeListener(listener);
 //Std listener only listen local event
-model.addModelListener(listener);
+//cloud.addModelListener(listener);
 var node = factory.createNode();
 node.setID("EC1");
 //Trigger event ADD 
@@ -249,6 +266,9 @@ cloud.addNodes(node);
 node.setID("EC2_1");
 				</code></pre>				
 			</div>
+		</div>
+		<div class="row text center book margin-bottom margin-top">
+			<p>Events aims at synchronize a presentation layer like a DOM fragment and the modeling layer.</p>
 		</div>
 	</section>
 	
@@ -299,6 +319,19 @@ node.setID("EC2_1");
 				<p>Leveraging incremental synchronization mecanism, KMF aims at building <span class="text bold">distribution modeling</span> environement. It now possible to embed and synchronize your tablet, phone with your home computer.</p>
 			</div>
 		</div>
+		
+		
+		<div class="row text center book margin-bottom">
+			<div class="column_10 offset_1 margin-top">
+				<h3 class="text bold color theme">Want to test it ? Try our playground <span class="text normal color white"></span>.</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="column_4 offset_4 text center">
+				<a href="" class="button large primary"><span class="icon github"></span>PlayGround</a>
+			</div>
+		</div>
+		
 	</section>
 	
 	<section class="bck color padding"  id="contribute">
