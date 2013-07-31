@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<title>Kevoree Modeling Framework :: PlayGround</title>
+	<meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="keywords" content="modeling, MDE, MDA, framework, java, kotlin, scala, javascript">
+	<meta name="author" content="Fouquet Francois">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/icon" href="../favicon.ico">
+	<!-- CSS -->
+	<link rel="stylesheet" href="../css/custom.min.css">
+	<link rel="stylesheet" href="../css/tuktuk.min.css">
+	<link rel="stylesheet" href="../css/tuktuk.theme.min.css">
+	<link rel="stylesheet" href="../css/tuktuk.icons.css">
+	<script src="../highlight/zepto.min.js"></script>
+    <style type="text/css" media="screen">
+      body {
+          overflow: hidden;
+      }
+      #editor { 
+          margin: 0;
+          position: absolute;
+          top: 10%;
+          bottom: 25%;
+          left: 0px;
+          right: 0px;
+      }
+      #output { 
+          margin: 0;
+          position: absolute;
+          top: 80%;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
+      }
+	  #output_banner {
+          margin: 0;
+          position: absolute;
+          top: 75%;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;  
+	  }
+	  #top {
+		  height:10%;
+          margin: 0;
+          position: absolute;
+          top: 0px;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;  
+	  }
+    </style>
+		
+</head>
+ 
+<body>
+	<div id="top" class="bck color padding-top padding-left">
+		<div class="raw">
+			<div class="column_4">
+				<h4 class="color theme text bold"> <span class="icon beaker"></span> KMF Playground</h4>
+			</div>			
+			<form id="form" name="form" class="margin-top">
+			<div class="column_2">
+				<a class="button icon play-circle" onclick="executePlayGround();"> Execute</a>
+			</div>
+			<div class="column_4">
+			    <fieldset style="width:300px">
+			                        <label>Sample:<small>code snippet</small></label>
+			                        <span class="select">
+			                            <select>
+			                                <option value="1">Simple PrettyPrint</option>
+			                                <option value="2">Two</option>
+			                                <option value="3">Three</option>
+			                            </select>
+			                        </span>
+			                    </fieldset>
+			</div>
+		    </form>
+		</div>		
+	</div>
+	
+	<pre id="editor">
+console.log("Hello");
+	</pre>
+
+	<div id="output_banner">
+		<div class="bck color padding-left" style="padding-bottom:100%;">
+			<h3 class="color theme text bold"> Console result goes here : <span class="icon down-sign" style="font-size: 22pt;"></span></h3>
+		</div>
+	</div>
+	<pre id="output">
+	</pre>
+
+	<script src="lib/kotlin-lib-ecma3.js"></script>
+	<script src="lib/kotlin-lib.js"></script>
+	<script src="lib/kotlin-maps.js"></script>
+	<script type="text/javascript" src="lib/org.kevoree.modeling.sample.cloud.js.js"></script>
+	<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+	
+		//Global Cloud Model Variables
+		var kevmod = Kotlin.modules['org.kevoree.modeling.sample.cloud.js'];
+		var saver = new kevmod.org.cloud.serializer.JSONModelSerializer();
+		var loader = new kevmod.org.cloud.loader.JSONModelLoader();
+		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
+		//var actionTypes = kevmod.org.cloud.util.ActionType;
+	
+	    var editor = ace.edit("editor");
+	    editor.setTheme("ace/theme/twilight");
+	    editor.getSession().setMode("ace/mode/javascript");
+		
+	    var output = ace.edit("output");
+	    output.setTheme("ace/theme/twilight");
+	   // editor.getSession().setMode("ace/mode/javascript");
+		function executePlayGround(){
+			var code = editor.getSession().getValue();
+			output.getSession().setValue("");
+			eval(code);
+		}
+		var oldConsole = console;
+		var proxyConsole = {
+			log : function(data){
+				output.getSession().setValue(output.getSession().getValue()+data+"\n");
+				output.gotoPageDown();
+			}
+		};
+		console = proxyConsole;
+	</script>
+	
+</body>
+</html>
