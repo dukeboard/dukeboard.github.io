@@ -6,6 +6,8 @@ var myNginx = factory.createSoftware();
 myNginx.setName("SRV0");
 myAmazonEC2node.addSoftwares(myNginx);
 
+draw(cloud,"Original");
+
 //save in JSON
 var savedModel = saver.serialize(cloud);
 console.log(savedModel);
@@ -19,6 +21,8 @@ console.log(cloudLoaded.findNodesByID("EC2_0"));
 var clonedModel = cloner.clone(cloudLoaded);
 console.log(cloudLoaded);
 
+draw(clonedModel,"First clone");
+
 //Clone to a readonly structure
 var clonedModel2 = cloner.clone(cloud,true);
 
@@ -29,4 +33,4 @@ var clonedModel3 = cloner.cloneMutableOnly(clonedModel);
 //verify the integrity
 console.log("Software found : "+clonedModel3.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
 
-
+draw(clonedModel3,"Partial clone");

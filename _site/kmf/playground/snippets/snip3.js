@@ -6,6 +6,8 @@ var myNginx = factory.createSoftware();
 myNginx.setName("SRV0");
 myAmazonEC2node.addSoftwares(myNginx);
 
+draw(cloud,"Original");
+
 var emptyCloud = factory.createCloud();
 
 //Produce the trace sequence of MO -> M1
@@ -16,5 +18,9 @@ console.log(diffSeq.exportToString());
 var interSeq = compare.inter(emptyCloud,cloud);
 console.log(interSeq.exportToString());
 
+draw(emptyCloud,"Before merge");
+
 //Merge M1 into M0
 new ModelTraceApplicator(emptyCloud).applyTraceOnModel(diffSeq);
+
+draw(emptyCloud,"After merge");

@@ -23,3 +23,4 @@ myNginx.setName("SRV0");
 myAmazonEC2node.addSoftwares(myNginx);
 
 console.log("Software found : "+cloud.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
+draw(cloud,"Final result");

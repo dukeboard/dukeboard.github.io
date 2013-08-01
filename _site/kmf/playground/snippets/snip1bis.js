@@ -31,4 +31,5 @@ factory.createSoftware().__proto__.prettyPrint = prettyPrint;
 
 //call it :-)
 cloud.prettyPrint();
-
+//draw it
+draw(cloud,"Final result");

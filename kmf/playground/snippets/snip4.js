@@ -6,6 +6,8 @@ var myNginx = factory.createSoftware();
 myNginx.setName("SRV0");
 myAmazonEC2node.addSoftwares(myNginx);
 
+draw(cloud,"Original");
+
 var listener = { elementChanged : function(event){
  switch(event.getType()){
   case ActionType.$ADD:
@@ -27,6 +29,8 @@ cloud.addNodes(node);
 //Trigger event SET
 node.setId("EC2_1");
 
+draw(cloud,"After Add");
+
 console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").getId());
 
 /* Declare a new instance of cloud */
@@ -47,6 +51,9 @@ cloud.addNodes(newNode);
 
 console.log(cloud.findByPath("nodes[newNode]").getId());
 console.log(newCloud.findByPath("nodes[newNode]").getId());
+
+draw(cloud,"Original+Added node");
+draw(newCloud,"Last event sync");
 
 
 
