@@ -523,10 +523,10 @@
             initialize: function () {
             },
             diff: function (origin, target) {
-              return this.internal_diff(origin, target, false);
+              return (new _.org.cloud.trace.TraceSequence()).populate(this.internal_diff(origin, target, false));
             },
             inter: function (origin, target) {
-              return this.internal_diff(origin, target, true);
+              return (new _.org.cloud.trace.TraceSequence()).populate(this.internal_diff(origin, target, true));
             },
             internal_diff: function (origin, target, inter) {
               var traces = new Kotlin.ArrayList(0);
@@ -2744,7 +2744,7 @@
                 var traces = this.get_compare().inter(casted, casted);
                 var tmp$6, tmp$7;
                 result.add(new _.org.cloud.trace.ModelAddTrace((tmp$6 = event.getSourcePath()) != null ? tmp$6 : Kotlin.throwNPE(), (tmp$7 = event.getElementAttributeName()) != null ? tmp$7 : Kotlin.throwNPE(), casted.path(), casted.metaClassName()));
-                result.addAll(traces);
+                result.addAll(traces.getTraces());
               }
                else if (tmp$0 === _.org.cloud.util.ActionType.get_ADD_ALL()) {
                 var casted_0 = event.getValue();
@@ -2758,7 +2758,7 @@
                     var traces_0 = this.get_compare().inter(elemCasted, elemCasted);
                     var tmp$9, tmp$10;
                     result.add(new _.org.cloud.trace.ModelAddTrace((tmp$9 = event.getSourcePath()) != null ? tmp$9 : Kotlin.throwNPE(), (tmp$10 = event.getElementAttributeName()) != null ? tmp$10 : Kotlin.throwNPE(), elemCasted.path(), elemCasted.metaClassName()));
-                    result.addAll(traces_0);
+                    result.addAll(traces_0.getTraces());
                   }
                 }
               }
