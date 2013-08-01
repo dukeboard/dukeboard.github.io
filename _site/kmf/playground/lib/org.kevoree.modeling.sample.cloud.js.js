@@ -1119,7 +1119,7 @@
                 var tmp$0 = this.getNodes().iterator();
                 while (tmp$0.hasNext()) {
                   var subElement = tmp$0.next();
-                  var foundedElement = similarObjCasted.findNodesByID(subElement.getGenerated_KMF_ID());
+                  var foundedElement = similarObjCasted.findNodesByID(subElement.getId());
                   if (foundedElement == null || !Kotlin.equals(foundedElement, subElement)) {
                     return false;
                   }
@@ -1226,7 +1226,6 @@
               this.$internal_modelElementListeners = null;
               this.$internal_modelTreeListeners = null;
               this.$_id = '';
-              this.$_generated_KMF_ID = '';
               this.$_softwares_java_cache = null;
               this.$_softwares = new Kotlin.ComplexHashMap(0);
               this.$removeAllSoftwaresCurrentlyProcessing = false;
@@ -1279,12 +1278,6 @@
             set__id: function (tmp$0) {
               this.$_id = tmp$0;
             },
-            get__generated_KMF_ID: function () {
-              return this.$_generated_KMF_ID;
-            },
-            set__generated_KMF_ID: function (tmp$0) {
-              this.$_generated_KMF_ID = tmp$0;
-            },
             get__softwares_java_cache: function () {
               return this.$_softwares_java_cache;
             },
@@ -1328,27 +1321,16 @@
                 throw new Kotlin.Exception(_.org.cloud.util.Constants.get_READ_ONLY_EXCEPTION());
               }
               var oldPath = this.path();
-              this.set__id(idP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_id(), idP));
-            },
-            getGenerated_KMF_ID: function () {
-              return this.get__generated_KMF_ID();
-            },
-            setGenerated_KMF_ID: function (generated_KMF_IDP) {
-              if (this.isReadOnly()) {
-                throw new Kotlin.Exception(_.org.cloud.util.Constants.get_READ_ONLY_EXCEPTION());
-              }
-              var oldPath = this.path();
               var oldId = this.internalGetKey();
               var previousParent = this.eContainer();
               var previousRefNameInParent = this.getRefInParent();
-              this.set__generated_KMF_ID(generated_KMF_IDP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), generated_KMF_IDP));
+              this.set__id(idP);
+              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_id(), idP));
               if (previousParent != null) {
                 var tmp$0;
                 previousParent.reflexiveMutator(_.org.cloud.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), this.path()));
+              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_id(), this.path()));
             },
             getSoftwares: function () {
               return _.kotlin.toList_1(this.get__softwares().values());
@@ -1463,7 +1445,6 @@
               }
               var selfObjectClone = _factories.getCloudFactory().createNode();
               selfObjectClone.setId(this.getId());
-              selfObjectClone.setGenerated_KMF_ID(this.getGenerated_KMF_ID());
               subResult.put(this, selfObjectClone);
               {
                 var tmp$0 = this.getSoftwares().iterator();
@@ -1515,14 +1496,6 @@
                   throw new Kotlin.Exception(_.org.cloud.util.Constants.get_UNKNOWN_MUTATION_TYPE_EXCEPTION() + mutationType);
                 }
               }
-               else if (refName === _.org.cloud.util.Constants.get_Att_generated_KMF_ID()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_SET()) {
-                  this.setGenerated_KMF_ID(value);
-                }
-                 else {
-                  throw new Kotlin.Exception(_.org.cloud.util.Constants.get_UNKNOWN_MUTATION_TYPE_EXCEPTION() + mutationType);
-                }
-              }
                else if (refName === _.org.cloud.util.Constants.get_Ref_softwares()) {
                 if (mutationType === _.org.cloud.util.ActionType.get_ADD()) {
                   this.addSoftwares(value);
@@ -1552,7 +1525,7 @@
               }
             },
             internalGetKey: function () {
-              return this.getGenerated_KMF_ID();
+              return this.getId();
             },
             path: function () {
               var container = this.eContainer();
@@ -1641,7 +1614,7 @@
                 var tmp$0 = this.getSoftwares().iterator();
                 while (tmp$0.hasNext()) {
                   var subElement = tmp$0.next();
-                  var foundedElement = similarObjCasted.findSoftwaresByID(subElement.getGenerated_KMF_ID());
+                  var foundedElement = similarObjCasted.findSoftwaresByID(subElement.getName());
                   if (foundedElement == null || !Kotlin.equals(foundedElement, subElement)) {
                     return false;
                   }
@@ -1655,9 +1628,6 @@
               }
               var similarObjCasted = similarObj;
               if (!Kotlin.equals(this.getId(), similarObjCasted.getId())) {
-                return false;
-              }
-              if (!Kotlin.equals(this.getGenerated_KMF_ID(), similarObjCasted.getGenerated_KMF_ID())) {
                 return false;
               }
               if (this.getSoftwares().size() !== similarObjCasted.getSoftwares().size()) {
@@ -1685,7 +1655,7 @@
               var hashLoop = null;
               var hashResult = null;
               attVal = this.getId();
-              var tmp$0, tmp$3;
+              var tmp$0;
               attVal2 = (tmp$0 = similarObjCasted) != null ? tmp$0.getId() : null;
               if (!Kotlin.equals(attVal, attVal2)) {
                 if (!inter) {
@@ -1697,20 +1667,6 @@
                 if (inter) {
                   var tmp$2;
                   traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_id(), null, attVal2.toString(), null));
-                }
-              }
-              attVal = this.getGenerated_KMF_ID();
-              attVal2 = (tmp$3 = similarObjCasted) != null ? tmp$3.getGenerated_KMF_ID() : null;
-              if (!Kotlin.equals(attVal, attVal2)) {
-                if (!inter) {
-                  var tmp$4;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$4 = this.path()) != null ? tmp$4 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
-                }
-              }
-               else {
-                if (inter) {
-                  var tmp$5;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$5 = this.path()) != null ? tmp$5 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
                 }
               }
               return traces;
@@ -1726,7 +1682,6 @@
               this.$internal_modelElementListeners = null;
               this.$internal_modelTreeListeners = null;
               this.$_name = '';
-              this.$_generated_KMF_ID = '';
             },
             get_internal_eContainer: function () {
               return this.$internal_eContainer;
@@ -1776,12 +1731,6 @@
             set__name: function (tmp$0) {
               this.$_name = tmp$0;
             },
-            get__generated_KMF_ID: function () {
-              return this.$_generated_KMF_ID;
-            },
-            set__generated_KMF_ID: function (tmp$0) {
-              this.$_generated_KMF_ID = tmp$0;
-            },
             setRecursiveReadOnly: function () {
               if (Kotlin.equals(this.get_internal_recursive_readOnlyElem(), true)) {
                 return;
@@ -1799,27 +1748,16 @@
                 throw new Kotlin.Exception(_.org.cloud.util.Constants.get_READ_ONLY_EXCEPTION());
               }
               var oldPath = this.path();
-              this.set__name(nameP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_name(), nameP));
-            },
-            getGenerated_KMF_ID: function () {
-              return this.get__generated_KMF_ID();
-            },
-            setGenerated_KMF_ID: function (generated_KMF_IDP) {
-              if (this.isReadOnly()) {
-                throw new Kotlin.Exception(_.org.cloud.util.Constants.get_READ_ONLY_EXCEPTION());
-              }
-              var oldPath = this.path();
               var oldId = this.internalGetKey();
               var previousParent = this.eContainer();
               var previousRefNameInParent = this.getRefInParent();
-              this.set__generated_KMF_ID(generated_KMF_IDP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), generated_KMF_IDP));
+              this.set__name(nameP);
+              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_name(), nameP));
               if (previousParent != null) {
                 var tmp$0;
                 previousParent.reflexiveMutator(_.org.cloud.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), this.path()));
+              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_name(), this.path()));
             },
             getClonelazy: function (subResult, _factories, mutableOnly) {
               if (mutableOnly && this.isRecursiveReadOnly()) {
@@ -1827,7 +1765,6 @@
               }
               var selfObjectClone = _factories.getCloudFactory().createSoftware();
               selfObjectClone.setName(this.getName());
-              selfObjectClone.setGenerated_KMF_ID(this.getGenerated_KMF_ID());
               subResult.put(this, selfObjectClone);
             },
             resolve: function (addrs, readOnly, mutableOnly) {
@@ -1849,20 +1786,12 @@
                   throw new Kotlin.Exception(_.org.cloud.util.Constants.get_UNKNOWN_MUTATION_TYPE_EXCEPTION() + mutationType);
                 }
               }
-               else if (refName === _.org.cloud.util.Constants.get_Att_generated_KMF_ID()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_SET()) {
-                  this.setGenerated_KMF_ID(value);
-                }
-                 else {
-                  throw new Kotlin.Exception(_.org.cloud.util.Constants.get_UNKNOWN_MUTATION_TYPE_EXCEPTION() + mutationType);
-                }
-              }
                else {
                 throw new Kotlin.Exception('Can reflexively ' + mutationType + ' for ' + refName + ' on ' + this);
               }
             },
             internalGetKey: function () {
-              return this.getGenerated_KMF_ID();
+              return this.getName();
             },
             path: function () {
               var container = this.eContainer();
@@ -1904,9 +1833,6 @@
               if (!Kotlin.equals(this.getName(), similarObjCasted.getName())) {
                 return false;
               }
-              if (!Kotlin.equals(this.getGenerated_KMF_ID(), similarObjCasted.getGenerated_KMF_ID())) {
-                return false;
-              }
               return true;
             },
             containedElementsList: function () {
@@ -1928,7 +1854,7 @@
               var hashLoop = null;
               var hashResult = null;
               attVal = this.getName();
-              var tmp$0, tmp$3;
+              var tmp$0;
               attVal2 = (tmp$0 = similarObjCasted) != null ? tmp$0.getName() : null;
               if (!Kotlin.equals(attVal, attVal2)) {
                 if (!inter) {
@@ -1940,20 +1866,6 @@
                 if (inter) {
                   var tmp$2;
                   traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_name(), null, attVal2.toString(), null));
-                }
-              }
-              attVal = this.getGenerated_KMF_ID();
-              attVal2 = (tmp$3 = similarObjCasted) != null ? tmp$3.getGenerated_KMF_ID() : null;
-              if (!Kotlin.equals(attVal, attVal2)) {
-                if (!inter) {
-                  var tmp$4;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$4 = this.path()) != null ? tmp$4 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
-                }
-              }
-               else {
-                if (inter) {
-                  var tmp$5;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$5 = this.path()) != null ? tmp$5 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
                 }
               }
               return traces;
@@ -2095,10 +2007,6 @@
                   var tmp$0;
                   modelElem.setId(this.unescapeJSON((tmp$0 = reader.nextString()) != null ? tmp$0 : Kotlin.throwNPE()));
                 }
-                 else if (nextName === 'generated_KMF_ID') {
-                  var tmp$1;
-                  modelElem.setGenerated_KMF_ID(this.unescapeJSON((tmp$1 = reader.nextString()) != null ? tmp$1 : Kotlin.throwNPE()));
-                }
                  else if (nextName === 'softwares') {
                   reader.beginArray();
                   while (reader.hasNext()) {
@@ -2129,10 +2037,6 @@
                 if (nextName === 'name') {
                   var tmp$0;
                   modelElem.setName(this.unescapeJSON((tmp$0 = reader.nextString()) != null ? tmp$0 : Kotlin.throwNPE()));
-                }
-                 else if (nextName === 'generated_KMF_ID') {
-                  var tmp$1;
-                  modelElem.setGenerated_KMF_ID(this.unescapeJSON((tmp$1 = reader.nextString()) != null ? tmp$1 : Kotlin.throwNPE()));
                 }
                  else if (nextName === 'eClass') {
                   reader.nextString();
@@ -2772,13 +2676,6 @@
                   this.escapeJson(ostream, selfObject.getId());
                   ostream.print_0('"');
                 }
-                if (!Kotlin.equals(selfObject.getGenerated_KMF_ID().toString(), '')) {
-                  ostream.println_1(',');
-                  ostream.print(' "generated_KMF_ID":');
-                  ostream.print('"');
-                  this.escapeJson(ostream, selfObject.getGenerated_KMF_ID());
-                  ostream.print_0('"');
-                }
                 if (selfObject.getSoftwares().size() > 0) {
                   ostream.println_1(',');
                   ostream.println_0('"softwares": [');
@@ -2815,13 +2712,6 @@
                   ostream.print(' "name":');
                   ostream.print('"');
                   this.escapeJson(ostream, selfObject.getName());
-                  ostream.print_0('"');
-                }
-                if (!Kotlin.equals(selfObject.getGenerated_KMF_ID().toString(), '')) {
-                  ostream.println_1(',');
-                  ostream.print(' "generated_KMF_ID":');
-                  ostream.print('"');
-                  this.escapeJson(ostream, selfObject.getGenerated_KMF_ID());
                   ostream.print_0('"');
                 }
                 ostream.println_1('}');

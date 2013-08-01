@@ -46,10 +46,10 @@
 		</div>
 		<div class="row text center">
 			<div class="column_3 offset_3">
-				<a href="https://github.com/dukeboard/kevoree-modeling-framework" class="button large secondary"><span class="icon github"></span>Github</a>
+				<a href="https://github.com/dukeboard/kevoree-modeling-framework/wiki/Getting-started" class="button large secondary"><span class="icon github"></span>Get started!</a>
 			</div>
 			<div class="column_3">
-				<a href="https://github.com/dukeboard/kevoree-modeling-framework/wiki/Getting-started" class="button large"><span class="icon download disabled"></span>Use it</a>
+				<a href="playground" target="_blanc" class="button large"><span class="icon download disabled"></span>Playground</a>
 			</div>
 		</div>
 	</section>
@@ -99,6 +99,9 @@
 				<h5>Use any eclipse graphical or textual editor to produce an ecore metamodel.</h5>			
 			</div>
 		</div>
+		<div class="row text center">
+				<a href="playground/ecore.html" target="_blanc" class="button secondary large"><span class="icon download disabled"></span>See the XMI</a>
+		</div>
 	</section>
 	
 	<section class="bck theme padding" id="features3">
@@ -117,14 +120,14 @@
 Cloud cloud = factory.createCloud();
 //create a node
 Node myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setID("EC2_0");
+myAmazonEC2node.setId("EC2_0");
 //add node to your cloud
 cloud.addNode(myAmazonEC2node);
 //create a software
 Softwzre myNginx = factory.createSoftware();
-myNginx.setID("SRV0");
+myNginx.setName("SRV0");
 //attach the software to your new node
-myAmazonEC2node.addNode(myNginx);					
+myAmazonEC2node.addSoftwares(myNginx);					
 				</code></pre>				
 			</div>
 			<div class="column_6">
@@ -134,14 +137,14 @@ myAmazonEC2node.addNode(myNginx);
 var cloud = factory.createCloud();
 //create a node
 var myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setID("EC2_0");
+myAmazonEC2node.setId("EC2_0");
 //add node to your cloud
-cloud.addNode(myAmazonEC2node);
+cloud.addNodes(myAmazonEC2node);
 //create a software
 var myNginx = factory.createSoftware();
-myNginx.setID("SRV0");
+myNginx.setName("SRV0");
 //attach the software to your new node
-myAmazonEC2node.addNode(myNginx);					
+myAmazonEC2node.addSoftwares(myNginx);					
 				</code></pre>				
 			</div>
 		</div>
@@ -150,7 +153,7 @@ myAmazonEC2node.addNode(myNginx);
 	<section class="bck white padding" id="features4">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Easily navigate acess elements using IDs</h1>
+				<h1 class="text bold">Easily acess model elements using IDs and Paths</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -197,11 +200,67 @@ console.log(soft.path(););
 	<section class="bck light padding" id="features5">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Load and Save your models in XMI or JSON</h1>
+				<h1 class="text bold">Load, Save and Clone your models in XMI or JSON</h1>
 			</div>
 		</div>
-		<div class="row text center">
-			TODO
+		<div class="row">
+			<div class="column_6">
+				<h1 class="color text theme bold center">Java</h1>
+					<pre><code style="border-radius:8px;">
+ModelCloner cloner = new ModelCloner();
+JSONModelSerializer jsonSaver 
+	= new JSONModelSerializer();
+JSONModelLoader jsonLoader
+	 = new JSONModelLoader();
+XMIModelSerializer xmiSaver 
+	= new XMIModelSerializer();
+XMINModelLoader xmiLoader 
+	= new XMINModelLoader();
+
+//Save in standard XMI Format (work Eclipse)
+System.out.println(xmiSaver.serialize(myCloud));
+//Save in human readable JSON
+System.out.println(jsonSaver.serialize(myCloud));
+
+//Load from JSON
+Cloud cloud = jsonLoader.loadFromString(txtPayLoad);
+//Load from XMI
+Cloud cloud = xmiLoader.loadFromString(txtPayLoad);
+
+//Clone the entire model
+Cloud clonedModel = cloner.clone(cloud);
+//Clone to a readonly structure
+clonedModel = cloner.clone(cloud,true);
+//Only clone a part of model, share the first node
+cloud.getNodes().get(0).setRecursiveReadOnly();
+Cloud clonedModel = cloner.partialClone(cloud);
+				</code></pre>				
+			</div>
+			<div class="column_6">
+				<h1 class="color text theme bold center">JS</h1>
+					<pre><code style="border-radius:8px;">
+var cloner = new ModelCloner();
+var jsonSaver = new JSONModelSerializer();
+var jsonLoader = new JSONModelLoader();
+
+//Save in human readable JSON
+console.log(jsonSaver.serialize(myCloud));
+
+//Load from JSON
+var cloud = jsonLoader.loadFromString(txtPayLoad);
+
+//Clone the entire model
+var clonedModel = cloner.clone(cloud);
+//Clone to a readonly structure
+var clonedModel = cloner.clone(cloud,true);
+//Only clone a part of model, share the first node
+cloud.getNodes().get(0).setRecursiveReadOnly();
+var clonedModel = cloner.partialClone(cloud);
+				</code></pre>				
+			</div>
+		</div>
+		<div class="row text center book margin-bottom margin-top">
+			<p>We support the standard formart XMI to by compliance with all others modeling framework like EMF. In addition we define a JSON format more portable especially for web usage. Our clone operator is also able to partially clone the model, and keep shared part unchanged. This is possible by putting part of model in readonly mode. Then is possible to use in parralel process these models without worry about cross changed.</p>
 		</div>
 	</section>
 	
@@ -428,7 +487,7 @@ assert(cloudM1.findNodeById("newNode") != null);
 		</div>
 		<div class="row">
 			<div class="column_4 offset_4 text center">
-				<a href="" class="button large primary"><span class="icon github"></span>PlayGround</a>
+				<a href="playground" target="_blanc" class="button large primary"><span class="icon github"></span>PlayGround</a>
 			</div>
 		</div>
 		

@@ -71,9 +71,10 @@
 			                        <label>Sample:<small>code snippet</small></label>
 			                        <span class="select">
 			                            <select id="snippetchangeSelect">
-			                                <option value="snippets/simplePP.js" selected>Simple PrettyPrint</option>
-			                                <option value="2">Two</option>
-			                                <option value="3">Three</option>
+			                                <option value="snippets/snip1.js" selected>Simple usage</option>
+			                                <option value="snippets/snip2.js">Save / Load / Clone</option>
+			                                <option value="snippets/snip3.js">Merge / Diff</option>
+											<option value="snippets/snip4.js">Events / Sync</option>
 			                            </select>
 			                        </span>
 			                    </fieldset>
@@ -120,7 +121,10 @@ console.log("Hello");
 			var code = editor.getSession().getValue();
 			output.getSession().setValue("");
 			try{eval(code);}
-			catch(err){console.error(err);}
+			catch(err){
+				console.error(err);
+				oldConsole.error(err);
+			}
 		}
 		var oldConsole = console;
 		var proxyConsole = {
@@ -149,7 +153,6 @@ console.log("Hello");
 		
 		 //init
 		var selectedValue = $('#snippetchangeSelect').val();
-		oldConsole.log(selectedValue);
 		$.ajax({
 		  url: selectedValue,
 		  dataType: 'text',
