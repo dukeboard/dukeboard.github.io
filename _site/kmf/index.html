@@ -222,10 +222,12 @@ System.out.println(xmiSaver.serialize(myCloud));
 //Save in human readable JSON
 System.out.println(jsonSaver.serialize(myCloud));
 
-//Load from JSON
-Cloud cloud = jsonLoader.loadFromString(txtPayLoad);
+//Load from JSON and take first package (only one here)
+Cloud cloud = jsonLoader
+	.loadModelFromString(txtPayLoad).get(0);
 //Load from XMI
-Cloud cloud = xmiLoader.loadFromString(txtPayLoad);
+Cloud cloud = xmiLoader
+	.loadModelFromString(txtPayLoad).get(0);
 
 //Clone the entire model
 Cloud clonedModel = cloner.clone(cloud);
@@ -233,7 +235,7 @@ Cloud clonedModel = cloner.clone(cloud);
 clonedModel = cloner.clone(cloud,true);
 //Only clone a part of model, share the first node
 cloud.getNodes().get(0).setRecursiveReadOnly();
-Cloud clonedModel = cloner.partialClone(cloud);
+Cloud clonedModel = cloner.cloneMutableOnly(cloud);
 				</code></pre>				
 			</div>
 			<div class="column_6">
@@ -246,8 +248,9 @@ var jsonLoader = new JSONModelLoader();
 //Save in human readable JSON
 console.log(jsonSaver.serialize(myCloud));
 
-//Load from JSON
-var cloud = jsonLoader.loadFromString(txtPayLoad);
+//Load from JSON and take first package
+var cloud = jsonLoader
+	.loadModelFromString(txtPayLoad).get(0);
 
 //Clone the entire model
 var clonedModel = cloner.clone(cloud);
@@ -255,7 +258,7 @@ var clonedModel = cloner.clone(cloud);
 var clonedModel = cloner.clone(cloud,true);
 //Only clone a part of model, share the first node
 cloud.getNodes().get(0).setRecursiveReadOnly();
-var clonedModel = cloner.partialClone(cloud);
+var clonedModel = cloner.cloneMutableOnly(cloud);
 				</code></pre>				
 			</div>
 		</div>

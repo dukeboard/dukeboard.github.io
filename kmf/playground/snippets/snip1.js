@@ -1,3 +1,14 @@
+/* KMF Cloud metamodel Playground */
+/* Select your snippet on TOP */
+/* Modify and run it */
+/* By default these variable are initialize : */
+/* saver : JSONSaver
+   loader : JSONLoader
+   cloner : ModelCLoner
+   factory : Cloud Factory
+   ActionType : Event and Trace types
+*/
+
 //create a cloud
 var cloud = factory.createCloud();
 //create a node
@@ -12,4 +23,3 @@ myNginx.setName("SRV0");
 myAmazonEC2node.addSoftwares(myNginx);
 
 console.log("Software found : "+cloud.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
-console.log(saver.serialize(cloud));
