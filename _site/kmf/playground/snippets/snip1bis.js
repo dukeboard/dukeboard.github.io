@@ -20,12 +20,15 @@ function prettyPrint(indice){
     var children = this.containedElementsList();    
     console.log("--".repeat(indice)+this.metaClassName())
     this.containedElementsList().array.forEach(function(entry) {
-        //apply aspect and call directly
-        if(entry.prettyPrint === undefined){entry.prettyPrint = prettyPrint;}  
         entry.prettyPrint(indice+1);
     });
 }
-//Apply aspect on heap
-cloud.prettyPrint = prettyPrint;
-//Run pretty print
+
+//Apply on all elements
+factory.createCloud().__proto__.prettyPrint = prettyPrint;
+factory.createNode().__proto__.prettyPrint = prettyPrint;
+factory.createSoftware().__proto__.prettyPrint = prettyPrint;
+
+//call it :-)
 cloud.prettyPrint();
+
