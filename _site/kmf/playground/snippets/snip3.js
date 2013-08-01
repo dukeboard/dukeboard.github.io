@@ -10,7 +10,6 @@ var emptyCloud = factory.createCloud();
 
 //Produce the trace sequence of MO -> M1
 var diffSeq = compare.diff(emptyCloud,cloud);
-oldConsole.log(diffSeq);
 console.log(diffSeq.exportToString());
 
 //Produce the trace sequence of MO inter M1

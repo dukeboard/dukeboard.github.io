@@ -30,7 +30,7 @@ node.setId("EC2_1");
 console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").getId());
 
 /* Declare a new instance of cloud */
-var newCloud = factory.createNode();
+var newCloud = factory.createCloud();
 var applicator = new ModelTraceApplicator(newCloud);
 /* Declare a new listener */
 var listener2 = { elementChanged : function(event){

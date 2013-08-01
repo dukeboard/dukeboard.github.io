@@ -1142,7 +1142,7 @@
             },
             containedElementsList: function () {
               var result = new Kotlin.ArrayList(1);
-              result.add(this.get__nodes().values());
+              result.addAll(this.get__nodes().values());
               return result;
             },
             metaClassName: function () {
@@ -1637,7 +1637,7 @@
             },
             containedElementsList: function () {
               var result = new Kotlin.ArrayList(1);
-              result.add(this.get__softwares().values());
+              result.addAll(this.get__softwares().values());
               return result;
             },
             metaClassName: function () {
@@ -3102,7 +3102,7 @@
                   var target = this.get_targetModel();
                   if (Kotlin.isType(trace, _.org.cloud.trace.ModelAddTrace)) {
                     var castedTrace = trace;
-                    this.tryClosePending(trace.get_srcPath());
+                    this.tryClosePending('#Fake#Path');
                     if (!Kotlin.equals(trace.get_srcPath(), '')) {
                       target = this.get_targetModel().findByPath(castedTrace.get_srcPath());
                     }
@@ -3110,7 +3110,7 @@
                   }
                   if (Kotlin.isType(trace, _.org.cloud.trace.ModelAddAllTrace)) {
                     var castedTrace_0 = trace;
-                    this.tryClosePending(trace.get_srcPath());
+                    this.tryClosePending('#Fake#Path');
                     var i = 0;
                     var tmp$1;
                     {
