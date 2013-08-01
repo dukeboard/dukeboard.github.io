@@ -10,20 +10,20 @@ for(var nodeI=0;nodeI<5;nodeI++){
        newNode.addSoftwares(newSoft);
     }
 }
+
+/* Utility function */
+String.prototype.repeat = function( num ){return new Array( num + 1 ).join(this);}
+
 //Pretty print aspect
 function prettyPrint(indice){
-    var myIndice = indice;
-    var children = this.containedElementsList();
-    if(myIndice === undefined){myIndice=0;}
-    var pre = "";for(var j=0;j<myIndice;j++){pre = pre + "-"}
-    console.log(pre+this.metaClassName())
-    for(var i=0;i<children.$size;i++){
-         var child = children.get(i);
-         if(child.prettyPrint === undefined){
-             child.prettyPrint = prettyPrint;
-         }  
-         child.prettyPrint(myIndice+1);
-    }
+    indice = typeof indice !== 'undefined' ? indice : 0;
+    var children = this.containedElementsList();    
+    console.log("--".repeat(indice)+this.metaClassName())
+    this.containedElementsList().array.forEach(function(entry) {
+        //apply aspect and call directly
+        if(entry.prettyPrint === undefined){entry.prettyPrint = prettyPrint;}  
+        entry.prettyPrint(indice+1);
+    });
 }
 //Apply aspect on heap
 cloud.prettyPrint = prettyPrint;
