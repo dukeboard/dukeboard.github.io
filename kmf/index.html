@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Kevoree Modeling Framework</title>
+	<title>KMF - Kevoree Modeling Framework</title>
 	<meta name="description" content="">
-	<meta name="keywords" content="modeling, MDE, MDA, framework, java, kotlin, scala, javascript">
+	<meta name="keywords" content="modeling, MDE, MDA, framework, java, kotlin, scala, javascript, kevoree, KMF, EMF, ecore, xmi, json">
 	<meta name="author" content="Fouquet Francois">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" type="image/icon" href="favicon.ico">
@@ -41,7 +41,8 @@
 			<div class="column_10 offset_1">
 				<img src="img/kevoree-rond-blanc.png" alt="Logo" class="margin-bottom"/>
 				<h1 class="color theme text bold center">Free the code from models !</h1>
-				<h3 class="text thin center">Models are no more restricted to modeling environements. The rise of Model@Runtime usages implies an efficient, multi-tenant and rich modeling framework. KMF aims at offering the effenciency and all the functionalities to edit, compose, synchronize models on JVM and JS virtual machines.</h3>
+				<h3 class="text thin center">Models are no more restricted to modeling environments. The increasing use of Model@Runtime requires rich and efficient modeling frameworks. <br/>
+                    KMF is developed to provide <strong>efficient modeling frameworks</strong> to edit, compose and synchronize models on <strong>Java</strong> and <strong>JavaScript</strong> Virtual Machines.</h3>
 			</div>
 		</div>
 		<div class="row text center">
@@ -58,7 +59,9 @@
 		<div class="row text center book">
 			<div class="column_10 offset_1">
 				<h1 class="text bold color light">About Kevoree Modeling Framework</h1>
-				<h3>It's a framework to generate code API from a domain metamoel for JS and JVM platforms. Reusable for various usages such as the storage on server-side but also presentation in a simple browser. @Runtime, it offers comparison, merge and incremental synchronisation. In short KMF generate from a metamodel a distributed model environnement.</h3>
+				<h3>KMF generates from a domain metamodel, modeling frameworks and API for JS and JVM platforms.
+                    It also offers comparison, merge and incremental synchronisation mechanisms tuned for Runtime use, making a powerful tool for server-side storage and presentation in a simple browser.
+                    In short, KMF generate business specific API and Tools from a metamodel, ready for distributed modeling activities.</h3>
 			</div>
 		</div>
 	</section>
@@ -71,18 +74,18 @@
 		</div>
 		<div class="row text center">
 				<h3 class="text bold">Let's take a concrete example</h3> 
-				Concrete things are better to understand abstract model tools.
+				Concrete things are better to understand abstract modeling tools.
 				<span class="icon comment" style="font-size: 20pt;"></span>
 				<h3 class="text bold">When you think about Cloud <span class="icon cloud" style="font-size: 20pt;"></span> systems...</h3>
-				<p>You think of hosting nodes<span class="icon home" style="font-size: 20pt;"></span> 
-					and hosted softwares<span class="icon cog" style="font-size: 20pt;"></span>.</p>
+				<p>You think of hosting nodes <span class="icon home" style="font-size: 20pt;"></span>
+					and hosted software <span class="icon cog" style="font-size: 20pt;"></span>.</p>
 		</div>
 	</section>
 	
 	<section class="bck white padding" id="features2">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Everything begin with a metamodel</h1>
+				<h1 class="text bold">Everything begins with a metamodel</h1>
 			</div>
 		</div>
 		<div class="row text center">
@@ -94,7 +97,7 @@
 				<br />
 				<h5>A collection of <span class="text bold">nodes</span> identified by an ID.</h5>
 				<br />
-				<h5>Each <span class="text bold">nodes</span> contains <span class="text bold">softwares</span> identified by their names.</h5>	
+				<h5>Each <span class="text bold">Node</span> contains several <span class="text bold">software</span> identified by their names.</h5>
 				<br />
 				<h5>Use any eclipse graphical or textual editor to produce an ecore metamodel.</h5>			
 			</div>
@@ -116,17 +119,17 @@
 			<div class="column_6">
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code style="border-radius:8px;">
-//create a cloud
+//Creation of a Cloud instance
 Cloud cloud = factory.createCloud();
-//create a node
+//Creation of a Node
 Node myAmazonEC2node = factory.createNode();
 myAmazonEC2node.setId("EC2_0");
-//add node to your cloud
+//Adding the node to the cloud
 cloud.addNode(myAmazonEC2node);
-//create a software
+//Creation of a Software
 Softwzre myNginx = factory.createSoftware();
 myNginx.setName("SRV0");
-//attach the software to your new node
+//Attaching the software to the node
 myAmazonEC2node.addSoftwares(myNginx);					
 				</code></pre>				
 			</div>
@@ -153,7 +156,7 @@ myAmazonEC2node.addSoftwares(myNginx);
 	<section class="bck white padding" id="features4">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Easily acess model elements using IDs and Paths</h1>
+				<h1 class="text bold">Easily access model elements using IDs and Paths</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -192,7 +195,8 @@ console.log(soft.path(););
 		</div>
 		
 		<div class="row text center book margin-bottom margin-top">
-			<p>Model elements selection using paths is way faster rather than iteration. It simpler but also way fatser because similarly to a database ID or NoSQL index, KMF generate behind your code hashtable to fast lookup elements.</p>
+			<p>Model elements selection using paths is way faster than iterating on collections. <br/>
+                Similarly to database IDs or NoSQL indexes, KMF uses hashtables to speed up the lookup of elements.</p>
 		</div>
 		
 	</section>
@@ -207,15 +211,11 @@ console.log(soft.path(););
 			<div class="column_6">
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code style="border-radius:8px;">
-ModelCloner cloner = new ModelCloner();
-JSONModelSerializer jsonSaver 
-	= new JSONModelSerializer();
-JSONModelLoader jsonLoader
-	 = new JSONModelLoader();
-XMIModelSerializer xmiSaver 
-	= new XMIModelSerializer();
-XMINModelLoader xmiLoader 
-	= new XMINModelLoader();
+ModelCloner     cloner = new ModelCloner();
+ModelSerializer jsonSaver = new JSONModelSerializer();
+ModelLoader     jsonLoader = new JSONModelLoader();
+ModelSerializer xmiSaver = new XMIModelSerializer();
+ModelLoader     xmiLoader = new XMINModelLoader();
 
 //Save in standard XMI Format (work Eclipse)
 System.out.println(xmiSaver.serialize(myCloud));
@@ -263,20 +263,24 @@ var clonedModel = cloner.cloneMutableOnly(cloud);
 			</div>
 		</div>
 		<div class="row text center book margin-bottom margin-top">
-			<p>We support the standard formart XMI to by compliance with all others modeling framework like EMF. In addition we define a JSON format more portable especially for web usage. Our clone operator is also able to partially clone the model, and keep shared part unchanged. This is possible by putting part of model in readonly mode. Then is possible to use in parralel process these models without worry about cross changed.</p>
+			<p>We support the standard <strong>XMI interchange format</strong> for compatibility with other modeling framework tool like EMF.<br/>
+               In addition KMF offers to serialize your models in <strong>JSON format</strong> for more portability, especially designed for web usage.<br/>
+               KMF allows to set part of the model as Read-Only. With this feature, the clone operator is able to efficiently clone mutable elements only.<br/>
+               This ability drastically speeds up the cloning and enables processes of clones in parallel.</p>
 		</div>
 	</section>
 	
 	<section class="bck theme padding" id="features6">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Listen events while working on models</h1>
+				<h1 class="text bold">Use Events to keep informed</h1>
 			</div>
 		</div>
 		<div class="row">
 			<div class="column_6">
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code style="border-radius:8px;">
+//Create a listener
 class ModelSyncListener implements ModelTreeListener {
     @Override
     public void elementChanged(ModelEvent event){
@@ -290,7 +294,8 @@ class ModelSyncListener implements ModelTreeListener {
 	   }
     }
 }
-//Add as Tree (meaning global) listener
+//Add it as TreeListener
+//Listens this element + all contained
 cloud.addModelTreeListener(new ModelSyncListener());
 //Std listener only listen local event
 //cloud.addModelListener(new ModelSyncListener());
@@ -330,14 +335,15 @@ node.setID("EC2_1");
 			</div>
 		</div>
 		<div class="row text center book margin-bottom margin-top">
-			<p>Events aims at synchronize a presentation layer like a DOM fragment and the modeling layer.</p>
+			<p>Events are triggered each time an attribute or a relation of a model element is edited.<br/>
+               They make it easier to synchronize a presentation layer like a DOM fragment and the modeling layer.</p>
 		</div>
 	</section>
 	
 	<section class="bck white padding" id="features7">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Use set operators to merge and compare</h1>
+				<h1 class="text bold">Set operators to merge and compare</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -346,21 +352,23 @@ node.setID("EC2_1");
 					<pre><code style="border-radius:8px;">
 ModelCompare compare = new ModelCompare();
 
-//Produce the trace sequence of MO -> M1
+//Produces the trace sequence to go from MO to M1
 TraceSequence diffSeq = compare.diff(model0,model1);
-//Produce the trace sequence of MO inter M1
+//Produces the trace sequence of MO inter M1
 TraceSequence interSeq = compare.inter(model0,model1);
 for(trace : diffSeq.getTraces()){
-	//Print the comparison between M0 and M1
+	//Prints the difference between M0 and M1
 	System.out.println(trace);
 }
-//Merge M1 into M0
-new ModelTraceApplicator(model0)
-   .applyTraceOnModel(traces);
+//Merges M1 into M0
+ModelTraceApplicator traceApplicator
+    = new ModelTraceApplicator(model0);
+traceApplicator.applyTraceOnModel(diffSeq);
 assert(model1.modelEquals(m0));
 Cloud model3 = factory.createCloud();
-new ModelTraceApplicator(model3)
-   .applyTraceOnModel(tracesInter);
+ModelTraceApplicator traceApplicator3
+    = new ModelTraceApplicator(model3)
+traceApplicator3.applyTraceOnModel(interSeq);
 //model3 is now the common part of M0 and M1
 				</code></pre>				
 			</div>
@@ -379,24 +387,25 @@ for(i=0;i &lt; diffSeq.getTraces().$size;i++){
 }
 //Merge M1 into M0
 new ModelTraceApplicator(model0)
-   .applyTraceOnModel(traces);
+   .applyTraceOnModel(diffSeq);
 assert(model1.modelEquals(m0));
 var model3 = factory.createCloud();
 new ModelTraceApplicator(model3)
-   .applyTraceOnModel(tracesInter);
+   .applyTraceOnModel(interSeq);
 //model3 is now the common part of M0 and M1
 				</code></pre>				
 			</div>
 		</div>
 		<div class="row text center book margin-bottom margin-top">
-			<p>Each model set operations manipulate models has traces sequences. Traces are atomic operation to modify models. Trace can be apply on models, thus it possible to build any operators using these atomics steps.</p>
+			<p>Each set operator manipulates models as trace sequences. A Trace is defined as an atomic operation modifying a model (add, set, remove).<br/>
+                Trace sequences can be applied on models, making it possible to build any operators using these atomic steps.</p>
 		</div>
 	</section>
 	
 	<section class="bck light padding" id="features8">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Synchronize incrementally your models !</h1>
+				<h1 class="text bold">Synchronize your models incrementally !</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -454,38 +463,40 @@ assert(cloudM1.findNodeById("newNode") != null);
 			</div>
 		</div>
 		<div class="row text center book margin-bottom margin-top">
-			<p>To synchronize severals models instances we simply capture events, convert it to trace and after a broadcast apply on each models. Coupled to a conflict resolution mecanism this is the basic for collaborative distributed modeling.</p>
+			<p>To synchronize several model instances simply capture events, convert them to trace, broadcast, and apply on each models.<br/>
+                Coupled with a conflict resolution mechanism, this makes the foundation for collaborative distributed modeling.</p>
 		</div>
 	</section>
 
 	<section class="bck theme padding">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold color dark">And many things more....</h1>
+				<h1 class="text bold color dark">And many more things...</h1>
 			</div>
 		</div>
 		<div class="row text center book">
 			<div class="column_4">
 				<span class="icon dashboard" style="font-size: 100pt;"></span>
 				<h3 class="text bold">Efficiency</h3>
-				<p>KMF takes efficiency seriously.<br/>With a <span class="text bold">generated</span>, you can expect the best performance at runtime for your modeling operations.</p>
+				<p>KMF takes efficiency seriously.<br/>With a <span class="text bold">generative</span> approach, you can expect the best performance at runtime for your modeling operations.</p>
 			</div>
 			<div class="column_4">
 				<span class="icon comments" style="font-size: 100pt;"></span>
-				<h3 class="text bold">Ease of Use and Portable</h3>
-				<p>Unlike other modeling framework, KMF provides <span class="text bold">cross compilation</span> for Java and JS platforms. Moreover it does'nt needs any library @Runtime and is <span class="text bold">easy-to-use</span> for any OO developper by leveraging simple POJO api.</p>
+				<h3 class="text bold">Easy of Use and Portable</h3>
+				<p>Unlike other modeling framework, KMF provides <span class="text bold">cross compilation</span> for Java and JS platforms. Moreover it doesn't need any library @Runtime and is <span class="text bold">easy-to-use</span> for any OO developper by leveraging simple POJO api.</p>
 			</div>
 			<div class="column_4">
 				<span class="icon fullscreen" style="font-size: 100pt;"></span>
 				<h3 class="text bold">Distributed</h3>
-				<p>Leveraging incremental synchronization mecanism, KMF aims at building <span class="text bold">distribution modeling</span> environement. It now possible to embed and synchronize your tablet, phone with your home computer.</p>
+				<p><strong>Collaborative and distributed modeling</strong> is enabled by KMF thanks to the incremental synchronization mechanism.<br/>
+                    It is now possible to embed and synchronize your models on tablets, phones and your home computer.</p>
 			</div>
 		</div>
 		
 		
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1 margin-top">
-				<h3 class="text bold color theme">Want to test it ? Try our playground <span class="text normal color white"></span>.</h3>
+				<h3 class="text bold color theme">Want to test it <strong>LIVE</strong> ? Try our playground <span class="text normal color white"></span>.</h3>
 			</div>
 		</div>
 		<div class="row">
@@ -501,7 +512,7 @@ assert(cloudM1.findNodeById("newNode") != null);
 			<div class="column_10 offset_1">
 				<h1 class="text bold color theme">Contribute</h1>
 				<h3>Want to help? We're on <span class="text normal color white">GitHub</span>.
- Fell free to us any feedback.</h3>
+ Feel free to give us any feedback.</h3>
 			</div>
 		</div>
 		<div class="row">
@@ -515,11 +526,11 @@ assert(cloudM1.findNodeById("newNode") != null);
 		<div class="row margin-top margin-bottom">
 			<div class="column_3">
 				<p class="text bold big">Free Software</p>
-					We're researchers from <span class="text normal">SnT Labs</span> (Lux) and <span class="text normal">Inria</span> Rennes (FR).
+					We're researchers from <span class="text normal">Interdisciplinary Center for Security, Reliability and Trust (SnT), University of Luxembourg</span> and <span class="text normal">INRIA</span> Rennes (FR).
 			</div>
 			<div class="column_4 offset_1">
 				<p class="text bold big">Join the team</p>
-					Help build KMF on <a href="https://github.com/dukeboard/kevoree-modeling-framework" class="text bold underline color theme">GitHub</a>.
+					Help to build KMF on <a href="https://github.com/dukeboard/kevoree-modeling-framework" class="text bold underline color theme">GitHub</a>.
 			</div>
 			<div class="column_3 offset_1">
 				<p class="text bold big">Need some help?</p>
