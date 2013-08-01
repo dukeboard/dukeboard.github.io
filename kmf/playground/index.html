@@ -108,6 +108,8 @@ console.log("Hello");
 		var loader = new kevmod.org.cloud.loader.JSONModelLoader();
 		var cloner = new kevmod.org.cloud.cloner.ModelCloner();
 		var compare = new kevmod.org.cloud.compare.ModelCompare();
+		var event2trace = new kevmod.org.cloud.trace.Event2Trace();
+		var ModelTraceApplicator = kevmod.org.cloud.trace.ModelTraceApplicator;
 		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
 		var ActionType = kevmod.org.cloud.util.ActionType;
 	
@@ -142,7 +144,6 @@ console.log("Hello");
 		
 		$("#snippetchange").change(function () {
 			var selectedValue = $('#snippetchangeSelect').val();
-			oldConsole.log(selectedValue);
 			$.ajax({
 			  url: selectedValue,
 			  dataType: 'text',

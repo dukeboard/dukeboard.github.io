@@ -15,17 +15,7 @@ console.log(diffSeq.exportToString());
 
 //Produce the trace sequence of MO inter M1
 var interSeq = compare.inter(emptyCloud,cloud);
+console.log(interSeq.exportToString());
 
-
-for(i=0;i < diffSeq.getTraces().$size;i++){
-	//Print the comparison between M0 and M1
-	console.log(diffSeq.getTraces()[i]);
-}
 //Merge M1 into M0
-new ModelTraceApplicator(model0)
-   .applyTraceOnModel(traces);
-assert(model1.modelEquals(m0));
-var model3 = factory.createCloud();
-new ModelTraceApplicator(model3)
-   .applyTraceOnModel(tracesInter);
-//model3 is now the common part of M0 and M1
+new ModelTraceApplicator(emptyCloud).applyTraceOnModel(diffSeq);

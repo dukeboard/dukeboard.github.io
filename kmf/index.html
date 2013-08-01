@@ -125,7 +125,7 @@ Cloud cloud = factory.createCloud();
 Node myAmazonEC2node = factory.createNode();
 myAmazonEC2node.setId("EC2_0");
 //Adding the node to the cloud
-cloud.addNode(myAmazonEC2node);
+cloud.addNodes(myAmazonEC2node);
 //Creation of a Software
 Softwzre myNginx = factory.createSoftware();
 myNginx.setName("SRV0");
@@ -164,11 +164,11 @@ myAmazonEC2node.addSoftwares(myNginx);
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code>
 //select your node by ID
-Node ec2node = cloud.findNodeByID("EC2_0");
+Node ec2node = cloud.findNodesByID("EC2_0");
 //or with XPath style
 ec2node = cloud.findByPath("nodes[EC2_0]");
 //then select a software
-Software soft = ec2node.findSoftwareByName("SRV0");
+Software soft = ec2node.findSoftwaresByName("SRV0");
 //or by path
 soft=cloud.findByPath("nodes[EC2_0]/softwares[SRV0]");
 //print the path of any element
@@ -180,11 +180,11 @@ System.out.println(soft.path(););
 				<h1 class="color text theme bold center">JS</h1>
 					<pre><code>
 //select your node by ID
-var ec2node = cloud.findNodeByID("EC2_0");
+var ec2node = cloud.findNodesByID("EC2_0");
 //or with XPath style
 ec2node = cloud.findByPath("nodes[EC2_0]");
 //then select a software
-var soft = ec2node.findSoftwareByName("SRV0");
+var soft = ec2node.findSoftwaresByName("SRV0");
 //or by path
 soft=cloud.findByPath("nodes[EC2_0]/softwares[SRV0]");
 //print the path of any element
@@ -304,7 +304,7 @@ node.setID("EC1");
 //Trigger event ADD 
 cloud.addNodes(node);
 //Trigger event SET
-node.setID("EC2_1");
+node.setId("EC2_1");
 				</code></pre>				
 			</div>
 			<div class="column_6">
@@ -326,11 +326,11 @@ cloud.addModelTreeListener(listener);
 //Std listener only listen local event
 //cloud.addModelListener(listener);
 var node = factory.createNode();
-node.setID("EC1");
+node.setId("EC1");
 //Trigger event ADD 
 cloud.addNodes(node);
 //Trigger event SET
-node.setID("EC2_1");
+node.setId("EC2_1");
 				</code></pre>				
 			</div>
 		</div>
@@ -430,10 +430,10 @@ cloudM0.addModelTreeListener(new ModelTreeListener(){
 });
 //Add a new node to cloudM0
 Node newNode = factory.createNode();
-newNode.setID("newNode")
-cloudM0.addNode(newNode);
+newNode.setId("newNode")
+cloudM0.addNodes(newNode);
 //Now CloudM1 has also create one node
-assert(cloudM1.findNodeById("newNode") != null);
+assert(cloudM1.findNodesById("newNode") != null);
 				</code></pre>				
 			</div>
 			<div class="column_6">
@@ -454,11 +454,11 @@ var listener = { elementChanged : function(event){
 
 //Add a new node to cloudM0
 var newNode = factory.createNode();
-newNode.setID("newNode")
-cloudM0.addNode(newNode);
+newNode.setId("newNode")
+cloudM0.addNodes(newNode);
 
 //Now CloudM1 has also create one node
-assert(cloudM1.findNodeById("newNode") != null);
+assert(cloudM1.findNodesById("newNode") != null);
 				</code></pre>				
 			</div>
 		</div>

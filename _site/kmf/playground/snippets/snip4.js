@@ -26,3 +26,30 @@ node.setId("EC1");
 cloud.addNodes(node);
 //Trigger event SET
 node.setId("EC2_1");
+
+console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").getId());
+
+/* Declare a new instance of cloud */
+var newCloud = factory.createNode();
+var applicator = new ModelTraceApplicator(newCloud);
+/* Declare a new listener */
+var listener2 = { elementChanged : function(event){
+    var traces = event2trace.convert(event);
+	//send trace to network or browser events
+	//for remote synchronization
+    applicator.applyTraceOnModel(traces);
+}};
+cloud.addModelTreeListener(listener2);
+
+var newNode = factory.createNode();
+newNode.setId("newNode")
+cloud.addNodes(newNode);
+
+console.log(cloud.findByPath("nodes[newNode]").getId());
+console.log(newCloud.findByPath("nodes[newNode]").getId());
+
+
+
+
+
+
