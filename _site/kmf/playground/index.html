@@ -25,7 +25,7 @@
           top: 10%;
           bottom: 25%;
           left: 0px;
-          right: 0px;
+          right: 0px;  
       }
       #output { 
           margin: 0;
@@ -33,7 +33,7 @@
           top: 80%;
           bottom: 0px;
           left: 0px;
-          right: 0px;
+          right: 0px;  
       }
 	  #output_banner {
           margin: 0;
@@ -57,6 +57,8 @@
 </head>
  
 <body>
+	
+	
 	<div id="top" class="bck color padding-top padding-left">
 		<div class="raw">
 			<div class="column_4">
@@ -95,7 +97,7 @@ console.log("Hello");
 	</div>
 	<pre id="output">
 	</pre>
-
+	
 	<script src="lib/kotlin-lib-ecma3.js"></script>
 	<script src="lib/kotlin-lib.js"></script>
 	<script src="lib/kotlin-maps.js"></script>
@@ -103,6 +105,7 @@ console.log("Hello");
 	<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 	
+
 		//Global Cloud Model Variables
 		var kevmod = Kotlin.modules['org.kevoree.modeling.sample.cloud.js'];
 		var saver = new kevmod.org.cloud.serializer.JSONModelSerializer();
@@ -113,7 +116,7 @@ console.log("Hello");
 		var ModelTraceApplicator = kevmod.org.cloud.trace.ModelTraceApplicator;
 		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
 		var ActionType = kevmod.org.cloud.util.ActionType;
-
+		
 	    var editor = ace.edit("editor");
 	    editor.setTheme("ace/theme/twilight");
 	    editor.getSession().setMode("ace/mode/javascript");
@@ -166,9 +169,7 @@ console.log("Hello");
 		  success: function(data) {
 		    editor.getSession().setValue(data);
 		  }
-		});
-		
-		
+		});	
 	</script>
 	
 </body>
