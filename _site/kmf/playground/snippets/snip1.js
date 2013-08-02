@@ -7,6 +7,7 @@
    cloner : ModelCLoner
    factory : Cloud Factory
    ActionType : Event and Trace types
+   draw(model,"description") function for model vizu (playground internal)
 */
 
 //create a cloud
@@ -23,4 +24,6 @@ myNginx.setName("SRV0");
 myAmazonEC2node.addSoftwares(myNginx);
 
 console.log("Software found : "+cloud.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
+
+//Draw the model in the right panel (severals call stack results)
 draw(cloud,"Final result");
