@@ -59,42 +59,44 @@
 	
     <div class="hero-unit">
 	<h1>Download</h1>
-  	<p>Get the tools, last version : <span id="lastVersion"></span> !</p>
+  	<p>Get the tools</p>
 	</div>
     
+<h2>Java SE Watchdog</h2>
+<p>KThe Kevoree Watchdog is a service that downloads (if necessary), installs, starts and monitors a Kevoree Runtime.</p>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.kevoree.watchdog&a=org.kevoree.watchdog&v=RELEASE" class="thin icon-download btn btn-primary" > Get Watchdog</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.kevoree.watchdog&a=org.kevoree.watchdog&v=LATEST" class="thin icon-download btn btn-secondary" > Get Watchdog Snapshot</a>
+	
 <h2>Java SE Runtime</h2>
 <p>Kevoree runtime is a standalone application running in a java virtual machine. Headless or with a graphical swing interface runtime is a container for your application.</p>
-<a id="javaseURL" href="#" class="thin icon-download btn btn-primary" > Get JavaSE runtime</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.kevoree.platform&a=org.kevoree.platform.standalone&v=RELEASE" class="thin icon-download btn btn-primary" > Get JavaSE runtime</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.kevoree.platform&a=org.kevoree.platform.standalone&v=LATEST" class="thin icon-download btn btn-secondary" > Get JavaSE runtime Snapshot</a>
+
+<h2>Java SE Runtime GUI</h2>
+<p>Same as Java SE Runtime but embedd in a frame GUI.</p>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui&v=RELEASE" class="thin icon-download btn btn-primary" > Get JavaSE runtime GUI</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui&v=LATEST" class="thin icon-download btn btn-secondary" > Get JavaSE runtime GUI Snapshot</a>
     
 <h2>Android Runtime</h2>
 <p>Android Runtime is compatible to android OS from version 2.3 and later.</p> 
-<a href="#" class="thin icon-download btn btn-primary" > Get Android runtime</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.kevoree.platform&a=org.kevoree.platform.android.apk&v=RELEASE&p=apk" class="thin icon-download btn btn-primary" > Get Android Runtime</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.kevoree.platform&a=org.kevoree.platform.android.apk&v=LATEST&p=apk" class="thin icon-download btn btn-secondary" > Get Android Runtime Snapshot</a>
     
 <h2>Editor</h2>
 <p>Kevoree editor is a swing application allowing you to edit you model, push and read from Kevoree nodes. It's graphical syntaxe is the easiest way to begin your first kevoree application.</p>
-<a id="editorURL" href="#" class="thin icon-download btn btn-primary" > Get editor</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor.standalone&v=RELEASE" class="thin icon-download btn btn-primary" > Get editor</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor.standalone&v=LATEST" class="thin icon-download btn btn-secondary" > Get editor Snapshot</a>
     
 <h2>Project Sample</h2>    
 <p>Project sample contains various sample of kevoree usage (component definition, kevscript, ...)</p>  
-<a href="#" class="thin icon-download btn btn-primary" > Get sample</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=central-proxy&g=org.kevoree.corelibrary.sample&a=org.kevoree.library.sample.javase.root&v=RELEASE" class="thin icon-download btn btn-primary" > Get sample</a>
+<a href="http://repository.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.kevoree.corelibrary.sample&a=org.kevoree.library.sample.javase.root&v=LATEST" class="thin icon-download btn btn-secondary" > Get sample Snapshot</a>
     
 <h2>Cloud virtual machine</h2>     
 <p>coming soon !</p>    
     
 </section>
 
-<script src="js/jquery-1.10.1.min.js"></script>
-<script src="js/version.js"></script>
-<script language="javascript">
-    console.log($('#lastVersion'));
-    $('#lastVersion').text(lastVersion);
-    var javaseURL = "http://maven.kevoree.org/release/org/kevoree/platform/org.kevoree.platform.standalone/"+lastVersion+"/org.kevoree.platform.standalone-"+lastVersion+".jar";
-    $('#javaseURL').attr("href", javaseURL)
-
-    var editorURL = "http://maven.kevoree.org/release/org/kevoree/tools/org.kevoree.tools.ui.editor.standalone/"+lastVersion+"/org.kevoree.tools.ui.editor.standalone-"+lastVersion+".jar";
-    $('#editorURL').attr("href", editorURL)
-
-</script>
   </div>
 
   <div id="footer">
