@@ -124,6 +124,11 @@
 <body>
 	
 	<div id="drawPanel" class="bck color">
+		<div id="metaReminder" style="margin-left:10px;margin-bottom:20px;">
+			<i>Meta model</i><br />
+			<img src="../img/cloud-reminder.png" />
+		</div>
+		
 	</div>
 	
 	
@@ -226,7 +231,12 @@
 		function executePlayGround(){
 			var code = editor.getSession().getValue();
 			output.getSession().setValue("");
+			
+			var previousHeader = $('#metaReminder');
+			
 			$('#drawPanel').empty();
+			$('#drawPanel').append(previousHeader);
+
 			try{eval(code);}
 			catch(err){
 				console.error(err);
