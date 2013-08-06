@@ -220,7 +220,7 @@ console.log(soft.path(););
 			<div class="column_6">
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code style="border-radius:8px;">
-ModelCloner     cloner = new ModelCloner();
+ModelCloner     cloner = new DefaultModelCloner();
 ModelSerializer jsonSaver = new JSONModelSerializer();
 ModelLoader     jsonLoader = new JSONModelLoader();
 ModelSerializer xmiSaver = new XMIModelSerializer();
@@ -250,7 +250,7 @@ Cloud clonedModel = cloner.cloneMutableOnly(cloud);
 			<div class="column_6">
 				<h1 class="color text theme bold center">JS</h1>
 					<pre><code style="border-radius:8px;">
-var cloner = new ModelCloner();
+var cloner = new DefaultModelCloner();
 var jsonSaver = new JSONModelSerializer();
 var jsonLoader = new JSONModelLoader();
 
@@ -322,10 +322,10 @@ node.setId("EC2_1");
 //Declare events listener
 var listener = { elementChanged : function(event){
  switch(event.getType()){
-  case actionTypes.$ADD:
+  case ActionType.$ADD:
     console.log("Add event ! "+event);
 	break;
-  case actionTypes.$SET:
+  case ActionType.$SET:
     console.log("Set event ! "+event);
 	break;
  }
@@ -359,7 +359,7 @@ node.setId("EC2_1");
 			<div class="column_6">
 				<h1 class="color text theme bold center">Java</h1>
 					<pre><code style="border-radius:8px;">
-ModelCompare compare = new ModelCompare();
+ModelCompare compare = new DefaultModelCompare();
 
 //Produces the trace sequence to go from MO to M1
 TraceSequence diffSeq = compare.diff(model0,model1);
@@ -370,21 +370,17 @@ for(trace : diffSeq.getTraces()){
 	System.out.println(trace);
 }
 //Merges M1 into M0
-ModelTraceApplicator traceApplicator
-    = new ModelTraceApplicator(model0);
-traceApplicator.applyTraceOnModel(diffSeq);
+diffSeq.applyOn(model0);
 assert(model1.modelEquals(m0));
 Cloud model3 = factory.createCloud();
-ModelTraceApplicator traceApplicator3
-    = new ModelTraceApplicator(model3)
-traceApplicator3.applyTraceOnModel(interSeq);
+interSeq.applyOn(model3);
 //model3 is now the common part of M0 and M1
 				</code></pre>				
 			</div>
 			<div class="column_6">
 				<h1 class="color text theme bold center">JS</h1>
 					<pre><code style="border-radius:8px;">
-var compare = new ModelCompare();
+var compare = new DefaultModelCompare();
 
 //Produce the trace sequence of MO -> M1
 var diffSeq = compare.diff(model0,model1);
@@ -395,12 +391,10 @@ for(i=0;i &lt; diffSeq.getTraces().$size;i++){
 	console.log(diffSeq.getTraces()[i]);
 }
 //Merge M1 into M0
-new ModelTraceApplicator(model0)
-   .applyTraceOnModel(diffSeq);
+diffSeq.applyOn(model0);
 assert(model1.modelEquals(m0));
 var model3 = factory.createCloud();
-new ModelTraceApplicator(model3)
-   .applyTraceOnModel(interSeq);
+interSeq.applyOn(model3);
 //model3 is now the common part of M0 and M1
 				</code></pre>				
 			</div>
@@ -424,17 +418,15 @@ new ModelTraceApplicator(model3)
 Cloud cloudM0 = factory.createNode();
 Cloud cloudM1 = factory.createNode();
 
-Event2Trace conv = new Event2Trace();
-ModelTraceApplicator apply = 
-	new ModelTraceApplicator(cloudM1);
-
+ModelCompare compare = new DefaultModelCompare();
+Event2Trace conv = new Event2Trace(compare);
 cloudM0.addModelTreeListener(new ModelTreeListener(){
  @Override
  public void elementChanged(ModelEvent event) {
   TraceSequence traceSeq = conv.convert(event);
   //send via network for remote synchronisation
   //traceSeq are serialiable
-  apply.applyTraceOnModel(traceSeq);
+  traceSeq.applyOn(cloudM1);
  }
 });
 //Add a new node to cloudM0
@@ -451,14 +443,13 @@ assert(cloudM1.findNodesById("newNode") != null);
 var cloudM0 = factory.createNode();
 var cloudM1 = factory.createNode();
 
-var conv = new Event2Trace();
-var apply = new ModelTraceApplicator(cloudM1);
-
+var compare = new DefaultModelCompare();
+var conv = new Event2Trace(compare);
 var listener = { elementChanged : function(event){
     var traces = apply.convert(event);
 	//send trace to network or browser events
 	//for remote synchronization
-    apply.applyTraceOnModel(traces);
+    traces.applyOn(cloudM1);
 }};
 
 //Add a new node to cloudM0
