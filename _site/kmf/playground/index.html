@@ -213,12 +213,12 @@
 		var kevmod = Kotlin.modules['org.kevoree.modeling.sample.cloud.js'];
 		var saver = new kevmod.org.cloud.serializer.JSONModelSerializer();
 		var loader = new kevmod.org.cloud.loader.JSONModelLoader();
-		var cloner = new kevmod.org.cloud.cloner.ModelCloner();
-		var compare = new kevmod.org.cloud.compare.ModelCompare();
-		var event2trace = new kevmod.org.cloud.trace.Event2Trace();
-		var ModelTraceApplicator = kevmod.org.cloud.trace.ModelTraceApplicator;
+		var cloner = new kevmod.org.cloud.cloner.DefaultModelCloner();
+		var compare = new kevmod.org.cloud.compare.DefaultModelCompare();
+		var event2trace = new kevmod.org.kevoree.modeling.api.trace.Event2Trace(compare);
+		//var ModelTraceApplicator = kevmod.org.cloud.trace.ModelTraceApplicator;
 		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
-		var ActionType = kevmod.org.cloud.util.ActionType;
+		var ActionType = kevmod.org.kevoree.modeling.api.util.ActionType;
 		
 	    var editor = ace.edit("editor");
 	    editor.setTheme("ace/theme/twilight");

@@ -21,6 +21,6 @@ console.log(interSeq.exportToString());
 draw(emptyCloud,"Before merge");
 
 //Merge M1 into M0
-new ModelTraceApplicator(emptyCloud).applyTraceOnModel(diffSeq);
+diffSeq.applyOn(emptyCloud);
 
 draw(emptyCloud,"After merge");

@@ -35,13 +35,12 @@ console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").getId());
 
 /* Declare a new instance of cloud */
 var newCloud = factory.createCloud();
-var applicator = new ModelTraceApplicator(newCloud);
 /* Declare a new listener */
 var listener2 = { elementChanged : function(event){
     var traces = event2trace.convert(event);
 	//send trace to network or browser events
 	//for remote synchronization
-    applicator.applyTraceOnModel(traces);
+    traces.applyOn(newCloud);
 }};
 cloud.addModelTreeListener(listener2);
 

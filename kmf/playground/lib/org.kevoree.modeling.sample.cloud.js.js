@@ -128,15 +128,15 @@
   , classes = function () {
     var c0 = Kotlin.createTrait({
     })
+    , ca = Kotlin.createTrait({
+    })
+    , c1 = Kotlin.createTrait(ca, {
+    })
+    , cb = Kotlin.createTrait({
+    })
+    , c2 = Kotlin.createTrait(cb, {
+    })
     , c3 = Kotlin.createTrait({
-    })
-    , c1 = Kotlin.createTrait(c3, {
-    })
-    , c7 = Kotlin.createTrait({
-    })
-    , c2 = Kotlin.createTrait(c7, {
-    })
-    , c4 = Kotlin.createTrait({
       get_internal_eContainer: function () {
         return this.$internal_eContainer;
       },
@@ -194,6 +194,9 @@
         this.set_internal_eContainer(container);
         this.set_internal_unsetCmd(unsetCmd);
         this.set_internal_containmentRefName(refNameInParent);
+      },
+      selectByQuery: function (query) {
+        throw new Kotlin.Exception('Not activated, please add selector option in KMF generation plugin');
       },
       get_internal_modelElementListeners: function () {
         return this.$internal_modelElementListeners;
@@ -282,28 +285,34 @@
         }
       }
     })
-    , c5 = Kotlin.createTrait({
+    , c4 = Kotlin.createTrait({
     })
-    , c6 = Kotlin.createTrait(c5, {
+    , c5 = Kotlin.createTrait(ca, {
+    })
+    , c6 = Kotlin.createTrait(ca, {
+    })
+    , c7 = Kotlin.createTrait({
     })
     , c8 = Kotlin.createTrait({
     })
-    , c9 = Kotlin.createTrait({
+    , c9 = Kotlin.createTrait(c8, {
     })
-    , ca = Kotlin.createTrait(c3, {
-    })
-    , cb = Kotlin.createTrait({
-    })
-    , cc = Kotlin.createTrait(c3, {
+    , cc = Kotlin.createTrait({
     })
     , cd = Kotlin.createTrait({
     })
     , ce = Kotlin.createTrait({
+    })
+    , cf = Kotlin.createTrait({
+    })
+    , cg = Kotlin.createTrait({
+    })
+    , ch = Kotlin.createTrait({
       handleEvent: function (arg1) {
         noImpl;
       }
     })
-    , cf = Kotlin.createClass(Kotlin.Iterator, {
+    , ci = Kotlin.createClass(Kotlin.Iterator, {
       initialize: function () {
         this.$state = _.kotlin.support.State.get_NotReady();
         this.$nextValue = null;
@@ -355,9 +364,9 @@
         this.set_state(_.kotlin.support.State.get_Done());
       }
     })
-    , cg = Kotlin.createTrait({
+    , cj = Kotlin.createTrait({
     });
-    return {c0: c0, c3: c3, c1: c1, c7: c7, c2: c2, c4: c4, c5: c5, c6: c6, c8: c8, c9: c9, ca: ca, cb: cb, cc: cc, cd: cd, ce: ce, cf: cf, cg: cg};
+    return {c0: c0, ca: ca, c1: c1, cb: cb, c2: c2, c3: c3, c4: c4, c5: c5, c6: c6, c7: c7, c8: c8, c9: c9, cc: cc, cd: cd, ce: ce, cf: cf, cg: cg, ch: ch, ci: ci, cj: cj};
   }()
   , _ = {
     java: Kotlin.definePackage({
@@ -440,12 +449,8 @@
       }),
       lang: Kotlin.definePackage({
         StringBuilder: Kotlin.createClass({
-          initialize: function (base) {
-            this.$base = base;
-            this.$content = this.get_base();
-          },
-          get_base: function () {
-            return this.$base;
+          initialize: function () {
+            this.$content = '';
           },
           get_content: function () {
             return this.$content;
@@ -472,7 +477,7 @@
     org: Kotlin.definePackage({
       cloud: Kotlin.definePackage({
         cloner: Kotlin.definePackage({
-          ModelCloner: Kotlin.createClass({
+          DefaultModelCloner: Kotlin.createClass(classes.cc, {
             initialize: function () {
               this.$mainFactory = new _.org.cloud.factory.MainFactory();
             },
@@ -516,17 +521,20 @@
         }),
         Cloud: classes.c1,
         CloudFactory: classes.c2,
-        Node: classes.ca,
-        Software: classes.cc,
+        Node: classes.c5,
+        Software: classes.c6,
         compare: Kotlin.definePackage({
-          ModelCompare: Kotlin.createClass({
+          DefaultModelCompare: Kotlin.createClass(classes.c7, {
             initialize: function () {
             },
+            createSequence: function () {
+              return new _.org.cloud.trace.DefaultTraceSequence();
+            },
             diff: function (origin, target) {
-              return (new _.org.cloud.trace.TraceSequence()).populate(this.internal_diff(origin, target, false));
+              return this.createSequence().populate(this.internal_diff(origin, target, false));
             },
             inter: function (origin, target) {
-              return (new _.org.cloud.trace.TraceSequence()).populate(this.internal_diff(origin, target, true));
+              return this.createSequence().populate(this.internal_diff(origin, target, true));
             },
             internal_diff: function (origin, target, inter) {
               var traces = new Kotlin.ArrayList(0);
@@ -555,7 +563,7 @@
                     if (objectsMap.containsKey(childPath_0)) {
                       if (inter) {
                         var tmp$3, tmp$4, tmp$5;
-                        traces.add(new _.org.cloud.trace.ModelAddTrace((tmp$4 = ((tmp$3 = child_0.eContainer()) != null ? tmp$3 : Kotlin.throwNPE()).path()) != null ? tmp$4 : Kotlin.throwNPE(), (tmp$5 = child_0.getRefInParent()) != null ? tmp$5 : Kotlin.throwNPE(), child_0.path(), child_0.metaClassName()));
+                        traces.add(new _.org.kevoree.modeling.api.trace.ModelAddTrace((tmp$4 = ((tmp$3 = child_0.eContainer()) != null ? tmp$3 : Kotlin.throwNPE()).path()) != null ? tmp$4 : Kotlin.throwNPE(), (tmp$5 = child_0.getRefInParent()) != null ? tmp$5 : Kotlin.throwNPE(), child_0.path(), child_0.metaClassName()));
                       }
                       var tmp$6;
                       traces.addAll(((tmp$6 = objectsMap.get(childPath_0)) != null ? tmp$6 : Kotlin.throwNPE()).generateDiffTraces(child_0, inter));
@@ -564,7 +572,7 @@
                      else {
                       if (!inter) {
                         var tmp$7, tmp$8, tmp$9;
-                        traces.add(new _.org.cloud.trace.ModelAddTrace((tmp$8 = ((tmp$7 = child_0.eContainer()) != null ? tmp$7 : Kotlin.throwNPE()).path()) != null ? tmp$8 : Kotlin.throwNPE(), (tmp$9 = child_0.getRefInParent()) != null ? tmp$9 : Kotlin.throwNPE(), child_0.path(), child_0.metaClassName()));
+                        traces.add(new _.org.kevoree.modeling.api.trace.ModelAddTrace((tmp$8 = ((tmp$7 = child_0.eContainer()) != null ? tmp$7 : Kotlin.throwNPE()).path()) != null ? tmp$8 : Kotlin.throwNPE(), (tmp$9 = child_0.getRefInParent()) != null ? tmp$9 : Kotlin.throwNPE(), child_0.path(), child_0.metaClassName()));
                         traces.addAll(child_0.generateDiffTraces(child_0, true));
                       }
                     }
@@ -580,7 +588,7 @@
                   while (tmp$10.hasNext()) {
                     var diffChild = tmp$10.next();
                     var tmp$11, tmp$12, tmp$13;
-                    traces.add(new _.org.cloud.trace.ModelAddTrace((tmp$12 = ((tmp$11 = diffChild.eContainer()) != null ? tmp$11 : Kotlin.throwNPE()).path()) != null ? tmp$12 : Kotlin.throwNPE(), (tmp$13 = diffChild.getRefInParent()) != null ? tmp$13 : Kotlin.throwNPE(), diffChild.path(), diffChild.metaClassName()));
+                    traces.add(new _.org.kevoree.modeling.api.trace.ModelAddTrace((tmp$12 = ((tmp$11 = diffChild.eContainer()) != null ? tmp$11 : Kotlin.throwNPE()).path()) != null ? tmp$12 : Kotlin.throwNPE(), (tmp$13 = diffChild.getRefInParent()) != null ? tmp$13 : Kotlin.throwNPE(), diffChild.path(), diffChild.metaClassName()));
                     traces.addAll(diffChild.generateDiffTraces(null, inter));
                   }
                 }
@@ -616,8 +624,7 @@
           })
         }),
         container: Kotlin.definePackage({
-          KMFContainer: classes.c3,
-          KMFContainerImpl: classes.c4,
+          KMFContainerImpl: classes.c3,
           RemoveFromContainerCommand: Kotlin.createClass({
             initialize: function (target, mutatorType, refName, element) {
               this.$target = target;
@@ -642,55 +649,8 @@
             }
           })
         }),
-        events: Kotlin.definePackage({
-          ModelElementListener: classes.c5,
-          ModelEvent: Kotlin.createClass({
-            initialize: function (sourcePath, etype, elementAttributeType, elementAttributeName, value) {
-              this.$sourcePath = sourcePath;
-              this.$etype = etype;
-              this.$elementAttributeType = elementAttributeType;
-              this.$elementAttributeName = elementAttributeName;
-              this.$value = value;
-            },
-            get_sourcePath: function () {
-              return this.$sourcePath;
-            },
-            get_etype: function () {
-              return this.$etype;
-            },
-            get_elementAttributeType: function () {
-              return this.$elementAttributeType;
-            },
-            get_elementAttributeName: function () {
-              return this.$elementAttributeName;
-            },
-            get_value: function () {
-              return this.$value;
-            },
-            getSourcePath: function () {
-              return this.get_sourcePath();
-            },
-            getType: function () {
-              return this.get_etype();
-            },
-            getElementAttributeType: function () {
-              return this.get_elementAttributeType();
-            },
-            getElementAttributeName: function () {
-              return this.get_elementAttributeName();
-            },
-            getValue: function () {
-              return this.get_value();
-            },
-            toString: function () {
-              return 'ModelEvent[src:' + this.getSourcePath() + ', type:' + this.getType() + ', elementAttributeType:' + this.getElementAttributeType() + ', elementAttributeName:' + this.getElementAttributeName() + ', value:' + this.getValue() + ']';
-            }
-          }),
-          ModelTreeListener: classes.c6
-        }),
         factory: Kotlin.definePackage({
-          KMFFactory: classes.c7,
-          MainFactory: Kotlin.createClass(classes.c7, {
+          MainFactory: Kotlin.createClass(classes.cb, {
             initialize: function () {
               this.$factories = Kotlin.arrayFromFun(1, function (i) {
                 return null;
@@ -721,7 +681,7 @@
           })
         }),
         impl: Kotlin.definePackage({
-          CloudImpl: Kotlin.createClass(classes.c4, classes.c1, {
+          CloudImpl: Kotlin.createClass(classes.c3, classes.c1, {
             initialize: function () {
               this.$internal_eContainer = null;
               this.$internal_containmentRefName = null;
@@ -830,12 +790,12 @@
               var previousParent = this.eContainer();
               var previousRefNameInParent = this.getRefInParent();
               this.set__generated_KMF_ID(generated_KMF_IDP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), generated_KMF_IDP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(oldPath, _.org.kevoree.modeling.api.util.ActionType.get_SET(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), generated_KMF_IDP));
               if (previousParent != null) {
                 var tmp$0;
-                previousParent.reflexiveMutator(_.org.cloud.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
+                previousParent.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), this.path()));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(oldPath, _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), this.path()));
             },
             getNodes: function () {
               return _.kotlin.toList_1(this.get__nodes().values());
@@ -861,10 +821,10 @@
                   var tmp$1 = nodesP.iterator();
                   while (tmp$1.hasNext()) {
                     var elem = tmp$1.next();
-                    elem.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.cloud.util.ActionType.get_REMOVE(), 'nodes', elem), 'nodes');
+                    elem.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), 'nodes', elem), 'nodes');
                   }
                 }
-                this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
+                this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_SET(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
               }
             },
             addNodes: function (nodesP) {
@@ -872,13 +832,13 @@
                 throw new Kotlin.Exception(_.org.cloud.util.Constants.get_READ_ONLY_EXCEPTION());
               }
               this.set__nodes_java_cache(null);
-              nodesP.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.cloud.util.ActionType.get_REMOVE(), 'nodes', nodesP), 'nodes');
+              nodesP.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), 'nodes', nodesP), 'nodes');
               var _key_ = nodesP.internalGetKey();
               if (Kotlin.equals(_key_, '') || _key_ == null) {
                 throw new Kotlin.Exception('Key empty : set the attribute key before adding the object');
               }
               this.get__nodes().put(_key_, nodesP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_ADD(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_ADD(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
             },
             addAllNodes: function (nodesP) {
               if (this.isReadOnly()) {
@@ -900,10 +860,10 @@
                 var tmp$1 = nodesP.iterator();
                 while (tmp$1.hasNext()) {
                   var el_0 = tmp$1.next();
-                  el_0.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.cloud.util.ActionType.get_REMOVE(), 'nodes', el_0), 'nodes');
+                  el_0.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), 'nodes', el_0), 'nodes');
                 }
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_ADD_ALL(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
             },
             get_removeAllNodesCurrentlyProcessing: function () {
               return this.$removeAllNodesCurrentlyProcessing;
@@ -921,7 +881,7 @@
                 var tmp$0;
                 ((tmp$0 = nodesP) != null ? tmp$0 : Kotlin.throwNPE()).setEContainer(null, null, null);
                 if (!this.get_removeAllNodesCurrentlyProcessing()) {
-                  this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_REMOVE(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
+                  this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), nodesP));
                 }
               }
             },
@@ -941,7 +901,7 @@
               }
               this.set__nodes_java_cache(null);
               this.get__nodes().clear();
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_REMOVE_ALL(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), temp_els));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_nodes(), temp_els));
               this.set_removeAllNodesCurrentlyProcessing(false);
             },
             getClonelazy: function (subResult, _factories, mutableOnly) {
@@ -994,7 +954,7 @@
             },
             reflexiveMutator: function (mutationType, refName, value) {
               if (refName === _.org.cloud.util.Constants.get_Att_generated_KMF_ID()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_SET()) {
+                if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_SET()) {
                   this.setGenerated_KMF_ID(value);
                 }
                  else {
@@ -1002,19 +962,19 @@
                 }
               }
                else if (refName === _.org.cloud.util.Constants.get_Ref_nodes()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_ADD()) {
+                if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_ADD()) {
                   this.addNodes(value);
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_ADD_ALL()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL()) {
                   this.addAllNodes(value);
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_REMOVE()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE()) {
                   this.removeNodes(value);
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_REMOVE_ALL()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL()) {
                   this.removeAllNodes();
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_RENEW_INDEX()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX()) {
                   if (this.get__nodes().size() !== 0 && this.get__nodes().containsKey(value)) {
                     var obj = this.get__nodes().get(value);
                     this.get__nodes().put(obj.internalGetKey(), obj);
@@ -1165,13 +1125,13 @@
               if (!Kotlin.equals(attVal, attVal2)) {
                 if (!inter) {
                   var tmp$1;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$1 = this.path()) != null ? tmp$1 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
+                  traces.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$1 = this.path()) != null ? tmp$1 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
                 }
               }
                else {
                 if (inter) {
                   var tmp$2;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
+                  traces.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_generated_KMF_ID(), null, attVal2.toString(), null));
                 }
               }
               return traces;
@@ -1216,7 +1176,7 @@
               }
             }
           }),
-          NodeImpl: Kotlin.createClass(classes.c4, classes.ca, {
+          NodeImpl: Kotlin.createClass(classes.c3, classes.c5, {
             initialize: function () {
               this.$internal_eContainer = null;
               this.$internal_containmentRefName = null;
@@ -1325,12 +1285,12 @@
               var previousParent = this.eContainer();
               var previousRefNameInParent = this.getRefInParent();
               this.set__id(idP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_id(), idP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(oldPath, _.org.kevoree.modeling.api.util.ActionType.get_SET(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_id(), idP));
               if (previousParent != null) {
                 var tmp$0;
-                previousParent.reflexiveMutator(_.org.cloud.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
+                previousParent.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_id(), this.path()));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(oldPath, _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_id(), this.path()));
             },
             getSoftwares: function () {
               return _.kotlin.toList_1(this.get__softwares().values());
@@ -1356,10 +1316,10 @@
                   var tmp$1 = softwaresP.iterator();
                   while (tmp$1.hasNext()) {
                     var elem = tmp$1.next();
-                    elem.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.cloud.util.ActionType.get_REMOVE(), 'softwares', elem), 'softwares');
+                    elem.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), 'softwares', elem), 'softwares');
                   }
                 }
-                this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
+                this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_SET(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
               }
             },
             addSoftwares: function (softwaresP) {
@@ -1367,13 +1327,13 @@
                 throw new Kotlin.Exception(_.org.cloud.util.Constants.get_READ_ONLY_EXCEPTION());
               }
               this.set__softwares_java_cache(null);
-              softwaresP.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.cloud.util.ActionType.get_REMOVE(), 'softwares', softwaresP), 'softwares');
+              softwaresP.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), 'softwares', softwaresP), 'softwares');
               var _key_ = softwaresP.internalGetKey();
               if (Kotlin.equals(_key_, '') || _key_ == null) {
                 throw new Kotlin.Exception('Key empty : set the attribute key before adding the object');
               }
               this.get__softwares().put(_key_, softwaresP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_ADD(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_ADD(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
             },
             addAllSoftwares: function (softwaresP) {
               if (this.isReadOnly()) {
@@ -1395,10 +1355,10 @@
                 var tmp$1 = softwaresP.iterator();
                 while (tmp$1.hasNext()) {
                   var el_0 = tmp$1.next();
-                  el_0.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.cloud.util.ActionType.get_REMOVE(), 'softwares', el_0), 'softwares');
+                  el_0.setEContainer(this, new _.org.cloud.container.RemoveFromContainerCommand(this, _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), 'softwares', el_0), 'softwares');
                 }
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_ADD_ALL(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
             },
             get_removeAllSoftwaresCurrentlyProcessing: function () {
               return this.$removeAllSoftwaresCurrentlyProcessing;
@@ -1416,7 +1376,7 @@
                 var tmp$0;
                 ((tmp$0 = softwaresP) != null ? tmp$0 : Kotlin.throwNPE()).setEContainer(null, null, null);
                 if (!this.get_removeAllSoftwaresCurrentlyProcessing()) {
-                  this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_REMOVE(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
+                  this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), softwaresP));
                 }
               }
             },
@@ -1436,7 +1396,7 @@
               }
               this.set__softwares_java_cache(null);
               this.get__softwares().clear();
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(this.path(), _.org.cloud.util.ActionType.get_REMOVE_ALL(), _.org.cloud.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), temp_els));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(this.path(), _.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_CONTAINMENT(), _.org.cloud.util.Constants.get_Ref_softwares(), temp_els));
               this.set_removeAllSoftwaresCurrentlyProcessing(false);
             },
             getClonelazy: function (subResult, _factories, mutableOnly) {
@@ -1489,7 +1449,7 @@
             },
             reflexiveMutator: function (mutationType, refName, value) {
               if (refName === _.org.cloud.util.Constants.get_Att_id()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_SET()) {
+                if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_SET()) {
                   this.setId(value);
                 }
                  else {
@@ -1497,19 +1457,19 @@
                 }
               }
                else if (refName === _.org.cloud.util.Constants.get_Ref_softwares()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_ADD()) {
+                if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_ADD()) {
                   this.addSoftwares(value);
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_ADD_ALL()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL()) {
                   this.addAllSoftwares(value);
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_REMOVE()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE()) {
                   this.removeSoftwares(value);
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_REMOVE_ALL()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL()) {
                   this.removeAllSoftwares();
                 }
-                 else if (mutationType === _.org.cloud.util.ActionType.get_RENEW_INDEX()) {
+                 else if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX()) {
                   if (this.get__softwares().size() !== 0 && this.get__softwares().containsKey(value)) {
                     var obj = this.get__softwares().get(value);
                     this.get__softwares().put(obj.internalGetKey(), obj);
@@ -1660,19 +1620,19 @@
               if (!Kotlin.equals(attVal, attVal2)) {
                 if (!inter) {
                   var tmp$1;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$1 = this.path()) != null ? tmp$1 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_id(), null, attVal2.toString(), null));
+                  traces.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$1 = this.path()) != null ? tmp$1 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_id(), null, attVal2.toString(), null));
                 }
               }
                else {
                 if (inter) {
                   var tmp$2;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_id(), null, attVal2.toString(), null));
+                  traces.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_id(), null, attVal2.toString(), null));
                 }
               }
               return traces;
             }
           }),
-          SoftwareImpl: Kotlin.createClass(classes.c4, classes.cc, {
+          SoftwareImpl: Kotlin.createClass(classes.c3, classes.c6, {
             initialize: function () {
               this.$internal_eContainer = null;
               this.$internal_containmentRefName = null;
@@ -1752,12 +1712,12 @@
               var previousParent = this.eContainer();
               var previousRefNameInParent = this.getRefInParent();
               this.set__name(nameP);
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_SET(), _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_name(), nameP));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(oldPath, _.org.kevoree.modeling.api.util.ActionType.get_SET(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_ATTRIBUTE(), _.org.cloud.util.Constants.get_Att_name(), nameP));
               if (previousParent != null) {
                 var tmp$0;
-                previousParent.reflexiveMutator(_.org.cloud.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
+                previousParent.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX(), (tmp$0 = previousRefNameInParent) != null ? tmp$0 : Kotlin.throwNPE(), oldId);
               }
-              this.fireModelEvent(new _.org.cloud.events.ModelEvent(oldPath, _.org.cloud.util.ActionType.get_RENEW_INDEX(), _.org.cloud.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_name(), this.path()));
+              this.fireModelEvent(new _.org.kevoree.modeling.api.events.ModelEvent(oldPath, _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX(), _.org.kevoree.modeling.api.util.ElementAttributeType.get_REFERENCE(), _.org.cloud.util.Constants.get_Att_name(), this.path()));
             },
             getClonelazy: function (subResult, _factories, mutableOnly) {
               if (mutableOnly && this.isRecursiveReadOnly()) {
@@ -1779,7 +1739,7 @@
             },
             reflexiveMutator: function (mutationType, refName, value) {
               if (refName === _.org.cloud.util.Constants.get_Att_name()) {
-                if (mutationType === _.org.cloud.util.ActionType.get_SET()) {
+                if (mutationType === _.org.kevoree.modeling.api.util.ActionType.get_SET()) {
                   this.setName(value);
                 }
                  else {
@@ -1859,13 +1819,13 @@
               if (!Kotlin.equals(attVal, attVal2)) {
                 if (!inter) {
                   var tmp$1;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$1 = this.path()) != null ? tmp$1 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_name(), null, attVal2.toString(), null));
+                  traces.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$1 = this.path()) != null ? tmp$1 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_name(), null, attVal2.toString(), null));
                 }
               }
                else {
                 if (inter) {
                   var tmp$2;
-                  traces.add(new _.org.cloud.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_name(), null, attVal2.toString(), null));
+                  traces.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$2 = this.path()) != null ? tmp$2 : Kotlin.throwNPE(), _.org.cloud.util.Constants.get_Att_name(), null, attVal2.toString(), null));
                 }
               }
               return traces;
@@ -1873,7 +1833,7 @@
           })
         }),
         loader: Kotlin.definePackage({
-          JSONModelLoader: Kotlin.createClass(classes.c8, {
+          JSONModelLoader: Kotlin.createClass(classes.cd, {
             initialize: function () {
               this.$mainFactory = new _.org.cloud.factory.MainFactory();
             },
@@ -2284,7 +2244,7 @@
               return ret;
             }
           }),
-          JSONResolveCommand: Kotlin.createClass(classes.c9, {
+          JSONResolveCommand: Kotlin.createClass(classes.c4, {
             initialize: function (context, target, mutatorType, refName, ref) {
               this.$context = context;
               this.$target = target;
@@ -2444,7 +2404,7 @@
               }
               var tokenType = _.org.cloud.loader.Type.get_EOF();
               var c = this.nextChar();
-              var currentValue = new _.java.lang.StringBuilder('');
+              var currentValue = new _.java.lang.StringBuilder();
               var jsonValue = null;
               while (!this.isDone() && this.isSpace(c)) {
                 c = this.nextChar();
@@ -2540,11 +2500,10 @@
               return this.$stats;
             }
           }),
-          ModelLoader: classes.c8,
-          ResolveCommand: classes.c9
+          ResolveCommand: classes.c4
         }),
         serializer: Kotlin.definePackage({
-          JSONModelSerializer: Kotlin.createClass(classes.cb, {
+          JSONModelSerializer: Kotlin.createClass(classes.ce, {
             initialize: function () {
             },
             serialize: function (oMS) {
@@ -2717,227 +2676,10 @@
                 ostream.println_1('}');
               }
             }
-          }),
-          ModelSerializer: classes.cb
+          })
         }),
         trace: Kotlin.definePackage({
-          Event2Trace: Kotlin.createClass({
-            initialize: function () {
-              this.$compare = new _.org.cloud.compare.ModelCompare();
-            },
-            get_compare: function () {
-              return this.$compare;
-            },
-            convert: function (event) {
-              var result = new Kotlin.ArrayList(0);
-              var tmp$0 = event.getType();
-              if (tmp$0 === _.org.cloud.util.ActionType.get_REMOVE()) {
-                var tmp$1, tmp$2, tmp$3;
-                result.add(new _.org.cloud.trace.ModelRemoveTrace((tmp$1 = event.getSourcePath()) != null ? tmp$1 : Kotlin.throwNPE(), (tmp$2 = event.getElementAttributeName()) != null ? tmp$2 : Kotlin.throwNPE(), (tmp$3 = event.getValue().path()) != null ? tmp$3 : Kotlin.throwNPE()));
-              }
-               else if (tmp$0 === _.org.cloud.util.ActionType.get_REMOVE()) {
-                var tmp$4, tmp$5;
-                result.add(new _.org.cloud.trace.ModelRemoveAllTrace((tmp$4 = event.getSourcePath()) != null ? tmp$4 : Kotlin.throwNPE(), (tmp$5 = event.getElementAttributeName()) != null ? tmp$5 : Kotlin.throwNPE()));
-              }
-               else if (tmp$0 === _.org.cloud.util.ActionType.get_ADD()) {
-                var casted = event.getValue();
-                var traces = this.get_compare().inter(casted, casted);
-                var tmp$6, tmp$7;
-                result.add(new _.org.cloud.trace.ModelAddTrace((tmp$6 = event.getSourcePath()) != null ? tmp$6 : Kotlin.throwNPE(), (tmp$7 = event.getElementAttributeName()) != null ? tmp$7 : Kotlin.throwNPE(), casted.path(), casted.metaClassName()));
-                result.addAll(traces.getTraces());
-              }
-               else if (tmp$0 === _.org.cloud.util.ActionType.get_ADD_ALL()) {
-                var casted_0 = event.getValue();
-                var paths = new Kotlin.ArrayList(0);
-                var types = new Kotlin.ArrayList(0);
-                {
-                  var tmp$8 = casted_0.iterator();
-                  while (tmp$8.hasNext()) {
-                    var elem = tmp$8.next();
-                    var elemCasted = elem;
-                    var traces_0 = this.get_compare().inter(elemCasted, elemCasted);
-                    var tmp$9, tmp$10;
-                    result.add(new _.org.cloud.trace.ModelAddTrace((tmp$9 = event.getSourcePath()) != null ? tmp$9 : Kotlin.throwNPE(), (tmp$10 = event.getElementAttributeName()) != null ? tmp$10 : Kotlin.throwNPE(), elemCasted.path(), elemCasted.metaClassName()));
-                    result.addAll(traces_0.getTraces());
-                  }
-                }
-              }
-               else if (tmp$0 === _.org.cloud.util.ActionType.get_SET()) {
-                if (event.getElementAttributeType() === _.org.cloud.util.ElementAttributeType.get_ATTRIBUTE()) {
-                  var tmp$11, tmp$12;
-                  result.add(new _.org.cloud.trace.ModelSetTrace((tmp$11 = event.getSourcePath()) != null ? tmp$11 : Kotlin.throwNPE(), (tmp$12 = event.getElementAttributeName()) != null ? tmp$12 : Kotlin.throwNPE(), null, event.getValue().toString(), null));
-                }
-                 else {
-                  var tmp$13, tmp$14;
-                  result.add(new _.org.cloud.trace.ModelSetTrace((tmp$13 = event.getSourcePath()) != null ? tmp$13 : Kotlin.throwNPE(), (tmp$14 = event.getElementAttributeName()) != null ? tmp$14 : Kotlin.throwNPE(), event.getValue().path(), null, null));
-                }
-              }
-               else if (tmp$0 === _.org.cloud.util.ActionType.get_RENEW_INDEX()) {
-              }
-               else {
-                throw new Kotlin.Exception("Can't convert event : " + event);
-              }
-              return (new _.org.cloud.trace.TraceSequence()).populate(result);
-            }
-          }),
-          ModelTrace: classes.cd,
-          ModelAddTrace: Kotlin.createClass(classes.cd, {
-            initialize: function (srcPath, refName, previousPath, typeName) {
-              this.$srcPath = srcPath;
-              this.$refName = refName;
-              this.$previousPath = previousPath;
-              this.$typeName = typeName;
-            },
-            get_srcPath: function () {
-              return this.$srcPath;
-            },
-            get_refName: function () {
-              return this.$refName;
-            },
-            get_previousPath: function () {
-              return this.$previousPath;
-            },
-            get_typeName: function () {
-              return this.$typeName;
-            },
-            toString: function () {
-              var buffer = new _.java.lang.StringBuilder('');
-              buffer.append('{ "traceType" : ' + _.org.cloud.util.ActionType.get_ADD() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '"');
-              if (this.get_previousPath() != null) {
-                buffer.append(', "previouspath" : "' + this.get_previousPath() + '"');
-              }
-              if (this.get_typeName() != null) {
-                buffer.append(', "typename" : "' + this.get_typeName() + '"');
-              }
-              buffer.append('}');
-              return buffer.toString();
-            }
-          }),
-          ModelAddAllTrace: Kotlin.createClass(classes.cd, {
-            initialize: function (srcPath, refName, previousPath, typeName) {
-              this.$srcPath = srcPath;
-              this.$refName = refName;
-              this.$previousPath = previousPath;
-              this.$typeName = typeName;
-            },
-            get_srcPath: function () {
-              return this.$srcPath;
-            },
-            get_refName: function () {
-              return this.$refName;
-            },
-            get_previousPath: function () {
-              return this.$previousPath;
-            },
-            get_typeName: function () {
-              return this.$typeName;
-            },
-            mkString: function (ss) {
-              if (ss == null) {
-                return null;
-              }
-              var buffer = new _.java.lang.StringBuilder('');
-              var isFirst = true;
-              {
-                var tmp$0 = ss.iterator();
-                while (tmp$0.hasNext()) {
-                  var s = tmp$0.next();
-                  if (!isFirst) {
-                    buffer.append(',');
-                  }
-                  buffer.append(s);
-                  isFirst = false;
-                }
-              }
-              return buffer.toString();
-            },
-            toString: function () {
-              var buffer = new _.java.lang.StringBuilder('');
-              buffer.append('{ "traceType" : ' + _.org.cloud.util.ActionType.get_ADD_ALL() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '"');
-              if (this.get_previousPath() != null) {
-                buffer.append(', "previouspath" : "' + this.mkString(this.get_previousPath()) + '"');
-              }
-              if (this.get_typeName() != null) {
-                buffer.append(', "typename" : "' + this.mkString(this.get_typeName()) + '"');
-              }
-              buffer.append('}');
-              return buffer.toString();
-            }
-          }),
-          ModelRemoveTrace: Kotlin.createClass(classes.cd, {
-            initialize: function (srcPath, refName, objPath) {
-              this.$srcPath = srcPath;
-              this.$refName = refName;
-              this.$objPath = objPath;
-            },
-            get_srcPath: function () {
-              return this.$srcPath;
-            },
-            get_refName: function () {
-              return this.$refName;
-            },
-            get_objPath: function () {
-              return this.$objPath;
-            },
-            toString: function () {
-              return '{ "traceType" : ' + _.org.cloud.util.ActionType.get_REMOVE() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '", "objpath" : "' + this.get_objPath() + '" }';
-            }
-          }),
-          ModelRemoveAllTrace: Kotlin.createClass(classes.cd, {
-            initialize: function (srcPath, refName) {
-              this.$srcPath = srcPath;
-              this.$refName = refName;
-            },
-            get_srcPath: function () {
-              return this.$srcPath;
-            },
-            get_refName: function () {
-              return this.$refName;
-            },
-            toString: function () {
-              return '{ "traceType" : ' + _.org.cloud.util.ActionType.get_REMOVE_ALL() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '" }';
-            }
-          }),
-          ModelSetTrace: Kotlin.createClass(classes.cd, {
-            initialize: function (srcPath, refName, objPath, content, typeName) {
-              this.$srcPath = srcPath;
-              this.$refName = refName;
-              this.$objPath = objPath;
-              this.$content = content;
-              this.$typeName = typeName;
-            },
-            get_srcPath: function () {
-              return this.$srcPath;
-            },
-            get_refName: function () {
-              return this.$refName;
-            },
-            get_objPath: function () {
-              return this.$objPath;
-            },
-            get_content: function () {
-              return this.$content;
-            },
-            get_typeName: function () {
-              return this.$typeName;
-            },
-            toString: function () {
-              var buffer = new _.java.lang.StringBuilder('');
-              buffer.append('{ "traceType" : ' + _.org.cloud.util.ActionType.get_SET() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '"');
-              if (this.get_objPath() != null) {
-                buffer.append(', "objpath" : "' + this.get_objPath() + '"');
-              }
-              if (this.get_content() != null) {
-                buffer.append(', "content" : "' + this.get_content() + '"');
-              }
-              if (this.get_typeName() != null) {
-                buffer.append(', "typename" : "' + this.get_typeName() + '"');
-              }
-              buffer.append('}');
-              return buffer.toString();
-            }
-          }),
-          TraceSequence: Kotlin.createClass({
+          DefaultTraceSequence: Kotlin.createClass(classes.cg, {
             initialize: function () {
               this.$traces = new Kotlin.ArrayList(0);
             },
@@ -2976,27 +2718,27 @@
                   keys.put(parser.nextName(), parser.nextString());
                 }
                 parser.endObject();
-                if (value === _.org.cloud.util.ActionType.get_SET()) {
+                if (value === _.org.kevoree.modeling.api.util.ActionType.get_SET()) {
                   var tmp$0, tmp$1;
-                  this.get_traces().add(new _.org.cloud.trace.ModelSetTrace((tmp$0 = keys.get('src')) != null ? tmp$0 : Kotlin.throwNPE(), (tmp$1 = keys.get('refname')) != null ? tmp$1 : Kotlin.throwNPE(), keys.get('objpath'), keys.get('content'), keys.get('typename')));
+                  this.get_traces().add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$0 = keys.get('src')) != null ? tmp$0 : Kotlin.throwNPE(), (tmp$1 = keys.get('refname')) != null ? tmp$1 : Kotlin.throwNPE(), keys.get('objpath'), keys.get('content'), keys.get('typename')));
                 }
-                 else if (value === _.org.cloud.util.ActionType.get_ADD()) {
+                 else if (value === _.org.kevoree.modeling.api.util.ActionType.get_ADD()) {
                   var tmp$2, tmp$3, tmp$4;
-                  this.get_traces().add(new _.org.cloud.trace.ModelAddTrace((tmp$2 = keys.get('src')) != null ? tmp$2 : Kotlin.throwNPE(), (tmp$3 = keys.get('refname')) != null ? tmp$3 : Kotlin.throwNPE(), (tmp$4 = keys.get('previouspath')) != null ? tmp$4 : Kotlin.throwNPE(), keys.get('typename')));
+                  this.get_traces().add(new _.org.kevoree.modeling.api.trace.ModelAddTrace((tmp$2 = keys.get('src')) != null ? tmp$2 : Kotlin.throwNPE(), (tmp$3 = keys.get('refname')) != null ? tmp$3 : Kotlin.throwNPE(), (tmp$4 = keys.get('previouspath')) != null ? tmp$4 : Kotlin.throwNPE(), keys.get('typename')));
                 }
-                 else if (value === _.org.cloud.util.ActionType.get_ADD_ALL()) {
+                 else if (value === _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL()) {
                   var tmp$5, tmp$6, tmp$7, tmp$8, tmp$9, tmp$10;
-                  this.get_traces().add(new _.org.cloud.trace.ModelAddAllTrace((tmp$5 = keys.get('src')) != null ? tmp$5 : Kotlin.throwNPE(), (tmp$6 = keys.get('refname')) != null ? tmp$6 : Kotlin.throwNPE(), (tmp$8 = (tmp$7 = keys.get('content')) != null ? Kotlin.splitString(tmp$7, ';') : null) != null ? _.kotlin.toList_0(tmp$8) : null, (tmp$10 = (tmp$9 = keys.get('typename')) != null ? Kotlin.splitString(tmp$9, ';') : null) != null ? _.kotlin.toList_0(tmp$10) : null));
+                  this.get_traces().add(new _.org.kevoree.modeling.api.trace.ModelAddAllTrace((tmp$5 = keys.get('src')) != null ? tmp$5 : Kotlin.throwNPE(), (tmp$6 = keys.get('refname')) != null ? tmp$6 : Kotlin.throwNPE(), (tmp$8 = (tmp$7 = keys.get('content')) != null ? Kotlin.splitString(tmp$7, ';') : null) != null ? _.kotlin.toList_0(tmp$8) : null, (tmp$10 = (tmp$9 = keys.get('typename')) != null ? Kotlin.splitString(tmp$9, ';') : null) != null ? _.kotlin.toList_0(tmp$10) : null));
                 }
-                 else if (value === _.org.cloud.util.ActionType.get_REMOVE()) {
+                 else if (value === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE()) {
                   var tmp$11, tmp$12, tmp$13;
-                  this.get_traces().add(new _.org.cloud.trace.ModelRemoveTrace((tmp$11 = keys.get('src')) != null ? tmp$11 : Kotlin.throwNPE(), (tmp$12 = keys.get('refname')) != null ? tmp$12 : Kotlin.throwNPE(), (tmp$13 = keys.get('objpath')) != null ? tmp$13 : Kotlin.throwNPE()));
+                  this.get_traces().add(new _.org.kevoree.modeling.api.trace.ModelRemoveTrace((tmp$11 = keys.get('src')) != null ? tmp$11 : Kotlin.throwNPE(), (tmp$12 = keys.get('refname')) != null ? tmp$12 : Kotlin.throwNPE(), (tmp$13 = keys.get('objpath')) != null ? tmp$13 : Kotlin.throwNPE()));
                 }
-                 else if (value === _.org.cloud.util.ActionType.get_REMOVE_ALL()) {
+                 else if (value === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL()) {
                   var tmp$14, tmp$15;
-                  this.get_traces().add(new _.org.cloud.trace.ModelRemoveAllTrace((tmp$14 = keys.get('src')) != null ? tmp$14 : Kotlin.throwNPE(), (tmp$15 = keys.get('refname')) != null ? tmp$15 : Kotlin.throwNPE()));
+                  this.get_traces().add(new _.org.kevoree.modeling.api.trace.ModelRemoveAllTrace((tmp$14 = keys.get('src')) != null ? tmp$14 : Kotlin.throwNPE(), (tmp$15 = keys.get('refname')) != null ? tmp$15 : Kotlin.throwNPE()));
                 }
-                 else if (value === _.org.cloud.util.ActionType.get_RENEW_INDEX()) {
+                 else if (value === _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX()) {
                 }
                  else {
                 }
@@ -3004,7 +2746,7 @@
               return this;
             },
             exportToString: function () {
-              var buffer = new _.java.lang.StringBuilder('');
+              var buffer = new _.java.lang.StringBuilder();
               buffer.append('[');
               var isFirst = true;
               {
@@ -3020,176 +2762,457 @@
               }
               buffer.append(']');
               return buffer.toString();
-            }
-          }),
-          ModelTraceApplicator: Kotlin.createClass({
-            initialize: function (targetModel) {
-              this.$targetModel = targetModel;
-              this.$factory = new _.org.cloud.factory.MainFactory();
-              this.$pendingObj = null;
-              this.$pendingParent = null;
-              this.$pendingParentRefName = null;
-              this.$pendingObjPath = null;
             },
-            get_targetModel: function () {
-              return this.$targetModel;
-            },
-            get_factory: function () {
-              return this.$factory;
-            },
-            set_factory: function (tmp$0) {
-              this.$factory = tmp$0;
-            },
-            get_pendingObj: function () {
-              return this.$pendingObj;
-            },
-            set_pendingObj: function (tmp$0) {
-              this.$pendingObj = tmp$0;
-            },
-            get_pendingParent: function () {
-              return this.$pendingParent;
-            },
-            set_pendingParent: function (tmp$0) {
-              this.$pendingParent = tmp$0;
-            },
-            get_pendingParentRefName: function () {
-              return this.$pendingParentRefName;
-            },
-            set_pendingParentRefName: function (tmp$0) {
-              this.$pendingParentRefName = tmp$0;
-            },
-            get_pendingObjPath: function () {
-              return this.$pendingObjPath;
-            },
-            set_pendingObjPath: function (tmp$0) {
-              this.$pendingObjPath = tmp$0;
-            },
-            tryClosePending: function (srcPath) {
-              if (this.get_pendingObj() != null && !Kotlin.equals(this.get_pendingObjPath(), srcPath)) {
-                var tmp$0, tmp$1;
-                ((tmp$0 = this.get_pendingParent()) != null ? tmp$0 : Kotlin.throwNPE()).reflexiveMutator(_.org.cloud.util.ActionType.get_ADD(), (tmp$1 = this.get_pendingParentRefName()) != null ? tmp$1 : Kotlin.throwNPE(), this.get_pendingObj());
-                this.set_pendingObj(null);
-                this.set_pendingObjPath(null);
-                this.set_pendingParentRefName(null);
-                this.set_pendingParent(null);
-              }
-            },
-            createOrAdd: function (previousPath, target, refName, potentialTypeName) {
-              var tmp$0;
-              if (previousPath != null) {
-                tmp$0 = this.get_targetModel().findByPath(previousPath);
-              }
-               else {
-                tmp$0 = null;
-              }
-              var targetElem = tmp$0;
-              if (targetElem != null) {
-                target.reflexiveMutator(_.org.cloud.util.ActionType.get_ADD(), refName, targetElem);
-              }
-               else {
-                var tmp$1;
-                this.set_pendingObj(this.get_factory().create((tmp$1 = potentialTypeName) != null ? tmp$1 : Kotlin.throwNPE()));
-                this.set_pendingObjPath(previousPath);
-                this.set_pendingParentRefName(refName);
-                this.set_pendingParent(target);
-              }
-            },
-            applyTraceOnModel: function (traceSeq) {
-              {
-                var tmp$0 = traceSeq.getTraces().iterator();
-                while (tmp$0.hasNext()) {
-                  var trace = tmp$0.next();
-                  var target = this.get_targetModel();
-                  if (Kotlin.isType(trace, _.org.cloud.trace.ModelAddTrace)) {
-                    var castedTrace = trace;
-                    this.tryClosePending('#Fake#Path');
-                    if (!Kotlin.equals(trace.get_srcPath(), '')) {
-                      target = this.get_targetModel().findByPath(castedTrace.get_srcPath());
-                    }
-                    this.createOrAdd(castedTrace.get_previousPath(), target, castedTrace.get_refName(), castedTrace.get_typeName());
-                  }
-                  if (Kotlin.isType(trace, _.org.cloud.trace.ModelAddAllTrace)) {
-                    var castedTrace_0 = trace;
-                    this.tryClosePending('#Fake#Path');
-                    var i = 0;
-                    var tmp$1;
-                    {
-                      var tmp$2 = ((tmp$1 = castedTrace_0.get_previousPath()) != null ? tmp$1 : Kotlin.throwNPE()).iterator();
-                      while (tmp$2.hasNext()) {
-                        var path = tmp$2.next();
-                        var tmp$3;
-                        this.createOrAdd(path, target, castedTrace_0.get_refName(), ((tmp$3 = castedTrace_0.get_typeName()) != null ? tmp$3 : Kotlin.throwNPE()).get(i));
-                        i++;
-                      }
-                    }
-                  }
-                  if (Kotlin.isType(trace, _.org.cloud.trace.ModelRemoveTrace)) {
-                    var castedTrace_1 = trace;
-                    this.tryClosePending(trace.get_srcPath());
-                    if (!Kotlin.equals(trace.get_srcPath(), '')) {
-                      target = this.get_targetModel().findByPath(castedTrace_1.get_srcPath());
-                    }
-                    target.reflexiveMutator(_.org.cloud.util.ActionType.get_REMOVE(), castedTrace_1.get_refName(), this.get_targetModel().findByPath(castedTrace_1.get_objPath()));
-                  }
-                  if (Kotlin.isType(trace, _.org.cloud.trace.ModelRemoveAllTrace)) {
-                    var castedTrace_2 = trace;
-                    this.tryClosePending(trace.get_srcPath());
-                    if (!Kotlin.equals(trace.get_srcPath(), '')) {
-                      target = this.get_targetModel().findByPath(castedTrace_2.get_srcPath());
-                    }
-                    target.reflexiveMutator(_.org.cloud.util.ActionType.get_REMOVE_ALL(), castedTrace_2.get_refName(), null);
-                  }
-                  if (Kotlin.isType(trace, _.org.cloud.trace.ModelSetTrace)) {
-                    var castedTrace_3 = trace;
-                    this.tryClosePending(trace.get_srcPath());
-                    if (!Kotlin.equals(trace.get_srcPath(), '') && !Kotlin.equals(castedTrace_3.get_srcPath(), this.get_pendingObjPath())) {
-                      target = this.get_targetModel().findByPath(castedTrace_3.get_srcPath());
-                    }
-                     else {
-                      if (Kotlin.equals(castedTrace_3.get_srcPath(), this.get_pendingObjPath()) && this.get_pendingObj() != null) {
-                        var tmp$4;
-                        target = (tmp$4 = this.get_pendingObj()) != null ? tmp$4 : Kotlin.throwNPE();
-                      }
-                    }
-                    if (castedTrace_3.get_content() != null) {
-                      target.reflexiveMutator(_.org.cloud.util.ActionType.get_SET(), castedTrace_3.get_refName(), castedTrace_3.get_content());
-                    }
-                     else {
-                      var tmp$6;
-                      if (castedTrace_3.get_objPath() != null) {
-                        var tmp$5;
-                        tmp$6 = this.get_targetModel().findByPath((tmp$5 = castedTrace_3.get_objPath()) != null ? tmp$5 : Kotlin.throwNPE());
-                      }
-                       else {
-                        tmp$6 = null;
-                      }
-                      var targetContentPath = tmp$6;
-                      if (targetContentPath != null) {
-                        target.reflexiveMutator(_.org.cloud.util.ActionType.get_SET(), castedTrace_3.get_refName(), targetContentPath);
-                      }
-                       else {
-                        if (castedTrace_3.get_typeName() != null && !Kotlin.equals(castedTrace_3.get_typeName(), '')) {
-                          this.createOrAdd(castedTrace_3.get_objPath(), target, castedTrace_3.get_refName(), castedTrace_3.get_typeName());
-                        }
-                         else {
-                          target.reflexiveMutator(_.org.cloud.util.ActionType.get_SET(), castedTrace_3.get_refName(), targetContentPath);
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              this.tryClosePending('#Fake#Path');
+            applyOn: function (target) {
+              var traceApplicator = new _.org.kevoree.modeling.api.trace.ModelTraceApplicator(target, new _.org.cloud.factory.MainFactory());
+              traceApplicator.applyTraceOnModel(this);
+              return true;
             }
           })
         }),
         util: Kotlin.definePackage({
         })
       }),
+      kevoree: Kotlin.definePackage({
+        modeling: Kotlin.definePackage({
+          api: Kotlin.definePackage({
+            compare: Kotlin.definePackage({
+              ModelCompare: classes.c7
+            }),
+            events: Kotlin.definePackage({
+              ModelElementListener: classes.c8,
+              ModelEvent: Kotlin.createClass({
+                initialize: function (internal_sourcePath, internal_etype, internal_elementAttributeType, internal_elementAttributeName, internal_value) {
+                  this.$internal_sourcePath = internal_sourcePath;
+                  this.$internal_etype = internal_etype;
+                  this.$internal_elementAttributeType = internal_elementAttributeType;
+                  this.$internal_elementAttributeName = internal_elementAttributeName;
+                  this.$internal_value = internal_value;
+                },
+                get_internal_sourcePath: function () {
+                  return this.$internal_sourcePath;
+                },
+                get_internal_etype: function () {
+                  return this.$internal_etype;
+                },
+                get_internal_elementAttributeType: function () {
+                  return this.$internal_elementAttributeType;
+                },
+                get_internal_elementAttributeName: function () {
+                  return this.$internal_elementAttributeName;
+                },
+                get_internal_value: function () {
+                  return this.$internal_value;
+                },
+                getSourcePath: function () {
+                  return this.get_internal_sourcePath();
+                },
+                getType: function () {
+                  return this.get_internal_etype();
+                },
+                getElementAttributeType: function () {
+                  return this.get_internal_elementAttributeType();
+                },
+                getElementAttributeName: function () {
+                  return this.get_internal_elementAttributeName();
+                },
+                getValue: function () {
+                  return this.get_internal_value();
+                },
+                toString: function () {
+                  return 'ModelEvent[src:' + this.getSourcePath() + ', type:' + this.getType() + ', elementAttributeType:' + this.getElementAttributeType() + ', elementAttributeName:' + this.getElementAttributeName() + ', value:' + this.getValue() + ']';
+                }
+              }),
+              ModelTreeListener: classes.c9
+            }),
+            KMFContainer: classes.ca,
+            KMFFactory: classes.cb,
+            ModelCloner: classes.cc,
+            ModelLoader: classes.cd,
+            ModelSerializer: classes.ce,
+            trace: Kotlin.definePackage({
+              Event2Trace: Kotlin.createClass({
+                initialize: function (compare) {
+                  this.$compare = compare;
+                },
+                get_compare: function () {
+                  return this.$compare;
+                },
+                convert: function (event) {
+                  var result = new Kotlin.ArrayList(0);
+                  var tmp$0 = event.getType();
+                  if (tmp$0 === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE()) {
+                    var tmp$1, tmp$2, tmp$3;
+                    result.add(new _.org.kevoree.modeling.api.trace.ModelRemoveTrace((tmp$1 = event.getSourcePath()) != null ? tmp$1 : Kotlin.throwNPE(), (tmp$2 = event.getElementAttributeName()) != null ? tmp$2 : Kotlin.throwNPE(), (tmp$3 = event.getValue().path()) != null ? tmp$3 : Kotlin.throwNPE()));
+                  }
+                   else if (tmp$0 === _.org.kevoree.modeling.api.util.ActionType.get_REMOVE()) {
+                    var tmp$4, tmp$5;
+                    result.add(new _.org.kevoree.modeling.api.trace.ModelRemoveAllTrace((tmp$4 = event.getSourcePath()) != null ? tmp$4 : Kotlin.throwNPE(), (tmp$5 = event.getElementAttributeName()) != null ? tmp$5 : Kotlin.throwNPE()));
+                  }
+                   else if (tmp$0 === _.org.kevoree.modeling.api.util.ActionType.get_ADD()) {
+                    var casted = event.getValue();
+                    var traces = this.get_compare().inter(casted, casted);
+                    var tmp$6, tmp$7;
+                    result.add(new _.org.kevoree.modeling.api.trace.ModelAddTrace((tmp$6 = event.getSourcePath()) != null ? tmp$6 : Kotlin.throwNPE(), (tmp$7 = event.getElementAttributeName()) != null ? tmp$7 : Kotlin.throwNPE(), casted.path(), casted.metaClassName()));
+                    result.addAll(traces.getTraces());
+                  }
+                   else if (tmp$0 === _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL()) {
+                    var casted_0 = event.getValue();
+                    {
+                      var tmp$8 = casted_0.iterator();
+                      while (tmp$8.hasNext()) {
+                        var elem = tmp$8.next();
+                        var elemCasted = elem;
+                        var traces_0 = this.get_compare().inter(elemCasted, elemCasted);
+                        var tmp$9, tmp$10;
+                        result.add(new _.org.kevoree.modeling.api.trace.ModelAddTrace((tmp$9 = event.getSourcePath()) != null ? tmp$9 : Kotlin.throwNPE(), (tmp$10 = event.getElementAttributeName()) != null ? tmp$10 : Kotlin.throwNPE(), elemCasted.path(), elemCasted.metaClassName()));
+                        result.addAll(traces_0.getTraces());
+                      }
+                    }
+                  }
+                   else if (tmp$0 === _.org.kevoree.modeling.api.util.ActionType.get_SET()) {
+                    if (event.getElementAttributeType() === _.org.kevoree.modeling.api.util.ElementAttributeType.get_ATTRIBUTE()) {
+                      var tmp$11, tmp$12;
+                      result.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$11 = event.getSourcePath()) != null ? tmp$11 : Kotlin.throwNPE(), (tmp$12 = event.getElementAttributeName()) != null ? tmp$12 : Kotlin.throwNPE(), null, event.getValue().toString(), null));
+                    }
+                     else {
+                      var tmp$13, tmp$14;
+                      result.add(new _.org.kevoree.modeling.api.trace.ModelSetTrace((tmp$13 = event.getSourcePath()) != null ? tmp$13 : Kotlin.throwNPE(), (tmp$14 = event.getElementAttributeName()) != null ? tmp$14 : Kotlin.throwNPE(), event.getValue().path(), null, null));
+                    }
+                  }
+                   else if (tmp$0 === _.org.kevoree.modeling.api.util.ActionType.get_RENEW_INDEX()) {
+                  }
+                   else {
+                    throw new Kotlin.Exception("Can't convert event : " + event);
+                  }
+                  return this.get_compare().createSequence().populate(result);
+                }
+              }),
+              ModelTrace: classes.cf,
+              ModelAddTrace: Kotlin.createClass(classes.cf, {
+                initialize: function (srcPath, refName, previousPath, typeName) {
+                  this.$srcPath = srcPath;
+                  this.$refName = refName;
+                  this.$previousPath = previousPath;
+                  this.$typeName = typeName;
+                },
+                get_srcPath: function () {
+                  return this.$srcPath;
+                },
+                get_refName: function () {
+                  return this.$refName;
+                },
+                get_previousPath: function () {
+                  return this.$previousPath;
+                },
+                get_typeName: function () {
+                  return this.$typeName;
+                },
+                toString: function () {
+                  var buffer = new _.java.lang.StringBuilder();
+                  buffer.append('{ "traceType" : ' + _.org.kevoree.modeling.api.util.ActionType.get_ADD() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '"');
+                  if (this.get_previousPath() != null) {
+                    buffer.append(', "previouspath" : "' + this.get_previousPath() + '"');
+                  }
+                  if (this.get_typeName() != null) {
+                    buffer.append(', "typename" : "' + this.get_typeName() + '"');
+                  }
+                  buffer.append('}');
+                  return buffer.toString();
+                }
+              }),
+              ModelAddAllTrace: Kotlin.createClass(classes.cf, {
+                initialize: function (srcPath, refName, previousPath, typeName) {
+                  this.$srcPath = srcPath;
+                  this.$refName = refName;
+                  this.$previousPath = previousPath;
+                  this.$typeName = typeName;
+                },
+                get_srcPath: function () {
+                  return this.$srcPath;
+                },
+                get_refName: function () {
+                  return this.$refName;
+                },
+                get_previousPath: function () {
+                  return this.$previousPath;
+                },
+                get_typeName: function () {
+                  return this.$typeName;
+                },
+                mkString: function (ss) {
+                  if (ss == null) {
+                    return null;
+                  }
+                  var buffer = new _.java.lang.StringBuilder();
+                  var isFirst = true;
+                  {
+                    var tmp$0 = ss.iterator();
+                    while (tmp$0.hasNext()) {
+                      var s = tmp$0.next();
+                      if (!isFirst) {
+                        buffer.append(',');
+                      }
+                      buffer.append(s);
+                      isFirst = false;
+                    }
+                  }
+                  return buffer.toString();
+                },
+                toString: function () {
+                  var buffer = new _.java.lang.StringBuilder();
+                  buffer.append('{ "traceType" : ' + _.org.kevoree.modeling.api.util.ActionType.get_ADD_ALL() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '"');
+                  if (this.get_previousPath() != null) {
+                    buffer.append(', "previouspath" : "' + this.mkString(this.get_previousPath()) + '"');
+                  }
+                  if (this.get_typeName() != null) {
+                    buffer.append(', "typename" : "' + this.mkString(this.get_typeName()) + '"');
+                  }
+                  buffer.append('}');
+                  return buffer.toString();
+                }
+              }),
+              ModelRemoveTrace: Kotlin.createClass(classes.cf, {
+                initialize: function (srcPath, refName, objPath) {
+                  this.$srcPath = srcPath;
+                  this.$refName = refName;
+                  this.$objPath = objPath;
+                },
+                get_srcPath: function () {
+                  return this.$srcPath;
+                },
+                get_refName: function () {
+                  return this.$refName;
+                },
+                get_objPath: function () {
+                  return this.$objPath;
+                },
+                toString: function () {
+                  return '{ "traceType" : ' + _.org.kevoree.modeling.api.util.ActionType.get_REMOVE() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '", "objpath" : "' + this.get_objPath() + '" }';
+                }
+              }),
+              ModelRemoveAllTrace: Kotlin.createClass(classes.cf, {
+                initialize: function (srcPath, refName) {
+                  this.$srcPath = srcPath;
+                  this.$refName = refName;
+                },
+                get_srcPath: function () {
+                  return this.$srcPath;
+                },
+                get_refName: function () {
+                  return this.$refName;
+                },
+                toString: function () {
+                  return '{ "traceType" : ' + _.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '" }';
+                }
+              }),
+              ModelSetTrace: Kotlin.createClass(classes.cf, {
+                initialize: function (srcPath, refName, objPath, content, typeName) {
+                  this.$srcPath = srcPath;
+                  this.$refName = refName;
+                  this.$objPath = objPath;
+                  this.$content = content;
+                  this.$typeName = typeName;
+                },
+                get_srcPath: function () {
+                  return this.$srcPath;
+                },
+                get_refName: function () {
+                  return this.$refName;
+                },
+                get_objPath: function () {
+                  return this.$objPath;
+                },
+                get_content: function () {
+                  return this.$content;
+                },
+                get_typeName: function () {
+                  return this.$typeName;
+                },
+                toString: function () {
+                  var buffer = new _.java.lang.StringBuilder();
+                  buffer.append('{ "traceType" : ' + _.org.kevoree.modeling.api.util.ActionType.get_SET() + ' , "src" : "' + this.get_srcPath() + '", "refname" : "' + this.get_refName() + '"');
+                  if (this.get_objPath() != null) {
+                    buffer.append(', "objpath" : "' + this.get_objPath() + '"');
+                  }
+                  if (this.get_content() != null) {
+                    buffer.append(', "content" : "' + this.get_content() + '"');
+                  }
+                  if (this.get_typeName() != null) {
+                    buffer.append(', "typename" : "' + this.get_typeName() + '"');
+                  }
+                  buffer.append('}');
+                  return buffer.toString();
+                }
+              }),
+              ModelTraceApplicator: Kotlin.createClass({
+                initialize: function (targetModel, factory) {
+                  this.$targetModel = targetModel;
+                  this.$factory = factory;
+                  this.$pendingObj = null;
+                  this.$pendingParent = null;
+                  this.$pendingParentRefName = null;
+                  this.$pendingObjPath = null;
+                },
+                get_targetModel: function () {
+                  return this.$targetModel;
+                },
+                get_factory: function () {
+                  return this.$factory;
+                },
+                get_pendingObj: function () {
+                  return this.$pendingObj;
+                },
+                set_pendingObj: function (tmp$0) {
+                  this.$pendingObj = tmp$0;
+                },
+                get_pendingParent: function () {
+                  return this.$pendingParent;
+                },
+                set_pendingParent: function (tmp$0) {
+                  this.$pendingParent = tmp$0;
+                },
+                get_pendingParentRefName: function () {
+                  return this.$pendingParentRefName;
+                },
+                set_pendingParentRefName: function (tmp$0) {
+                  this.$pendingParentRefName = tmp$0;
+                },
+                get_pendingObjPath: function () {
+                  return this.$pendingObjPath;
+                },
+                set_pendingObjPath: function (tmp$0) {
+                  this.$pendingObjPath = tmp$0;
+                },
+                tryClosePending: function (srcPath) {
+                  if (this.get_pendingObj() != null && !Kotlin.equals(this.get_pendingObjPath(), srcPath)) {
+                    var tmp$0, tmp$1;
+                    ((tmp$0 = this.get_pendingParent()) != null ? tmp$0 : Kotlin.throwNPE()).reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_ADD(), (tmp$1 = this.get_pendingParentRefName()) != null ? tmp$1 : Kotlin.throwNPE(), this.get_pendingObj());
+                    this.set_pendingObj(null);
+                    this.set_pendingObjPath(null);
+                    this.set_pendingParentRefName(null);
+                    this.set_pendingParent(null);
+                  }
+                },
+                createOrAdd: function (previousPath, target, refName, potentialTypeName) {
+                  var tmp$0;
+                  if (previousPath != null) {
+                    tmp$0 = this.get_targetModel().findByPath(previousPath);
+                  }
+                   else {
+                    tmp$0 = null;
+                  }
+                  var targetElem = tmp$0;
+                  if (targetElem != null) {
+                    target.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_ADD(), refName, targetElem);
+                  }
+                   else {
+                    var tmp$1;
+                    this.set_pendingObj(this.get_factory().create((tmp$1 = potentialTypeName) != null ? tmp$1 : Kotlin.throwNPE()));
+                    this.set_pendingObjPath(previousPath);
+                    this.set_pendingParentRefName(refName);
+                    this.set_pendingParent(target);
+                  }
+                },
+                applyTraceOnModel: function (traceSeq) {
+                  {
+                    var tmp$0 = traceSeq.getTraces().iterator();
+                    while (tmp$0.hasNext()) {
+                      var trace = tmp$0.next();
+                      var target = this.get_targetModel();
+                      if (Kotlin.isType(trace, _.org.kevoree.modeling.api.trace.ModelAddTrace)) {
+                        var castedTrace = trace;
+                        this.tryClosePending('#Fake#Path');
+                        if (!Kotlin.equals(trace.get_srcPath(), '')) {
+                          target = this.get_targetModel().findByPath(castedTrace.get_srcPath());
+                        }
+                        this.createOrAdd(castedTrace.get_previousPath(), target, castedTrace.get_refName(), castedTrace.get_typeName());
+                      }
+                      if (Kotlin.isType(trace, _.org.kevoree.modeling.api.trace.ModelAddAllTrace)) {
+                        var castedTrace_0 = trace;
+                        this.tryClosePending('#Fake#Path');
+                        var i = 0;
+                        var tmp$1;
+                        {
+                          var tmp$2 = ((tmp$1 = castedTrace_0.get_previousPath()) != null ? tmp$1 : Kotlin.throwNPE()).iterator();
+                          while (tmp$2.hasNext()) {
+                            var path = tmp$2.next();
+                            var tmp$3;
+                            this.createOrAdd(path, target, castedTrace_0.get_refName(), ((tmp$3 = castedTrace_0.get_typeName()) != null ? tmp$3 : Kotlin.throwNPE()).get(i));
+                            i++;
+                          }
+                        }
+                      }
+                      if (Kotlin.isType(trace, _.org.kevoree.modeling.api.trace.ModelRemoveTrace)) {
+                        var castedTrace_1 = trace;
+                        this.tryClosePending(trace.get_srcPath());
+                        if (!Kotlin.equals(trace.get_srcPath(), '')) {
+                          target = this.get_targetModel().findByPath(castedTrace_1.get_srcPath());
+                        }
+                        target.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_REMOVE(), castedTrace_1.get_refName(), this.get_targetModel().findByPath(castedTrace_1.get_objPath()));
+                      }
+                      if (Kotlin.isType(trace, _.org.kevoree.modeling.api.trace.ModelRemoveAllTrace)) {
+                        var castedTrace_2 = trace;
+                        this.tryClosePending(trace.get_srcPath());
+                        if (!Kotlin.equals(trace.get_srcPath(), '')) {
+                          target = this.get_targetModel().findByPath(castedTrace_2.get_srcPath());
+                        }
+                        target.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_REMOVE_ALL(), castedTrace_2.get_refName(), null);
+                      }
+                      if (Kotlin.isType(trace, _.org.kevoree.modeling.api.trace.ModelSetTrace)) {
+                        var castedTrace_3 = trace;
+                        this.tryClosePending(trace.get_srcPath());
+                        if (!Kotlin.equals(trace.get_srcPath(), '') && !Kotlin.equals(castedTrace_3.get_srcPath(), this.get_pendingObjPath())) {
+                          target = this.get_targetModel().findByPath(castedTrace_3.get_srcPath());
+                        }
+                         else {
+                          if (Kotlin.equals(castedTrace_3.get_srcPath(), this.get_pendingObjPath()) && this.get_pendingObj() != null) {
+                            var tmp$4;
+                            target = (tmp$4 = this.get_pendingObj()) != null ? tmp$4 : Kotlin.throwNPE();
+                          }
+                        }
+                        if (castedTrace_3.get_content() != null) {
+                          target.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_SET(), castedTrace_3.get_refName(), castedTrace_3.get_content());
+                        }
+                         else {
+                          var tmp$6;
+                          if (castedTrace_3.get_objPath() != null) {
+                            var tmp$5;
+                            tmp$6 = this.get_targetModel().findByPath((tmp$5 = castedTrace_3.get_objPath()) != null ? tmp$5 : Kotlin.throwNPE());
+                          }
+                           else {
+                            tmp$6 = null;
+                          }
+                          var targetContentPath = tmp$6;
+                          if (targetContentPath != null) {
+                            target.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_SET(), castedTrace_3.get_refName(), targetContentPath);
+                          }
+                           else {
+                            if (castedTrace_3.get_typeName() != null && !Kotlin.equals(castedTrace_3.get_typeName(), '')) {
+                              this.createOrAdd(castedTrace_3.get_objPath(), target, castedTrace_3.get_refName(), castedTrace_3.get_typeName());
+                            }
+                             else {
+                              target.reflexiveMutator(_.org.kevoree.modeling.api.util.ActionType.get_SET(), castedTrace_3.get_refName(), targetContentPath);
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                  this.tryClosePending('#Fake#Path');
+                }
+              }),
+              TraceSequence: classes.cg
+            }),
+            util: Kotlin.definePackage({
+            })
+          })
+        })
+      }),
       w3c: Kotlin.definePackage({
         dom: Kotlin.definePackage({
           events: Kotlin.definePackage({
-            EventListener: classes.ce
+            EventListener: classes.ch
           })
         })
       })
@@ -6271,7 +6294,7 @@
       iterate: function (nextFunction) {
         return new _.kotlin.FunctionIterator(nextFunction);
       },
-      FilterIterator: Kotlin.createClass(classes.cf, {
+      FilterIterator: Kotlin.createClass(classes.ci, {
         initialize: function (iterator, predicate) {
           this.$iterator = iterator;
           this.$predicate = predicate;
@@ -6294,7 +6317,7 @@
           this.done();
         }
       }),
-      FilterNotNullIterator: Kotlin.createClass(classes.cf, {
+      FilterNotNullIterator: Kotlin.createClass(classes.ci, {
         initialize: function (iterator) {
           this.$iterator = iterator;
           this.super_init();
@@ -6315,7 +6338,7 @@
           this.done();
         }
       }),
-      MapIterator: Kotlin.createClass(classes.cf, {
+      MapIterator: Kotlin.createClass(classes.ci, {
         initialize: function (iterator, transform) {
           this.$iterator = iterator;
           this.$transform = transform;
@@ -6336,7 +6359,7 @@
           }
         }
       }),
-      FlatMapIterator: Kotlin.createClass(classes.cf, {
+      FlatMapIterator: Kotlin.createClass(classes.ci, {
         initialize: function (iterator, transform) {
           this.$iterator = iterator;
           this.$transform = transform;
@@ -6373,7 +6396,7 @@
           }
         }
       }),
-      TakeWhileIterator: Kotlin.createClass(classes.cf, {
+      TakeWhileIterator: Kotlin.createClass(classes.ci, {
         initialize: function (iterator, predicate) {
           this.$iterator = iterator;
           this.$predicate = predicate;
@@ -6396,7 +6419,7 @@
           this.done();
         }
       }),
-      FunctionIterator: Kotlin.createClass(classes.cf, {
+      FunctionIterator: Kotlin.createClass(classes.ci, {
         initialize: function (nextFunction) {
           this.$nextFunction = nextFunction;
           this.super_init();
@@ -6414,7 +6437,7 @@
           }
         }
       }),
-      CompositeIterator: Kotlin.createClass(classes.cf, {
+      CompositeIterator: Kotlin.createClass(classes.ci, {
         initialize: function (iterators) {
           this.super_init();
           this.$iteratorsIter = Kotlin.arrayIterator(iterators);
@@ -6453,7 +6476,7 @@
           }
         }
       }),
-      SingleIterator: Kotlin.createClass(classes.cf, {
+      SingleIterator: Kotlin.createClass(classes.ci, {
         initialize: function (value) {
           this.$value = value;
           this.super_init();
@@ -7625,7 +7648,7 @@
         set_asserter: function (tmp$0) {
           this.$asserter = tmp$0;
         },
-        QUnitAsserter: Kotlin.createClass(classes.cg, {
+        QUnitAsserter: Kotlin.createClass(classes.cj, {
           initialize: function () {
           },
           assertTrue: function (message, actual) {
@@ -7700,7 +7723,7 @@
             return e;
           }
         },
-        Asserter: classes.cg
+        Asserter: classes.cj
       }),
       dom: Kotlin.definePackage({
         createDocument: function () {
@@ -7715,7 +7738,7 @@
         eventHandler: function (handler) {
           return new _.kotlin.dom.EventListenerHandler(handler);
         },
-        EventListenerHandler: Kotlin.createClass(classes.ce, {
+        EventListenerHandler: Kotlin.createClass(classes.ch, {
           initialize: function (handler) {
             this.$handler = handler;
           },
@@ -7994,7 +8017,7 @@
         nextSiblings: function (receiver) {
           return new _.kotlin.dom.NextSiblingIterator(receiver);
         },
-        NextSiblingIterator: Kotlin.createClass(classes.cf, {
+        NextSiblingIterator: Kotlin.createClass(classes.ci, {
           initialize: function (node) {
             this.$node = node;
             this.super_init();
@@ -8019,7 +8042,7 @@
         previousSiblings: function (receiver) {
           return new _.kotlin.dom.PreviousSiblingIterator(receiver);
         },
-        PreviousSiblingIterator: Kotlin.createClass(classes.cf, {
+        PreviousSiblingIterator: Kotlin.createClass(classes.ci, {
           initialize: function (node) {
             this.$node = node;
             this.super_init();
@@ -8146,7 +8169,7 @@
         }
       }),
       support: Kotlin.definePackage({
-        AbstractIterator: classes.cf
+        AbstractIterator: classes.ci
       })
     })
   };
@@ -8326,34 +8349,6 @@
     });
   }.call(_.org.cloud.loader));
   (function () {
-    this.ActionType = Kotlin.createObject({
-      initialize: function () {
-        this.$SET = 0;
-        this.$ADD = 1;
-        this.$REMOVE = 2;
-        this.$ADD_ALL = 3;
-        this.$REMOVE_ALL = 4;
-        this.$RENEW_INDEX = 5;
-      },
-      get_SET: function () {
-        return this.$SET;
-      },
-      get_ADD: function () {
-        return this.$ADD;
-      },
-      get_REMOVE: function () {
-        return this.$REMOVE;
-      },
-      get_ADD_ALL: function () {
-        return this.$ADD_ALL;
-      },
-      get_REMOVE_ALL: function () {
-        return this.$REMOVE_ALL;
-      },
-      get_RENEW_INDEX: function () {
-        return this.$RENEW_INDEX;
-      }
-    });
     this.Constants = Kotlin.createObject({
       initialize: function () {
         this.$UNKNOWN_MUTATION_TYPE_EXCEPTION = 'Unknown mutation type: ';
@@ -8426,6 +8421,36 @@
         return this.$Ref_softwares;
       }
     });
+  }.call(_.org.cloud.util));
+  (function () {
+    this.ActionType = Kotlin.createObject({
+      initialize: function () {
+        this.$SET = 0;
+        this.$ADD = 1;
+        this.$REMOVE = 2;
+        this.$ADD_ALL = 3;
+        this.$REMOVE_ALL = 4;
+        this.$RENEW_INDEX = 5;
+      },
+      get_SET: function () {
+        return this.$SET;
+      },
+      get_ADD: function () {
+        return this.$ADD;
+      },
+      get_REMOVE: function () {
+        return this.$REMOVE;
+      },
+      get_ADD_ALL: function () {
+        return this.$ADD_ALL;
+      },
+      get_REMOVE_ALL: function () {
+        return this.$REMOVE_ALL;
+      },
+      get_RENEW_INDEX: function () {
+        return this.$RENEW_INDEX;
+      }
+    });
     this.ElementAttributeType = Kotlin.createObject({
       initialize: function () {
         this.$ATTRIBUTE = 0;
@@ -8442,7 +8467,7 @@
         return this.$CONTAINMENT;
       }
     });
-  }.call(_.org.cloud.util));
+  }.call(_.org.kevoree.modeling.api.util));
   (function () {
     this.$asserter = new _.kotlin.test.QUnitAsserter();
   }.call(_.kotlin.test));
