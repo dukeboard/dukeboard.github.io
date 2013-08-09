@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<title>Orion Editor Sample</title>
+<link rel="stylesheet" type="text/css" href="orion-editor.css"/>
+
+
+<script src="../kotlin-lib-ecma3.js"></script>
+<script src="../kotlin-lib.js"></script>
+<script src="../kotlin-maps.js"></script>
+<script type="text/javascript" src="../org.kevoree.modeling.sample.cloud.js.js"></script>
+
+<script src="built-editor.min.js"></script>
+<script src="doctrine.js"></script>
+<script src="esprima.js"></script>
+<script src="types.js"></script>
+<script src="esprimaJsContentAssist.js"></script>
+<script src="esprimaVisitor.js"></script>
+<script src="proposalUtils.js"></script>
+<script src="customeditor.js"></script>
+
+
+<script>
+require(['custom/editor'], function (editor) {
+    var e = editor({ parent: 'editor', lang: 'js', contentassist: true });
+});
+</script>
+</head>
+<body>
+
+
+<pre id="editor" style="height: 500px;">var capitalDb = {
+    Indonesia: 'Jakarta',
+    Germany: 'Berlin',
+    Norway: 'Oslo'
+};
+
+var constants = [3.1415926535, 2.7182818284];
+
+// Property completion: type "capitalDb." and press Ctrl+Space.
+
+
+// Array inferencing: type "constants[0]." and press Ctrl+Space
+// to list possible number conversion (e.g "toFixed").
+
+
+
+/**
+ * Find the greatest common divisor of two numbers.
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
+function gcd(a, b) {
+    return (b === 0) ? a : gcd(b, a % b);
+}
+
+// Function signature: type "gc" and press Ctrl+Space
+ 
+</pre>
+
+
+</body>
+</html>
