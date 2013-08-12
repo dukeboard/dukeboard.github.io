@@ -18,53 +18,7 @@
     <style type="text/css" media="screen">
       body {
           overflow: hidden;
-      }
-      #editor { 
-          margin: 0;
-          position: absolute;
-          top: 10%;
-          bottom: 25%;
-          left: 0px;
-          right: 15%;  
-      }
-      #output { 
-          margin: 0;
-          position: absolute;
-          top: 80%;
-          bottom: 0px;
-          left: 0px;
-          right: 15%;  
-      }
-	  #output_banner {
-          margin: 0;
-          position: absolute;
-          top: 75%;
-          bottom: 0px;
-          left: 0px;
-          right: 15%;  
-	  }
-	  #top {
-		  height:10%;
-          margin: 0;
-          position: absolute;
-          top: 0px;
-          bottom: 0px;
-          left: 0px;
-          right: 15%;  
-	  }
-	  #drawPanel {
-		  padding-top:20px;
-		  height:100%;
-          margin: 0;
-          position: absolute;
-          top: 0px;
-          bottom: 0px;
-          left: 85%;
-          right: 0px;  
-		  overflow : scroll;
-	  }
-	  
-	  
+      }  
 	  /* Framework start from here */
 	  ul.tree,
 	  ul.tree ul {
@@ -111,33 +65,89 @@
 	  }
 
 	  ul.tree ul li:last-child:before {
-	    background:#4b5f6d; /* same with body background */
+	    background:#24211E; /* same with body background */
 	    height:auto;
 	    top:10px; /* (line-height/2) */
 	    bottom:0;
 	  }
-
     </style>
+	
+    <link rel="stylesheet" href="lib/codemirror/codemirror.css">
+    <script src="lib/codemirror/codemirror.js"></script>
+    <script src="lib/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="lib/codemirror/addon/edit/continuecomment.js"></script>
+    <script src="lib/codemirror/addon/comment/comment.js"></script>
+    <script src="lib/codemirror/addon/hint/show-hint.js"></script>
+    <link rel="stylesheet" href="lib/codemirror/addon/hint/show-hint.css">
+
+    <script src="lib/codemirror/mode/javascript/javascript.js"></script>
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+    <script src="lib/acorn/acorn.js"></script>
+    <script src="lib/acorn/acorn_loose.js"></script>
+    <script src="lib/acorn/util/walk.js"></script>
+    <script src="lib/tern/lib/signal.js"></script>
+    <script src="lib/tern/lib/tern.js"></script>
+    <script src="lib/tern/lib/def.js"></script>
+    <script src="lib/tern/lib/comment.js"></script>
+    <script src="lib/tern/lib/infer.js"></script>
+    <script src="lib/tern/plugin/doc_comment.js"></script>
+	<script src="lib/tern/plugin/node.js"></script>
+	<script src="lib/tern/plugin/requirejs.js"></script>
+	
+    <script src="lib/codemirror/addon/tern/tern.js"></script>
+    <link rel="stylesheet" href="lib/codemirror/addon/tern/tern.css">
+	
+	<style>
+	html {
+	    position: relative;
+	    min-height: 100%;
+	}
+	body {
+	    margin: 4% 0 25%; /* bottom = footer height */
+	}
+	footer {
+	    width: 85%;		
+		position:fixed;
+		bottom:0px;
+		left:0px;
+		color:#CCC;
+		background:#333;
+		padding:8px;		
+	}
+	.right {
+	    position: absolute;
+	    left: 85%;
+		right:15%;
+	    top: 0;
+	    height: 100%;
+	    width: 15%;
+	}
+	.codeBody{
+	    height: 73%;
+	    width: 85%;	
+	}
+	header {
+		position:fixed;
+			top:0px;
+			left:0px;
+			width:85%;
+	}
+	
+	.CodeMirror {border: 0px solid black; font-size:13px}
+	
+	</style>
+		
 		
 </head>
  
 <body>
 	
-	<div id="drawPanel" class="bck color">
-		<div id="metaReminder" style="margin-left:10px;margin-bottom:20px;">
-			<i>Meta model</i><br />
-			<img src="../img/cloud-reminder.png" />
-		</div>
-		
-	</div>
-	
-	
-	<div id="top" class="bck color padding-top padding-left">
+	<header class="bck dark">
 		<div class="raw">
+			<form id="form" name="form">
 			<div class="column_4">
 				<h4 class="color theme text bold"> <span class="icon beaker"></span> KMF Playground</h4>
 			</div>			
-			<form id="form" name="form" class="margin-top">
 			<div class="column_2">
 				<a class="button icon play-circle" onclick="executePlayGround();"> Execute</a>
 			</div>
@@ -156,24 +166,32 @@
 			                    </fieldset>
 			</div>
 		    </form>
-		</div>		
-	</div>
-	
-	<pre id="editor">
-	</pre>
-
-	<div id="output_banner">
-		<div class="bck color padding-left" style="padding-bottom:100%;">
-			<h3 class="color theme text bold"> Result goes here : <span class="icon down-sign" style="font-size: 22pt;"></span></h3>
 		</div>
+	 </header>
+	
+	<div class="right bck center dark" style="padding-left:10px;color:white;">
+			<div id="metaReminder">
+				<i>Meta model</i><br />
+				<img src="../img/cloud-reminder.png" />
+			</div>
+			<div id="drawPanel">
+				
+			</div>
 	</div>
-	<pre id="output">
-	</pre>
 	
+	<div class="codeBody">
+		<textarea id="code" name="code">
+		</textarea>	
+	</div>
+
+
+	<footer class="bck dark" style="position:absolute;bottom:0px;height:22%;width:85%;">
+		<h3 class="color theme text bold"> Result goes here : <span class="icon down-sign" style="font-size: 22pt;"></span></h3>
+		<textarea id="output" name="output"></textarea>
+	</footer>
+		
 	<script type="text/javascript" src="lib/org.kevoree.modeling.sample.cloud.js.min.js"></script>
-	<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-	
+	<script>	
 	function draw(cloud,txt){
 		if(cloud.metaClassName != undefined && cloud.metaClassName() == "org.cloud.Cloud"){
 			
@@ -217,17 +235,63 @@
 		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
 		var ActionType = kevmod.org.kevoree.modeling.api.util.ActionType;
 		
-	    var editor = ace.edit("editor");
-	    editor.setTheme("ace/theme/twilight");
-	    editor.getSession().setMode("ace/mode/javascript");
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+          lineNumbers: true,
+          matchBrackets: true,
+          continueComments: "Enter",
+          extraKeys: {"Ctrl-Q": "toggleComment"}
+        });
 		
+		function getURL(url, c) {
+		    var xhr = new XMLHttpRequest();
+		    xhr.open("get", url, true);
+		    xhr.send();
+		    xhr.onreadystatechange = function() {
+		      if (xhr.readyState != 4) return;
+		      if (xhr.status < 400) return c(null, xhr.responseText);
+		      var e = new Error(xhr.responseText || "No response");
+		      e.status = xhr.status;
+		      c(e);
+		    };
+		  }
+
+		  var server;
+		  getURL("lib/tern/defs/ecma5.json", function(err, code) {
+		    if (err) throw new Error("Request for ecma5.json: " + err);
+		    server = new CodeMirror.TernServer({
+				defs: [JSON.parse(code)],
+				plugins: {requirejs: {},nodejs: {},node: {}, doc_comment: true},
+			    workerDeps: [
+				"../../../acorn/acorn.js", 
+				"../../../acorn/acorn_loose.js",
+			    "../../../acorn/util/walk.js", 
+				"../../../tern/lib/signal.js", 
+				"../../../tern/lib/tern.js",
+			    "../../../tern/lib/def.js",
+				"../../../tern/lib/infer.js", 
+				"../../../tern/lib/comment.js",
+			    "../../../tern/plugin/requirejs.js", 
+				"../../../tern/plugin/doc_comment.js"],
+			    workerScript: "lib/codemirror/addon/tern/worker.js",
+			    useWorker: true
+			});
+		    editor.setOption("extraKeys", {
+		      "Ctrl-Space": function(cm) { server.complete(cm); },
+		      "Ctrl-I": function(cm) { server.showType(cm); },
+		      "Alt-.": function(cm) { server.jumpToDef(cm); },
+		      "Alt-,": function(cm) { server.jumpBack(cm); },
+		      "Ctrl-Q": function(cm) { server.rename(cm); },
+		    })
+		    editor.on("cursorActivity", function(cm) { server.updateArgHints(cm); });
+		  });
 		
-	    var output = ace.edit("output");
-	    output.setTheme("ace/theme/twilight");
-	   // editor.getSession().setMode("ace/mode/javascript");
+          var output = CodeMirror.fromTextArea(document.getElementById("output"), {
+            lineNumbers: false
+          });
+		  		
 		function executePlayGround(){
-			var code = editor.getSession().getValue();
-			output.getSession().setValue("");
+			var code = editor.getValue();
+			output.setValue("");
 			
 			var previousHeader = $('#metaReminder');
 			
@@ -247,12 +311,12 @@
 				if(data.metaClassName != undefined){
 					txt = "KMF Element : "+data.metaClassName();
 				}
-				output.getSession().setValue(output.getSession().getValue()+txt+"\n");
-				output.gotoPageDown();
+				output.setValue(output.getValue()+txt+"\n");
+				//output.gotoPageDown();
 			},
 			error : function(data){
-				output.getSession().setValue(output.getSession().getValue()+"ERROR : "+data+"\n");
-				output.gotoPageDown();
+				output.setValue(output.getValue()+"ERROR : "+data+"\n");
+				//output.gotoPageDown();
 			}
 		};
 		console = proxyConsole;
@@ -263,7 +327,7 @@
 			  url: selectedValue,
 			  dataType: 'text',
 			  success: function(data) {
-			    editor.getSession().setValue(data);
+	  		    editor.setValue(data);
 			  }
 			});
 		 });
@@ -273,8 +337,8 @@
 		$.ajax({
 		  url: selectedValue,
 		  dataType: 'text',
-		  success: function(data) {
-		    editor.getSession().setValue(data);
+		  success: function(data) {			  
+		    editor.setValue(data);
 		  }
 		});	
 	</script>
