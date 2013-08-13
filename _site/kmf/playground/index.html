@@ -1,76 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-	<title>Kevoree Modeling Framework :: PlayGround</title>
-	<meta name="description" content="">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 	<meta name="keywords" content="modeling, MDE, MDA, framework, java, kotlin, scala, javascript">
 	<meta name="author" content="Fouquet Francois">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Kevoree Modeling Framework :: PlayGround</title>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="sticky-footer-navbar.css" rel="stylesheet">
 	<link rel="shortcut icon" type="image/icon" href="../favicon.ico">
-	<!-- CSS -->
-	<link rel="stylesheet" href="../css/custom.min.css">
-	<link rel="stylesheet" href="../css/tuktuk.min.css">
-	<link rel="stylesheet" href="../css/tuktuk.theme.min.css">
-	<link rel="stylesheet" href="../css/tuktuk.icons.css">
-	<script src="../highlight/zepto.min.js"></script>
-    <style type="text/css" media="screen">
-      body {
-          overflow: hidden;
-      }  
-	  /* Framework start from here */
-	  ul.tree,
-	  ul.tree ul {
-	    list-style:none;
-	    margin:0;
-	    padding:0;
-	  }
-
-	  ul.tree ul {
-	    margin-left:10px; /* indentation */
-	    position:relative;
-	  }
-
-	  ul.tree ul:before {
-	    content:"";
-	    display:block;
-	    width:0;
-	    position:absolute;
-	    top:0;
-	    bottom:0;
-	    left:0;
-	    border-left:1px solid;
-	  }
-
-	  ul.tree li {
-	    margin:0;
-	    padding:0 12px; /* indentation + 2 */
-	    font-size:14px;
-	    line-height:20px; /* default list item `line-height` */
-	    color:#FFF;
-	    font-weight:bold;
-	    position:relative;
-	  }
-
-	  ul.tree ul li:before {
-	    content:"";
-	    display:block;
-	    width:10px; /* same with indentation */
-	    height:0;
-	    border-top:1px solid;
-	    position:absolute;
-	    top:10px;
-	    left:0;
-	  }
-
-	  ul.tree ul li:last-child:before {
-	    background:#24211E; /* same with body background */
-	    height:auto;
-	    top:10px; /* (line-height/2) */
-	    bottom:0;
-	  }
-    </style>
+	
 	
     <link rel="stylesheet" href="lib/codemirror/codemirror.css">
     <script src="lib/codemirror/codemirror.js"></script>
@@ -81,7 +22,7 @@
     <link rel="stylesheet" href="lib/codemirror/addon/hint/show-hint.css">
 
     <script src="lib/codemirror/mode/javascript/javascript.js"></script>
-    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+    <style type="text/css">.CodeMirror {border-top: 0px solid black; border-bottom: 0px solid black;}</style>
     <script src="lib/acorn/acorn.js"></script>
     <script src="lib/acorn/acorn_loose.js"></script>
     <script src="lib/acorn/util/walk.js"></script>
@@ -97,110 +38,127 @@
     <script src="lib/codemirror/addon/tern/tern.js"></script>
     <link rel="stylesheet" href="lib/codemirror/addon/tern/tern.css">
 	
-	<style>
-	html {
-	    position: relative;
-	    min-height: 100%;
-	}
-	body {
-	    margin: 4% 0 25%; /* bottom = footer height */
-	}
-	footer {
-	    width: 85%;		
-		position:fixed;
-		bottom:0px;
-		left:0px;
-		color:#CCC;
-		background:#333;
-		padding:8px;		
-	}
-	.right {
-	    position: absolute;
-	    left: 85%;
-		right:15%;
-	    top: 0;
-	    height: 100%;
-	    width: 15%;
-	}
-	.codeBody{
-	    height: 73%;
-	    width: 85%;	
-	}
-	header {
-		position:fixed;
-			top:0px;
-			left:0px;
-			width:85%;
-	}
+    <link href="bootstrap-glyphicons/css/bootstrap-glyphicons.css" rel="stylesheet">
 	
-	.CodeMirror {border: 0px solid black; font-size:13px}
-	
-	</style>
-		
-		
-</head>
- 
-<body>
-	
-	<header class="bck dark">
-		<div class="raw">
-			<form id="form" name="form">
-			<div class="column_4">
-				<h4 class="color theme text bold"> <span class="icon beaker"></span> KMF Playground</h4>
-			</div>			
-			<div class="column_2">
-				<a class="button icon play-circle" onclick="executePlayGround();"> Execute</a>
-			</div>
-			<div class="column_4">
-			    <fieldset style="width:300px" id="snippetchange">
-			                        <label>Sample:<small>code snippet</small></label>
-			                        <span class="select">
-			                            <select id="snippetchangeSelect">
-			                                <option value="snippets/snip1.js" selected>Simple usage</option>
-			                                <option value="snippets/snip1bis.js">Aspects oriented</option>
-			                                <option value="snippets/snip2.js">Save / Load / Clone</option>
-			                                <option value="snippets/snip3.js">Merge / Diff</option>
-											<option value="snippets/snip4.js">Events / Sync</option>
-			                            </select>
-			                        </span>
-			                    </fieldset>
-			</div>
-		    </form>
-		</div>
-	 </header>
-	
-	<div class="right bck center dark" style="padding-left:10px;color:white;">
-			<div id="metaReminder">
-				<i>Meta model</i><br />
-				<img src="../img/cloud-reminder.png" />
-			</div>
-			<div id="drawPanel">
-				
-			</div>
-	</div>
-	
-	<div class="codeBody">
-		<textarea id="code" name="code">
-		</textarea>	
-	</div>
+  </head>
 
+  <body>
+	  
 
-	<footer class="bck dark" style="position:absolute;bottom:0px;height:22%;width:85%;">
-		<h3 class="color theme text bold"> Result goes here : <span class="icon down-sign" style="font-size: 22pt;"></span></h3>
-		<textarea id="output" name="output"></textarea>
-	</footer>
-		
+	  
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-fixed-top navbar-inverse">
+          <div class="container">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-dashboard"></span> KMF Playground</a>
+          </div>
+        </div>
+
+      <!-- Begin page content -->
+	  
+      <div class="container">
+    		<textarea id="code" name="code" style="width:100%;height:300px;"></textarea>	
+      </div>
+    </div>
+
+    <div id="footer">
+		<ul class="nav navbar-nav">
+			<li style="padding-top:7px;padding-left:15px;"><button class="btn btn-default" onclick="executePlayGround();">Execute</button><li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a onclick="loadSnippet('snippets/snip1.js');">Simple usage</a></li>
+                <li><a onclick="loadSnippet('snippets/snip1bis.js');">Aspects oriented</a></li>
+                <li><a onclick="loadSnippet('snippets/snip2.js');">Save / Load / Clone</a></li>
+                <li><a onclick="loadSnippet('snippets/snip3.js');">Merge / Diff</a></li>
+                <li><a onclick="loadSnippet('snippets/snip4.js');">Events / Sync</a></li>
+              </ul>
+            </li>
+		</ul>
+  		<textarea id="output" name="output" style="width:100%;height:120px;"></textarea>		
+    </div>
+	
+  	<div class="wrapright">
+		<style>
+  	  /* Framework start from here */
+  	  ul.tree,
+  	  ul.tree ul {
+  	    list-style:none;
+  	    margin:0;
+  	    padding:0;
+  	  }
+
+  	  ul.tree ul {
+  	    margin-left:10px; /* indentation */
+  	    position:relative;
+  	  }
+
+  	  ul.tree ul:before {
+  	    content:"";
+  	    display:block;
+  	    width:0;
+  	    position:absolute;
+  	    top:0;
+  	    bottom:0;
+  	    left:0;
+  	    border-left:1px solid;
+  	  }
+
+  	  ul.tree li {
+  	    margin:0;
+  	    padding:0 12px; /* indentation + 2 */
+  	    font-size:14px;
+  	    line-height:20px; /* default list item `line-height` */
+  	    color: gray;
+  	    font-weight:bold;
+  	    position:relative;
+  	  }
+
+  	  ul.tree ul li:before {
+  	    content:"";
+  	    display:block;
+  	    width:10px; /* same with indentation */
+  	    height:0;
+  	    border-top:1px solid;
+  	    position:absolute;
+  	    top:10px;
+  	    left:0;
+  	  }
+
+  	  ul.tree ul li:last-child:before {
+  	    background:#222222; /* same with body background */
+  	    height:auto;
+  	    top:10px; /* (line-height/2) */
+  	    bottom:0;
+  	  }
+		</style>
+			<div id="metaReminder" style="text-align:center;margin-bottom:10px;">
+  				<img src="../img/cloud-reminder.png" />
+  			</div>
+  			<div id="drawPanel">
+
+  			</div>
+  	</div>
+
+    <script src="lib/jquery-2.0.3.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+	
 	<script type="text/javascript" src="lib/org.kevoree.modeling.sample.cloud.js.min.js"></script>
-	<script>	
+		
+	<script>
+
 	function draw(cloud,txt){
 		if(cloud.metaClassName != undefined && cloud.metaClassName() == "org.cloud.Cloud"){
 			
 			if(txt != undefined){
-				var headerTxt = $('<i style="margin-left:10px;"></i>');
+				var headerTxt = $('<i style="margin-left:10px;color:gray;"></i>');
 				headerTxt.text(txt);
 				$('#drawPanel').append(headerTxt);
 			}
-			
 			var CloudUL = $('<ul class="tree"></ul>');
 			var CloudHeader = $('<li></li>');
 			CloudHeader.text("Cloud");
@@ -236,11 +194,14 @@
 		var ActionType = kevmod.org.kevoree.modeling.api.util.ActionType;
 		
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+		  gutter: true, 
           lineNumbers: true,
           matchBrackets: true,
           continueComments: "Enter",
-          extraKeys: {"Ctrl-Q": "toggleComment"}
+          extraKeys: {"Ctrl-Q": "toggleComment"},
+		  mode: "text/javascript"
         });
+				
 		
 		function getURL(url, c) {
 		    var xhr = new XMLHttpRequest();
@@ -288,6 +249,14 @@
           var output = CodeMirror.fromTextArea(document.getElementById("output"), {
             lineNumbers: false
           });
+		  
+  		editor.setSize($(this).width()-160, $('body').height() - 270);
+  		output.setSize($(this).width()-160, 150);
+  		window.onresize = function(event) {
+  			editor.setSize($(this).width()-160, $('body').height() - 270); 
+	  		output.setSize($(this).width()-160, 150);
+  		}
+		  
 		  		
 		function executePlayGround(){
 			var code = editor.getValue();
@@ -321,27 +290,19 @@
 		};
 		console = proxyConsole;
 		
-		$("#snippetchange").change(function () {
-			var selectedValue = $('#snippetchangeSelect').val();
+		function loadSnippet(name){
 			$.ajax({
-			  url: selectedValue,
+			  url: name,
 			  dataType: 'text',
 			  success: function(data) {
 	  		    editor.setValue(data);
 			  }
 			});
-		 });
+		 };
 		
 		 //init
-		var selectedValue = $('#snippetchangeSelect').val();
-		$.ajax({
-		  url: selectedValue,
-		  dataType: 'text',
-		  success: function(data) {			  
-		    editor.setValue(data);
-		  }
-		});	
+		loadSnippet('snippets/snip1.js');
 	</script>
 	
-</body>
+  </body>
 </html>
