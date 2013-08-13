@@ -222,8 +222,8 @@
 		    if (err) throw new Error("Request for ecma5.json: " + err);
 		    server = new CodeMirror.TernServer({
 				defs: [JSON.parse(code)],
-				plugins: {requirejs: {},nodejs: {},node: {}, doc_comment: true},
-			    workerDeps: [
+				plugins: {requirejs: {},nodejs: {},node: {}, doc_comment: true}//,
+			 /*   workerDeps: [
 				"../../../acorn/acorn.js", 
 				"../../../acorn/acorn_loose.js",
 			    "../../../acorn/util/walk.js", 
@@ -235,7 +235,7 @@
 			    "../../../tern/plugin/requirejs.js", 
 				"../../../tern/plugin/doc_comment.js"],
 			    workerScript: "lib/codemirror/addon/tern/worker.js",
-			    useWorker: true
+			    useWorker: true*/
 			});
 		    editor.setOption("extraKeys", {
 		      "Ctrl-Space": function(cm) { server.complete(cm); },
