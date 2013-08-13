@@ -79,7 +79,8 @@
               </ul>
             </li>
 		</ul>
-  		<textarea id="output" name="output" style="width:100%;height:120px;"></textarea>		
+		<br />
+  		<textarea id="output" name="output" style="width:100%;height:150px;"></textarea>		
     </div>
 	
   	<div class="wrapright">
@@ -251,10 +252,10 @@
           });
 		  
   		editor.setSize($(this).width()-160, $('body').height() - 270);
-  		output.setSize($(this).width()-160, 150);
+  		output.setSize($(this).width()-160, 170);
   		window.onresize = function(event) {
   			editor.setSize($(this).width()-160, $('body').height() - 270); 
-	  		output.setSize($(this).width()-160, 150);
+	  		output.setSize($(this).width()-160, 170);
   		}
 		  
 		  		
