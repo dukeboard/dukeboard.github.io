@@ -36,6 +36,9 @@
 	<script src="lib/tern/plugin/requirejs.js"></script>
 	
     <script src="lib/codemirror/addon/tern/tern.js"></script>
+	
+    <script src="lib/handlebars.js"></script>
+
     <link rel="stylesheet" href="lib/codemirror/addon/tern/tern.css">
 	
     <link href="bootstrap-glyphicons/css/bootstrap-glyphicons.css" rel="stylesheet">
@@ -150,35 +153,50 @@
 	
 	<script type="text/javascript" src="lib/org.kevoree.modeling.sample.cloud.js.min.js"></script>
 		
-	<script>
+<script id="cloud-template" type="text/x-handlebars-template">
+  <ul class='tree'>
+      <li>Cloud
+          <ul>
+              {{#each getNodes}}
+              <li>Node:{{getId}}
+                    <ul>
+                        {{#each getSoftwares}}
+                            <li>Soft:{{getName}}</li>
+                        {{/each}}
+                    </ul>
+              </li>
+              {{/each}}
+           </ul>
+      </li>
+    </ul>
+</script>
+      
+<script>
 
+var template = "<i style='margin-left:10px;color:gray;'>{{txt}}</i>";
+var compiledTemplate = Handlebars.compile(template);
+        
+Handlebars.registerHelper('each', function(context, options) {
+  var ret = "";
+  if(typeof context == 'function'){ 
+      context = context.call(this).array; 
+  } 
+  for(var i=0, j=context.length; i<j; i++) {
+    ret = ret + options.fn(context[i]);
+  }
+  return ret;
+});    
+        
+    var template2 = "<ul class='tree'><li>Cloud<ul>{{#each getNodes}}<li>Node:{{getId}}  </li>{{/each}}</ul></li></ul>";
+	var compiledTemplate2 = Handlebars.compile($('#cloud-template').html());
+        
 	function draw(cloud,txt){
 		if(cloud.metaClassName != undefined && cloud.metaClassName() == "org.cloud.Cloud"){
-			
 			if(txt != undefined){
-				var headerTxt = $('<i style="margin-left:10px;color:gray;"></i>');
-				headerTxt.text(txt);
-				$('#drawPanel').append(headerTxt);
+				$('#drawPanel').append(compiledTemplate({txt : txt}));
 			}
-			var CloudUL = $('<ul class="tree"></ul>');
-			var CloudHeader = $('<li></li>');
-			CloudHeader.text("Cloud");
-			CloudUL.append(CloudHeader);
-			var CloudNodesUL = $('<ul></ul>');
-			CloudHeader.append(CloudNodesUL);
-		    cloud.containedElementsList().array.forEach(function(node) {
-				var NodeLI = $('<li></li>');
-				CloudNodesUL.append(NodeLI);
-				NodeLI.text("Node:"+node.getId());
-				var SoftwareUL = $('<ul></ul>');
-				NodeLI.append(SoftwareUL);
-			    node.containedElementsList().array.forEach(function(soft) {
-					var SoftLI = $('<li></li>');
-					SoftLI.text("Soft:"+soft.getName());
-					SoftwareUL.append(SoftLI);
-			    });
-		    });
-			$('#drawPanel').append(CloudUL);
+            $('#drawPanel').append(compiledTemplate2(cloud));
+            
 		}
 	}
 	
