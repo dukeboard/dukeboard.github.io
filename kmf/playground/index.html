@@ -189,7 +189,6 @@ Handlebars.registerHelper('each', function(context, options) {
         
     var template2 = "<ul class='tree'><li>Cloud<ul>{{#each getNodes}}<li>Node:{{getId}}  </li>{{/each}}</ul></li></ul>";
 	var compiledTemplate2 = Handlebars.compile($('#cloud-template').html());
-        
 	function draw(cloud,txt){
 		if(cloud.metaClassName != undefined && cloud.metaClassName() == "org.cloud.Cloud"){
 			if(txt != undefined){

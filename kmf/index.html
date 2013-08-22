@@ -365,12 +365,14 @@ ModelCompare compare = new DefaultModelCompare();
 TraceSequence diffSeq = compare.diff(model0,model1);
 //Produces the trace sequence of MO inter M1
 TraceSequence interSeq = compare.inter(model0,model1);
+//Produces the trace sequence of MO merged with M1
+TraceSequence mergeSeq = compare.merge(model0,model1);
 for(trace : diffSeq.getTraces()){
 	//Prints the difference between M0 and M1
 	System.out.println(trace);
 }
 //Merges M1 into M0
-diffSeq.applyOn(model0);
+mergeSeq.applyOn(model0);
 assert(model1.modelEquals(m0));
 Cloud model3 = factory.createCloud();
 interSeq.applyOn(model3);
@@ -386,12 +388,14 @@ var compare = new DefaultModelCompare();
 var diffSeq = compare.diff(model0,model1);
 //Produce the trace sequence of MO inter M1
 var interSeq = compare.inter(model0,model1);
+//Produces the trace sequence of MO merged with M1
+var mergeSeq = compare.merge(model0,model1);
 for(i=0;i &lt; diffSeq.getTraces().$size;i++){
 	//Print the comparison between M0 and M1
 	console.log(diffSeq.getTraces()[i]);
 }
 //Merge M1 into M0
-diffSeq.applyOn(model0);
+mergeSeq.applyOn(model0);
 assert(model1.modelEquals(m0));
 var model3 = factory.createCloud();
 interSeq.applyOn(model3);
