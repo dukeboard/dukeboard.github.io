@@ -8,54 +8,29 @@ myAmazonEC2node.addSoftwares(myNginx);
 
 draw(cloud,"Original");
 
-var listener = { elementChanged : function(event){
- switch(event.getType()){
-  case ActionType.$ADD:
-    console.log("Add event ! "+event);
-	break;
-  case ActionType.$SET:
-    console.log("Set event ! "+event);
-	break;
- }
-}};
-//Add as Tree (meaning global) listener
-cloud.addModelTreeListener(listener);
-//Std listener only listen local event
-//cloud.addModelListener(listener);
-var node = factory.createNode();
-node.setId("EC1");
-//Trigger event ADD 
-cloud.addNodes(node);
-//Trigger event SET
-node.setId("EC2_1");
+//save in JSON
+var savedModel = saver.serialize(cloud);
+console.log(savedModel);
 
-draw(cloud,"After Add");
+//Load from JSON and take first package (only one in this model)
+var cloudLoaded = loader.loadModelFromString(savedModel).get(0);
+//Ensure integrity
+console.log(cloudLoaded.findNodesByID("EC2_0"));
 
-console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").getId());
+//Clone the entire model
+var clonedModel = cloner.clone(cloudLoaded);
+console.log(cloudLoaded);
 
-/* Declare a new instance of cloud */
-var newCloud = factory.createCloud();
-/* Declare a new listener */
-var listener2 = { elementChanged : function(event){
-    var traces = event2trace.convert(event);
-	//send trace to network or browser events
-	//for remote synchronization
-    traces.applyOn(newCloud);
-}};
-cloud.addModelTreeListener(listener2);
+draw(clonedModel,"First clone");
 
-var newNode = factory.createNode();
-newNode.setId("newNode")
-cloud.addNodes(newNode);
+//Clone to a readonly structure
+var clonedModel2 = cloner.clone(cloud,true);
 
-console.log(cloud.findByPath("nodes[newNode]").getId());
-console.log(newCloud.findByPath("nodes[newNode]").getId());
+//Only clone a part of model, share the first node
+clonedModel.getNodes().get(0).setRecursiveReadOnly();
+var clonedModel3 = cloner.cloneMutableOnly(clonedModel);
 
-draw(cloud,"Original+Added node");
-draw(newCloud,"Last event sync");
+//verify the integrity
+console.log("Software found : "+clonedModel3.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
 
-
-
-
-
-
+draw(clonedModel3,"Partial clone");

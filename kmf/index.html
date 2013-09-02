@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
+	<meta charset="utf-8"/>
 	<title>KMF - Kevoree Modeling Framework</title>
-	<meta name="description" content="">
-	<meta name="keywords" content="modeling, MDE, MDA, framework, java, kotlin, scala, javascript, kevoree, KMF, EMF, ecore, xmi, json">
-	<meta name="author" content="Fouquet Francois">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/icon" href="favicon.ico">
+	<meta name="description" content=""/>
+	<meta name="keywords" content="modeling, MDE, MDA, framework, java, kotlin, scala, javascript, kevoree, KMF, EMF, ecore, xmi, json"/>
+	<meta name="author" content="Fouquet Francois"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<link rel="shortcut icon" type="image/icon" href="favicon.ico"/>
 	<!-- CSS -->
-	<link rel="stylesheet" href="css/custom.min.css">
-	<link rel="stylesheet" href="css/tuktuk.min.css">
-	<link rel="stylesheet" href="css/tuktuk.theme.min.css">
-	<link rel="stylesheet" href="css/tuktuk.icons.css">
+	<link rel="stylesheet" href="css/custom.min.css"/>
+	<link rel="stylesheet" href="css/tuktuk.min.css"/>
+	<link rel="stylesheet" href="css/tuktuk.theme.min.css"/>
+	<link rel="stylesheet" href="css/tuktuk.icons.css"/>
 	
-	<link rel="stylesheet" href="highlight/styles/tomorrow.css">
+	<link rel="stylesheet" href="highlight/styles/tomorrow.css"/>
 	<script src="highlight/zepto.min.js"></script>
-	<script src="highlight/highlight.pack.js"></script>	
+	<script src="highlight/highlight.pack.js"></script>	         
 </head>
  
 <body>
@@ -47,10 +47,10 @@
 		</div>
 		<div class="row text center">
 			<div class="column_3 offset_3">
-				<a href="https://github.com/dukeboard/kevoree-modeling-framework/wiki/" target="_blank" class="button large secondary"><span class="icon github"></span>Documentation</a>
+				<a id="opendocBT" href="https://github.com/dukeboard/kevoree-modeling-framework/wiki/" target="_blank" class="button large secondary"><span class="icon github"></span>Documentation</a>
 			</div>
 			<div class="column_3">
-				<a href="playground" target="_blank" class="button large"><span class="icon download disabled"></span>Playground</a>
+				<a id="openPlaygroundBT" href="playground" target="_blank" class="button large"><span class="icon download disabled"></span>Playground</a>
 			</div>
 		</div>
 		<br />
@@ -59,7 +59,7 @@
 				<h4 class="color text right bold">current version</h4>
 			</div>
 			<div class="column_2">
-				<h4 class="color theme text bold center">1.4.7</h4>
+				<h4 class="color theme text bold center">1.5.0</h4>
 			</div>
 		</div>
 	</section>
@@ -471,7 +471,130 @@ assert(cloudM1.findNodesById("newNode") != null);
                 Coupled with a conflict resolution mechanism, this makes the foundation for collaborative distributed modeling.</p>
 		</div>
 	</section>
+    
+    
+    	<section class="bck white padding" id="features9">
+		<div class="row text center book margin-bottom">
+			<div class="column_10 offset_1">
+				<h1 class="text bold">Deeply and efficient naviguation into models</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="column_6">
+				<h1 class="color text theme bold center">Java</h1>
+					<pre><code style="border-radius:8px;">
+ModelVisitor visitor = new ModelVisitor(){
+    public override fun visit(
+      KMFContainer elem,
+      String refNameInParent,
+	  KMFContainer parent) {
+	    System.out.println(elem.path())
+    }
+}
+//recursive navigate into contained elements
+cloud.visit(true,true,false);
+//recursive navigate into non contained elements
+cloud.visit(true,false,true);
+//Non recursive navigate into cloud childs elements
+cloud.visit(false,true,true);
 
+ModelAttributesVisitor visitorAtts 
+	= new ModelAttributesVisitor(){
+    public override fun visit(
+      Object attValue,
+      String name,
+	  KMFContainer parent) {
+	    System.out.println("Visit "+name)
+    }
+}
+//Visit all attributes of Cloud
+cloud.visit(visitorAtts);
+
+				</code></pre>				
+			</div>
+			<div class="column_6">
+				<h1 class="color text theme bold center">JS</h1>
+					<pre><code style="border-radius:8px;">
+var visitor = new ModelVisitor();
+visitor.visit = function(modelElem){
+	console.log(modelElem.metaClassName());
+}
+//recursive navigate into contained elements
+cloud.visit(true,true,false);
+//recursive navigate into non contained elements
+cloud.visit(true,false,true);
+//Non recursive navigate into cloud childs elements
+cloud.visit(false,true,true);
+
+var visitorAtts = new ModelAttributesVisitor();
+visitorAtts.visit = function(attValue,name,parent) {
+	console.log(name);
+}
+//Visit all attributes of Cloud
+cloud.visit(visitorAtts);
+				</code></pre>				
+			</div>
+		</div>
+		<div class="row text center book margin-bottom margin-top">
+			<p>Visitor API replace the iterative way to navigate into model elements. They can be visit in recusive way or not (first boolean parameters). Visit methods are generated to offer best performances. In addition users can manage the recusive visit by using stopVisit() methods inside the visitor object to globally stop the process, or noChildrenVisit() to skip children.</p>
+		</div>
+	</section>
+    
+	<section class="bck light padding" id="features10">
+		<div class="row text center book margin-bottom">
+			<div class="column_10 offset_1">
+				<h1 class="text bold">Inject behavior and build executable model</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="column_6">
+				<h1 class="color text theme bold center">Kotlin (JVM) and JS</h1>
+					<pre><code style="border-radius:8px;">
+//declare a new aspect on Node
+aspect trait NodeAspect : Node {
+	//private method
+	//are not include in model
+	private fun privateProcess(){};
+	//method add to Node metaClass
+	fun newService(){}
+}
+//Add a new concept named ExNode
+//The new concept will inherit Node
+metaClass("ExNode") ExNodeA : Node {
+	//public method
+	fun ExRun(){
+	}
+}
+//create an instance of the concept
+var newNode = factory.createExNode();
+				</code></pre>				
+			</div>
+			<div class="column_6">
+				<h1 class="color text theme bold center">JS</h1>
+					<pre><code style="border-radius:8px;">
+//JS version can use static aspects
+//define, same as tje JVM version
+//In addition model elements
+//are generated with a prototype
+//which allows dynamically aspects
+
+//add a method to Node concept
+factory.createNode().prototype.prettyPrint =
+ function prettyPrint(){
+   console.log(this.metaClassName());
+}
+//create a standard node
+var node = factory.createNode();
+//call aspect method
+node.prettyPrint();
+				</code></pre>				
+			</div>
+		</div>
+		<div class="row text center book margin-bottom margin-top">
+			<p>Aspects replace the derived method of ecore. Allowing to write statically verified code instead of ugly putting code in </p>
+		</div>
+	</section>
+	
 	<section class="bck theme padding">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">

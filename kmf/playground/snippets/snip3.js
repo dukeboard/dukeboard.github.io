@@ -1,26 +1,34 @@
+//Just define a deep cloud model
 var cloud = factory.createCloud();
-var myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setId("EC2_0");
-cloud.addNodes(myAmazonEC2node);
-var myNginx = factory.createSoftware();
-myNginx.setName("SRV0");
-myAmazonEC2node.addSoftwares(myNginx);
+for(var nodeI=0;nodeI<5;nodeI++){
+    var newNode = factory.createNode();
+    newNode.setId("Node_"+nodeI);
+    cloud.addNodes(newNode);
+    for(var softI=0;softI<3;softI++){
+       var newSoft = factory.createSoftware();
+       newSoft.setName("Soft_"+nodeI+"_"+softI);
+       newNode.addSoftwares(newSoft);
+    }
+}
 
-draw(cloud,"Original");
+/* Utility function */
+String.prototype.repeat = function( num ){return new Array( num + 1 ).join(this);}
 
-var emptyCloud = factory.createCloud();
+//Pretty print aspect on all nodes
+factory.createNode().__proto__.prettyPrint = function prettyPrint(){
+	console.log("--"+this.getId()+":"+this.metaClassName());
+}
+//Pretty print aspect on all softwares
+factory.createSoftware().__proto__.prettyPrint = function prettyPrint(){
+	console.log("----"+this.getName()+":"+this.metaClassName());
+}
 
-//Produce the trace sequence of MO -> M1
-var diffSeq = compare.diff(emptyCloud,cloud);
-console.log(diffSeq.exportToString());
+//Run deep visit
+var childVisitor = new ModelVisitor();
+childVisitor.visit = function(modelElem){
+	modelElem.prettyPrint();
+}
+cloud.visit(childVisitor,true,true,false)
 
-//Produce the trace sequence of MO inter M1
-var interSeq = compare.inter(emptyCloud,cloud);
-console.log(interSeq.exportToString());
-
-draw(emptyCloud,"Before merge");
-
-//Merge M1 into M0
-diffSeq.applyOn(emptyCloud);
-
-draw(emptyCloud,"After merge");
+//draw it
+draw(cloud,"Final result");

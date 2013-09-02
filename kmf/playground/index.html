@@ -75,10 +75,11 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a onclick="loadSnippet('snippets/snip1.js');">Simple usage</a></li>
-                <li><a onclick="loadSnippet('snippets/snip1bis.js');">Aspects oriented</a></li>
-                <li><a onclick="loadSnippet('snippets/snip2.js');">Save / Load / Clone</a></li>
-                <li><a onclick="loadSnippet('snippets/snip3.js');">Merge / Diff</a></li>
-                <li><a onclick="loadSnippet('snippets/snip4.js');">Events / Sync</a></li>
+                <li><a onclick="loadSnippet('snippets/snip2.js');">Visitor usage</a></li>
+                <li><a onclick="loadSnippet('snippets/snip3.js');">Aspects oriented</a></li>
+                <li><a onclick="loadSnippet('snippets/snip4.js');">Save / Load / Clone</a></li>
+                <li><a onclick="loadSnippet('snippets/snip5.js');">Merge / Diff</a></li>
+                <li><a onclick="loadSnippet('snippets/snip6.js');">Events / Sync</a></li>
               </ul>
             </li>
 		</ul>
@@ -207,9 +208,9 @@ Handlebars.registerHelper('each', function(context, options) {
 		var cloner = new kevmod.org.cloud.cloner.DefaultModelCloner();
 		var compare = new kevmod.org.cloud.compare.DefaultModelCompare();
 		var event2trace = new kevmod.org.kevoree.modeling.api.trace.Event2Trace(compare);
-		//var ModelTraceApplicator = kevmod.org.cloud.trace.ModelTraceApplicator;
 		var factory = new kevmod.org.cloud.impl.DefaultCloudFactory();
 		var ActionType = kevmod.org.kevoree.modeling.api.util.ActionType;
+		var ModelVisitor = kevmod.org.kevoree.modeling.api.util.ModelVisitor;		
 		
         var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
 		  gutter: true, 

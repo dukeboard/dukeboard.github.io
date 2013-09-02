@@ -1,36 +1,36 @@
+/* KMF Cloud metamodel Playground */
+/* Select your snippet on TOP */
+/* Modify and run it */
+/* By default these variable are initialize : */
+/* saver : JSONSaver
+   loader : JSONLoader
+   cloner : ModelCLoner
+   factory : Cloud Factory
+   ActionType : Event and Trace types
+   draw(model,"description") function for model vizu (playground internal)
+*/
+
+//create a cloud
 var cloud = factory.createCloud();
+//create a node
 var myAmazonEC2node = factory.createNode();
 myAmazonEC2node.setId("EC2_0");
+//add node to your cloud
 cloud.addNodes(myAmazonEC2node);
+//create a software
 var myNginx = factory.createSoftware();
 myNginx.setName("SRV0");
+//attach the software to your new node
 myAmazonEC2node.addSoftwares(myNginx);
 
-draw(cloud,"Original");
 
-//save in JSON
-var savedModel = saver.serialize(cloud);
-console.log(savedModel);
+//declare a simple visitor to print the metaClassName
+var childVisitor = new ModelVisitor();
+childVisitor.visit = function(modelElem){
+	console.log(modelElem.metaClassName());
+}
 
-//Load from JSON and take first package (only one in this model)
-var cloudLoaded = loader.loadModelFromString(savedModel).get(0);
-//Ensure integrity
-console.log(cloudLoaded.findNodesByID("EC2_0"));
-
-//Clone the entire model
-var clonedModel = cloner.clone(cloudLoaded);
-console.log(cloudLoaded);
-
-draw(clonedModel,"First clone");
-
-//Clone to a readonly structure
-var clonedModel2 = cloner.clone(cloud,true);
-
-//Only clone a part of model, share the first node
-clonedModel.getNodes().get(0).setRecursiveReadOnly();
-var clonedModel3 = cloner.cloneMutableOnly(clonedModel);
-
-//verify the integrity
-console.log("Software found : "+clonedModel3.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
-
-draw(clonedModel3,"Partial clone");
+//run the visit
+cloud.visit(childVisitor,true,true,false)
+//Draw the model in the right panel (severals call stack results)
+draw(cloud,"Final result");
