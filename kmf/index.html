@@ -476,7 +476,7 @@ assert(cloudM1.findNodesById("newNode") != null);
     	<section class="bck white padding" id="features9">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Deeply and efficient naviguation into models</h1>
+				<h1 class="text bold">Dive efficiently into models</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -491,11 +491,11 @@ ModelVisitor visitor = new ModelVisitor(){
 	    System.out.println(elem.path())
     }
 }
-//recursive navigate into contained elements
+//recursive navigation into contained elements
 cloud.visit(true,true,false);
-//recursive navigate into non contained elements
+//recursive navigation into not contained references
 cloud.visit(true,false,true);
-//Non recursive navigate into cloud childs elements
+//Non recursive navigation into cloud references
 cloud.visit(false,true,true);
 
 ModelAttributesVisitor visitorAtts 
@@ -519,11 +519,11 @@ var visitor = new ModelVisitor();
 visitor.visit = function(modelElem){
 	console.log(modelElem.metaClassName());
 }
-//recursive navigate into contained elements
+//recursive navigation into contained elements
 cloud.visit(true,true,false);
-//recursive navigate into non contained elements
+//recursive navigation into not contained references
 cloud.visit(true,false,true);
-//Non recursive navigate into cloud childs elements
+//Non recursive navigation into cloud references
 cloud.visit(false,true,true);
 
 var visitorAtts = new ModelAttributesVisitor();
@@ -536,7 +536,11 @@ cloud.visit(visitorAtts);
 			</div>
 		</div>
 		<div class="row text center book margin-bottom margin-top">
-			<p>Visitor API replace the iterative way to navigate into model elements. They can be visit in recusive way or not (first boolean parameters). Visit methods are generated to offer best performances. In addition users can manage the recusive visit by using stopVisit() methods inside the visitor object to globally stop the process, or noChildrenVisit() to skip children.</p>
+			<p>The Visitor API replaces the natural iterative navigation through model elements. 
+				You can choos to visit recursively or not (first boolean parameters).
+				Visit methods are generated to offer best performances.
+				In addition users can stop the recursion at anytime by using the stopVisit() methods inside the visitor object to globally stop the process.
+				Also, noChildrenVisit() skips children.</p>
 		</div>
 	</section>
     
