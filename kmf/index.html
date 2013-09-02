@@ -573,17 +573,17 @@ var newNode = factory.createExNode();
 				<h1 class="color text theme bold center">JS</h1>
 					<pre><code style="border-radius:8px;">
 //JS version can use static aspects
-//define, same as tje JVM version
+//same as the JVM version.
 //In addition model elements
-//are generated with a prototype
-//which allows dynamically aspects
+//are generated extensible dynamically
+//by leveraging prototypes
 
-//add a method to Node concept
+//add a method to the Node concept
 factory.createNode().prototype.prettyPrint =
  function prettyPrint(){
    console.log(this.metaClassName());
 }
-//create a standard node
+//create a standard node object
 var node = factory.createNode();
 //call aspect method
 node.prettyPrint();
