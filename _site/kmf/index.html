@@ -41,7 +41,7 @@
 			<div class="column_10 offset_1">
 				<img src="img/kevoree-rond-blanc.png" alt="Logo" class="margin-bottom"/>
 				<h1 class="color theme text bold center">Free the code from models !</h1>
-				<h3 class="text thin center">Models are no more restricted to modeling environments. The increasing use of Model@Runtime requires rich and efficient modeling frameworks. <br/>
+				<h3 class="text thin center">Models are longer restricted to modeling environments. The increasing use of Model@Runtime requires rich and efficient modeling frameworks. <br/>
                     KMF is developed to provide <strong>efficient modeling frameworks</strong> to edit, compose and synchronize models on <strong>Java</strong> and <strong>JavaScript</strong> Virtual Machines.</h3>
 			</div>
 		</div>
@@ -68,7 +68,7 @@
 		<div class="row text center book">
 			<div class="column_10 offset_1">
 				<h1 class="text bold color light">About Kevoree Modeling Framework</h1>
-				<h3>KMF generates from a domain metamodel, modeling frameworks and API for JS and JVM platforms.
+				<h3>KMF generates modeling frameworks and API for JS and JVM platforms, from a domain metamodel.
                     It also offers comparison, merge and incremental synchronisation mechanisms tuned for Runtime use, making a powerful tool for server-side storage and presentation in a simple browser.
                     In short, KMF generate business specific API and Tools from a metamodel, ready for distributed modeling activities.</h3>
 			</div>
@@ -282,7 +282,7 @@ var clonedModel = cloner.cloneMutableOnly(cloud);
 	<section class="bck theme padding" id="features6">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Use Events to keep informed</h1>
+				<h1 class="text bold">Use Events to stay informed</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -476,7 +476,7 @@ assert(cloudM1.findNodesById("newNode") != null);
     	<section class="bck white padding" id="features9">
 		<div class="row text center book margin-bottom">
 			<div class="column_10 offset_1">
-				<h1 class="text bold">Deeply and efficient naviguation into models</h1>
+				<h1 class="text bold">Dive efficiently into models</h1>
 			</div>
 		</div>
 		<div class="row">
@@ -491,11 +491,11 @@ ModelVisitor visitor = new ModelVisitor(){
 	    System.out.println(elem.path())
     }
 }
-//recursive navigate into contained elements
+//recursive navigation into contained elements
 cloud.visit(true,true,false);
-//recursive navigate into non contained elements
+//recursive navigation into not contained references
 cloud.visit(true,false,true);
-//Non recursive navigate into cloud childs elements
+//Non recursive navigation into cloud references
 cloud.visit(false,true,true);
 
 ModelAttributesVisitor visitorAtts 
@@ -519,11 +519,11 @@ var visitor = new ModelVisitor();
 visitor.visit = function(modelElem){
 	console.log(modelElem.metaClassName());
 }
-//recursive navigate into contained elements
+//recursive navigation into contained elements
 cloud.visit(true,true,false);
-//recursive navigate into non contained elements
+//recursive navigation into not contained references
 cloud.visit(true,false,true);
-//Non recursive navigate into cloud childs elements
+//Non recursive navigation into cloud references
 cloud.visit(false,true,true);
 
 var visitorAtts = new ModelAttributesVisitor();
@@ -536,7 +536,11 @@ cloud.visit(visitorAtts);
 			</div>
 		</div>
 		<div class="row text center book margin-bottom margin-top">
-			<p>Visitor API replace the iterative way to navigate into model elements. They can be visit in recusive way or not (first boolean parameters). Visit methods are generated to offer best performances. In addition users can manage the recusive visit by using stopVisit() methods inside the visitor object to globally stop the process, or noChildrenVisit() to skip children.</p>
+			<p>The Visitor API replaces the natural iterative navigation through model elements. 
+				You can choos to visit recursively or not (first boolean parameters).
+				Visit methods are generated to offer best performances.
+				In addition users can stop the recursion at anytime by using the stopVisit() methods inside the visitor object to globally stop the process.
+				Also, noChildrenVisit() skips children.</p>
 		</div>
 	</section>
     
