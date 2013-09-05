@@ -38,6 +38,8 @@ draw(clonedModel3,"Partial clone");
 
 //save into XMI format
 var savedModel = xmiSaver.serialize(cloud);
+//print it
+console.log(savedModel);
 //reload from XMI stream
 var reloadCloud = xmiLoader.loadModelFromString(savedModel).get(0);
 
