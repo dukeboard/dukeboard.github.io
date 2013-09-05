@@ -274,7 +274,8 @@ var clonedModel = cloner.cloneMutableOnly(cloud);
 //save into XMI format
 var savedModel = xmiSaver.serialize(cloud);
 //reload from XMI stream
-var reloadCloud = xmiLoader.loadFromString(savedModel);
+var reloadCloud = xmiLoader
+	.loadModelFromString(savedModel);
 
 				</code></pre>				
 			</div>
