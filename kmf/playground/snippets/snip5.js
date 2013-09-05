@@ -1,9 +1,9 @@
 var cloud = factory.createCloud();
 var myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setId("EC2_0");
+myAmazonEC2node.id = "EC2_0";
 cloud.addNodes(myAmazonEC2node);
 var myNginx = factory.createSoftware();
-myNginx.setName("SRV0");
+myNginx.name = "SRV0";
 myAmazonEC2node.addSoftwares(myNginx);
 
 draw(cloud,"Original");

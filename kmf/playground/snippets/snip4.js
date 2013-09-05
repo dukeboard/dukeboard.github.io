@@ -1,9 +1,9 @@
 var cloud = factory.createCloud();
 var myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setId("EC2_0");
+myAmazonEC2node.id = "EC2_0";
 cloud.addNodes(myAmazonEC2node);
 var myNginx = factory.createSoftware();
-myNginx.setName("SRV0");
+myNginx.name = "SRV0";
 myAmazonEC2node.addSoftwares(myNginx);
 
 draw(cloud,"Original");
@@ -27,10 +27,19 @@ draw(clonedModel,"First clone");
 var clonedModel2 = cloner.clone(cloud,true);
 
 //Only clone a part of model, share the first node
-clonedModel.getNodes().get(0).setRecursiveReadOnly();
+clonedModel.nodes.get(0).setRecursiveReadOnly();
 var clonedModel3 = cloner.cloneMutableOnly(clonedModel);
 
 //verify the integrity
-console.log("Software found : "+clonedModel3.findByPath("nodes[EC2_0]/softwares[SRV0]").getName());
+console.log("Software found : "+clonedModel3.findByPath("nodes[EC2_0]/softwares[SRV0]").name);
 
 draw(clonedModel3,"Partial clone");
+
+
+//save into XMI format
+var savedModel = xmiSaver.serialize(cloud);
+//reload from XMI stream
+var reloadCloud = xmiLoader.loadModelFromString(savedModel).get(0);
+
+draw(reloadCloud,"Reload from XMI");
+

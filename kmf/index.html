@@ -59,7 +59,7 @@
 				<h4 class="color text right bold">current version</h4>
 			</div>
 			<div class="column_2">
-				<h4 class="color theme text bold center">1.5.1</h4>
+				<h4 class="color theme text bold center">1.5.2</h4>
 			</div>
 		</div>
 	</section>
@@ -149,12 +149,12 @@ myAmazonEC2node.addSoftwares(myNginx);
 var cloud = factory.createCloud();
 //create a node
 var myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setId("EC2_0");
+myAmazonEC2node.id = "EC2_0";
 //add node to your cloud
 cloud.addNodes(myAmazonEC2node);
 //create a software
 var myNginx = factory.createSoftware();
-myNginx.setName("SRV0");
+myNginx.name = "SRV0";
 //attach the software to your new node
 myAmazonEC2node.addSoftwares(myNginx);					
 				</code></pre>				
@@ -253,6 +253,8 @@ Cloud clonedModel = cloner.cloneMutableOnly(cloud);
 var cloner = new DefaultModelCloner();
 var jsonSaver = new JSONModelSerializer();
 var jsonLoader = new JSONModelLoader();
+var xmiSaver = new XMIModelSerializer();
+var xmiLoader = new XMINModelLoader();
 
 //Save in human readable JSON
 console.log(jsonSaver.serialize(myCloud));
@@ -268,6 +270,12 @@ var clonedModel = cloner.clone(cloud,true);
 //Only clone a part of model, share the first node
 cloud.getNodes().get(0).setRecursiveReadOnly();
 var clonedModel = cloner.cloneMutableOnly(cloud);
+
+//save into XMI format
+var savedModel = xmiSaver.serialize(cloud);
+//reload from XMI stream
+var reloadCloud = xmiLoader.loadFromString(savedModel);
+
 				</code></pre>				
 			</div>
 		</div>
@@ -335,11 +343,11 @@ cloud.addModelTreeListener(listener);
 //Std listener only listen local event
 //cloud.addModelListener(listener);
 var node = factory.createNode();
-node.setId("EC1");
+node.id = "EC1";
 //Trigger event ADD 
 cloud.addNodes(node);
 //Trigger event SET
-node.setId("EC2_1");
+node.id = "EC2_1";
 				</code></pre>				
 			</div>
 		</div>

@@ -158,11 +158,11 @@
   <ul class='tree'>
       <li>Cloud
           <ul>
-              {{#each getNodes}}
-              <li>Node:{{getId}}
+              {{#each nodes}}
+              <li>Node:{{id}}
                     <ul>
-                        {{#each getSoftwares}}
-                            <li>Soft:{{getName}}</li>
+                        {{#each softwares}}
+                            <li>Soft:{{name}}</li>
                         {{/each}}
                     </ul>
               </li>
@@ -182,13 +182,16 @@ Handlebars.registerHelper('each', function(context, options) {
   if(typeof context == 'function'){ 
       context = context.call(this).array; 
   } 
+  if(context.array != undefined){
+  	context = context.array;
+  }
   for(var i=0, j=context.length; i<j; i++) {
     ret = ret + options.fn(context[i]);
   }
   return ret;
 });    
         
-    var template2 = "<ul class='tree'><li>Cloud<ul>{{#each getNodes}}<li>Node:{{getId}}  </li>{{/each}}</ul></li></ul>";
+    var template2 = "<ul class='tree'><li>Cloud<ul>{{#each nodes}}<li>Node:{{id}}  </li>{{/each}}</ul></li></ul>";
 	var compiledTemplate2 = Handlebars.compile($('#cloud-template').html());
 	function draw(cloud,txt){
 		if(cloud.metaClassName != undefined && cloud.metaClassName() == "org.cloud.Cloud"){
@@ -200,11 +203,14 @@ Handlebars.registerHelper('each', function(context, options) {
 		}
 	}
 	
-
 		//Global Cloud Model Variables
 		var kevmod = Kotlin.modules['org.kevoree.modeling.sample.cloud.js'];
 		var saver = new kevmod.org.cloud.serializer.JSONModelSerializer();
 		var loader = new kevmod.org.cloud.loader.JSONModelLoader();
+		
+		var xmiSaver = new kevmod.org.cloud.serializer.XMIModelSerializer();
+		var xmiLoader = new kevmod.org.cloud.loader.XMIModelLoader();
+		
 		var cloner = new kevmod.org.cloud.cloner.DefaultModelCloner();
 		var compare = new kevmod.org.cloud.compare.DefaultModelCompare();
 		var event2trace = new kevmod.org.kevoree.modeling.api.trace.Event2Trace(compare);

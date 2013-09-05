@@ -1,9 +1,9 @@
 var cloud = factory.createCloud();
 var myAmazonEC2node = factory.createNode();
-myAmazonEC2node.setId("EC2_0");
+myAmazonEC2node.id  = "EC2_0";
 cloud.addNodes(myAmazonEC2node);
 var myNginx = factory.createSoftware();
-myNginx.setName("SRV0");
+myNginx.name = "SRV0";
 myAmazonEC2node.addSoftwares(myNginx);
 
 draw(cloud,"Original");
@@ -23,15 +23,15 @@ cloud.addModelTreeListener(listener);
 //Std listener only listen local event
 //cloud.addModelListener(listener);
 var node = factory.createNode();
-node.setId("EC1");
+node.id = "EC1";
 //Trigger event ADD 
 cloud.addNodes(node);
 //Trigger event SET
-node.setId("EC2_1");
+node.id = "EC2_1";
 
 draw(cloud,"After Add");
 
-console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").getId());
+console.log("Software found : "+cloud.findByPath("nodes[EC2_1]").id);
 
 /* Declare a new instance of cloud */
 var newCloud = factory.createCloud();
@@ -45,11 +45,11 @@ var listener2 = { elementChanged : function(event){
 cloud.addModelTreeListener(listener2);
 
 var newNode = factory.createNode();
-newNode.setId("newNode")
+newNode.id = "newNode";
 cloud.addNodes(newNode);
 
-console.log(cloud.findByPath("nodes[newNode]").getId());
-console.log(newCloud.findByPath("nodes[newNode]").getId());
+console.log(cloud.findByPath("nodes[newNode]").id);
+console.log(newCloud.findByPath("nodes[newNode]").id);
 
 draw(cloud,"Original+Added node");
 draw(newCloud,"Last event sync");
