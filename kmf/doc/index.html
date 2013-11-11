@@ -31,19 +31,93 @@
 
   <!-- Meta -->
   <meta content="Kevoree Modeling Framework" property="og:title">
-  <meta content="Pimp my model! An framework dedicated for runtime multi-criterions models optimization" name="description">
+  <meta content="KMF is a model@run.time modeling framework" name="description">
 
   <!-- Initializer -->
   <script>
     Flatdoc.run({
-      fetcher: Flatdoc.github('dukeboard/kevoree-modeling-framework','DOC.md')
+	  //fetcher: Flatdoc.file('DOC.md')
+      fetcher: Flatdoc.github('dukeboard/kevoree-modeling-framework')
     });
   </script>
+  
+  <style>
+  .title-card {
+    background: #1d3b47;
+    color: #ccc;
+    text-align: center;
+
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    display: table; }
+
+  .title-card > .in {
+    display: table-cell;
+    vertical-align: middle; }
+
+  .title-card .headline {
+    vertical-align: middle;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+    padding-left: 40px;
+    padding-right: 40px;
+    max-width: 800px;
+    line-height: 1.7; }
+
+  .title-card h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 3.3em;
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 0.5em;
+    color: #fff; }
+
+  .title-card p {
+    font-family: montserrat, sans-serif;
+    color: #b8eaea;
+    font-weight: bold;
+    font-size: 1.3em; }
+
+  .title-card h5 {
+    margin-top: 150px;
+
+    font-family: montserrat, sans-serif;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.8em; }
+
+  .title-card h5 span {
+    display: inline-block;
+    padding: 5px 20px;
+    border: solid 3px #fff; }
+  
+  </style>
+  
 </head>
 <body role='flatdoc'>
+	
+	<div class='title-area title-card' style="background-color:#181818;">
+	    <div class='in'>
+		  <img src='http://kevoree.org/kmf/img/kevoree-rond-blanc.png' alt='' class='' style="width:25%;">
+	      <div class='headline'>
+	        <h1>Kevoree Modeling Framework</h1>
+	        <p>Free the code from models !</h5>
+	        <h5><span>KMF</span></h5>
+	      </div>
+	    </div>
+	  </div>
+	
   <div class='header'>
     <div class='left'>
-      <h1>Kevoree Modeling Fwk</h1>
+      <h1>KMF</h1>
       <ul>
         <li><a href='https://github.com/dukeboard/kevoree-modeling-framework'>View on GitHub</a></li>
         <li><a href='https://github.com/dukeboard/kevoree-modeling-framework/issues'>Issues</a></li>
