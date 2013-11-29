@@ -1,0 +1,30 @@
+The Kevoree Environment
+---------------
+
+### ObjectivesThis practice aims at making you familiar with the Kevoree environment and basic mechanisms. To this end, you will make use of the Kevoree Editor and the Java Runtime to create a local chat application. 
+
+### Setting up your environmentFirst of all, you need to have a **Java Runtime Environment 1.6** at least.    
+Then browse to the [Kevoree Download Section](http://www.kevoree.org/download "Title") and download the last stable version of the `Kevoree Editor` and the `Kevoree JavaSE Runtime GUI`. To launch them, double-click or command ”java -jar org.kevoree.tools.ui.editor.jar”.
+
+> [Java Runtime w. GUI >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui&v=RELEASE)   
+>
+> [Kevoree Editor >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor.standalone&v=RELEASE)
+
+
+Start the Runtime
+---------------
+Its time to launch a `Runtime`.    You should get a new window as presented in [Figure 1](id:fig-runtime). This window displays, on the left hand side, which components, channels and groups are currently instantiated and running. The console will display any log information or printing from your components. The command prompt on the bottom allows to get several information from the Kevoree Runtime kernel, but this is out of the scope of this practice.All right, the runtime is ready, let launch an Editor !
+
+
+
+Start the Editor
+---------------Launch the `Editor`.You should get the window presented in [Figure 2](id:fig-editor).On the left hand side, the library of available components. Empty for the moment, we will get some component definitions from existing libraries. On top, several icons open different panels displaying logs, errors or the Kevoree scripting panel.On the center, the model edition space.Here we go. Let first collect the current model of the runtime we just started. In the editor,File / Open From NodeBy default, the IP:Port value is set to collect the model from a group run- ning on the localhost, accessible trough the 8000 port. If you changed the values when you started the runtime, then you have to change this value. Otherwise, proceed.The Editor will then ask for the current model of the runtime, and display it. You should see the synchronization group called ’synch’ (in green), a node called ’node0’ as specified in the runtime startup window, and a green link that indicates that the node0 is part of the ’synch’ group.In the editor, save the model in XMI then in JSON format, and have a look at these files. This is actually what the runtime and the editor are exchanging.Ok, you’re ready to create your chat application.
+
+
+Create & Deploy the application
+---------------To create the chat application we will use two instances of an existing com- ponent. To be able to create an instance, we first need to complete the library of available components. To do so in the Editor,Model / Load Kevoree Core Library / JAVASE /And select the defaultChannels and fakeDomo. The library of available com- ponents, on the left, should fill up with additional components from these libraries.Drag&Drop a component called ”FakeConsole”, two times, from the li- brary to the ’node0’. Doing that, you will create two instances of the Fake- Console component type in the model we previously got from the runtime. The actual creation of the FakeConsole instances is made by the runtime, in order to fit the new model it receives. Click on the node, and hit the ’Push’ button at the bottom of the node property windows that shows-up.This action pushes the modifier model to the runtime, and you should see the two instances of the FakeConsole component created.Now you should have a new window with two tabs. Each tab is an instance of the FakeConsole component. They have been automatically grouped in a single window.These consoles are functional (you can type in text), but connected to noth- ing, so the communication between the two FakeConsole instances is not working. Also, the consoles have generated names, so we may change them.Come back in the Editor, and change the names of the consoles’ instances in their properties window (click on the instance).Then we will set up the communication links between the two consoles. The ports of the consoles are Message ports, meaning we have inputPort on the left of a component, and outputPort on the right. Thus what you type in the console prompt will be sent through the output port of the console. For this message to reach the other console, we have to connect the output- Port of one console to the inputPort of the other one.Browse the library on the left to find a defMsg channel (with a orange icon). Drag one in the edition space (not on the node, neither on the component). Then drag the outputPort of the first console to the orange channel instance; drag the inputPort of the second console to the channel instance. You just made your first (one way)connection.To do the other way you may use a shortcut: drag the outputPort of the second console and drop it on the inputPort of the first console. Select ”defMsg” in the windows that prompts for the channel type.Time to deploy again. Click on the node, then ’Push’.The runtime will adapt the running application accordingly to the new model we just sent.Now, what you write in one console, arrives in the other.Congratulation. You just deployed your first application using Model@Runtime. If you want to check that the model is really available at runtime, close your editor, launch it again and open the model from the node. You’ll get thesame model as you sent the last time.
+
+
+
+Let play a bit
+---------------Now that you know how to create instances, connect components and deploy the application, I want you to perform the two next tasks by your own.I want you to setup an alert system to inform users of the chats that there are unread messages. Make use of whatever you like :-), or try FakeLight component if you get lost.

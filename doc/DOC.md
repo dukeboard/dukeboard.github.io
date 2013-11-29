@@ -1,6 +1,3 @@
-Kevoree
-=======
-
 Getting started
 ---------------
 
