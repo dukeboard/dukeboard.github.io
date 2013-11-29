@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
+
+  <title>Kevoree</title>
+
+  <!-- Flatdoc -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src='http://rstacruz.github.io/flatdoc/v/0.8.0/legacy.js'></script>
+  <script src='http://rstacruz.github.io/flatdoc/v/0.8.0/flatdoc.js'></script>
+
+  <!-- Flatdoc theme -->
+  <link  href='http://rstacruz.github.io/flatdoc/v/0.8.0/theme-white/style.css' rel='stylesheet'>
+  <script src='http://rstacruz.github.io/flatdoc/v/0.8.0/theme-white/script.js'></script>
+
+  <!-- Meta -->
+  <meta content="Kevoree" property="og:title">
+  <meta content="Kevoree is a model@run.time platform" name="description">
+
+  <!-- Initializer -->
+  <script>
+    Flatdoc.run({
+	  fetcher: Flatdoc.file('DOC.md')
+      //fetcher: Flatdoc.github('dukeboard/kevoree-modeling-framework')
+    });
+  </script>
+  
+  <style>
+  .title-card {
+    background: #1d3b47;
+    color: #ccc;
+    text-align: center;
+
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    display: table; }
+
+  .title-card > .in {
+    display: table-cell;
+    vertical-align: middle; }
+
+  .title-card .headline {
+    vertical-align: middle;
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+
+    padding-left: 40px;
+    padding-right: 40px;
+    max-width: 800px;
+    line-height: 1.7; }
+
+  .title-card h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 3.3em;
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 0.5em;
+    color: #fff; }
+
+  .title-card p {
+    font-family: montserrat, sans-serif;
+    color: #b8eaea;
+    font-weight: bold;
+    font-size: 1.3em; }
+
+  .title-card h5 {
+    margin-top: 150px;
+
+    font-family: montserrat, sans-serif;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 1.8em; }
+
+  .title-card h5 span {
+    display: inline-block;
+    padding: 5px 20px;
+    border: solid 3px #fff; }
+  
+  </style>
+  
+</head>
+<body role='flatdoc'>
+	
+	<div class='title-area title-card' style="background-color:#24221f;">
+	    <div class='in'>
+		  <img src='http://kevoree.org/kmf/img/kevoree-rond-blanc.png' alt='' class='' style="width:25%;">
+	      <div class='headline'>
+	        <h1 style="color:#feb41c!important;font-weight:bold;">Kevoree</h1>
+	        <p>Model@Runtime for adaptive distributed system !</h5>
+	        <h5 style="color:#feb41c;"><span>Kevoree</span></h5>
+	      </div>
+	    </div>
+	  </div>
+	
+  <div class='header'>
+    <div class='left'>
+      <h1>KMF</h1>
+      <ul>
+        <li><a href='https://github.com/dukeboard/kevoree'>View on GitHub</a></li>
+        <li><a href='https://github.com/dukeboard/kevoree/issues'>Issues</a></li>
+      </ul>
+    </div>
+    <div class='right'>
+      <!-- GitHub buttons: see http://ghbtns.com -->
+      <iframe src="http://ghbtns.com/github-btn.html?user=dukeboard&amp;repo=kevoree&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+    </div>
+  </div>
+
+  <div class='content-root'>
+    <div class='menubar'>
+      <div class='menu section' role='flatdoc-menu'></div>
+    </div>
+    <div role='flatdoc-content' class='content'></div>
+  </div>
+
+</body>
+</html>
