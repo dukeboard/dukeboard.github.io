@@ -34,8 +34,10 @@ Making a component
 The Annotation API is made to provide a simple and flexible way to decorate your existing code to declare it as a component/a channel/a node/a group.
 
 * `add` adds a new instance of Component, Node, Channel or Group.
-> add <component_name>@<node_name> : ComponentType
-> add <node_name> : <node_type>
+```
+add <component_name>@<node_name> : ComponentType
+add <node_name> : <node_type>
+```
 
 * `remove`
 * `move`
