@@ -260,21 +260,45 @@ You can also specify the name of the node you want to launch.
 Kevoree Script (aka KevScript)
 ---------------
 KevScript is a scripting language developed to simplify the authoring of models at design and run-time.
+<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span>  KevScript is a scripting language to manipulate a model. The KevoreeScriptEngine takes a script and a source model as input, and returns a new model modified according to the script.</span>
 
-### How to script
-1. First, write your adaptation script. Describe the modifications you want to operate on the model in the editor on of the running system.
+### How to script ?
 
-1. Then ask for its interpretation / application on models.
+1. First, write your adaptation script. Describe the modifications you want to operate on the model.
+1. Then ask for the execution of this script on a model.
 
+<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span>  KevScript is ordered ! It means that, for instance, you have to create an instance BEFORE using it in a bind command.</span>
+
+
+### Dynamic adaptation of a Kevoree Runtime
+The dynamic adaptation of a Kevoree Runtime is not the business of KevScript.
+If you want to use a KevScript to realize an adaptation of your system, you have to:   
+
+1. Create a KevScript and ask for its execution on a model. This execution will give you a new model.
+1. Ask the runtime for a deployment of this new model.
+2. 
 
 ### KevScript Commands
 
 **Comments**    
-
+If you want to comment a line in your KevScript, here you go.
 ```
 // this is a comment
 // comments allow any characters ! \ù%*é=^``~&°.:!§,?/#çà][-|
 ```
+
+**Namespace**   
+A namespace allows to group several elements under a unique name, in order to simplify the manipulation on these elements. For instance, you can declare a namespace to which you add several nodes, to be able to write their connection to the same synchronization group as presented on the right.   
+Elements are added in namespaces using the `attach` command, they can be removed from the namespace using `detach`. A namespace can be completely removed using the `remove` command. 
+
+```
+namespace space42
+attach node0, node1 space42
+attach space42 sync
+detach node1 space42
+remove space42
+```
+
 
 **Repository**     
 Adds a repository location for the resolution of binaries.
@@ -284,96 +308,91 @@ repo http://oss.sonatype.org/content/repositories/releases
 ```
 
 **Include**     
-Imports a library of types in the model, makes the Types available.
+Imports a library of types in the model, makes the Types available.   
+A fixed version number enforce the use of a specific version of library that will never change.    
+A `SNAPSHOT` version will always get the last version of the library, in snapshot mode.   
+A `RELEASE` version tag indicates that the version has to be updated to the latests release of the library.    
+A `LATEST` version tag (the default) looks for the latest version of the library, regarless of its type (release or snapshot) based on the build timestamp.
 ```
-include mvn:org.kevoree.library.javase:org.kevoree.library.javase.websocketgrp:2.0.5-SNAPSHOT
+include mvn:org.kevoree.library.java:org.kevoree.library.java.javaNode:3.0.0
+include mvn:org.kevoree.library.java:org.kevoree.library.java.javaNode:3.0.0-SNAPSHOT
+include mvn:org.kevoree.library.java:org.kevoree.library.java.javaNode:RELEASE
+include mvn:org.kevoree.library.java:org.kevoree.library.java.javaNode:LATEST
 ```
 
 **Add**       
-Adds a new instance of `Component`, `Node`, `Channel` or `Group`.       
-<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span> When adding an instance of component into your model, you have to specify the node instance it has to be deployed in, using the `@<nodeName>` synthax</span>
+Adds a new instance of `Component`, `Node`, `Channel` or `Group`.    
+You can add several elements of the same type, at the same time, by separating the instances' names with a `,`.    
+When the element you add is a component instance, you `MUST` specify the node that will host this instance, using a dotted notation (i.e.: node0.instance0 : MyComponentType).
 ```
-add <nodeName> : <NodeType>
-add <groupName> : <GroupType>
-add <channelName> : <ChannelType>
-add <componentName>@<nodeName> : <ComponentType>
-
-add node0, node1 : JavaSENode
-add sync : HelloGroup
-add comp0 : HelloWorld
-add chan0 : HelloChannel
+add node0, node1 : JavaNode
+add sync : WebSocketGroup/0.0.2-SNAPSHOT
+add node0.comp0 : ToyConsole
+add node0.comp1, node0.comp2 : ToyDisplay
+add chan0 : DelayBufferedChannel
 ```
 
 **Remove**   
 Removes elements from the model.
 ```
-remove node0, node1
+remove node0
 remove sync
+remove chan0
 ```
 
 **Move**   
-Moves one or several instances to another node. Instances can be of type `NodeTye` or `ComponentType`. The node the elements have to be moved to is always at the last position in the command.
+Moves one or several instances to another node. Instances can be of type `NodeType` or `ComponentType`. The last parameter of the command is always the destination node.
 ```
-move comp0 node0
-move * node0
-move *@node0 node1
-move comp0, comp1 node1
+move node0.comp0 node1
+move *.* node0 //moves all components of all nodes, to node0
+move node0.comp0, node0.comp1 node1
 ```
 
 **Set**   
-Used to set parameters of instances.
+Used to set parameters of instances.   
+Some parameters are `fragment dependent`. In this case, a property can have a different value on each node howting a fragment (it can be the case for Groups and Channels). In this case, the property is set using a `<element>.<property>/<node> = "<value>"` notation.
 ```
-set comp0 {foo="bar", baz='potato'}
-set sync {forcePush="false"}, {port='8000'}@node0, {port='8001'}@node1
+set node0.comp0.foo = "bar"
+set node0.*.baz = 'potato' //sets the property baz of all components on node0
+set sync.forcePush = "false"
+set sync.port/node0 = '8000'
 ```
  
 **Bind**   
 Binds the port, or several ports, of a component instance to several channel instances. 
 ```
-bind comp0.sendMsg chan0, chan1
+bind node0.base.output chan0
+bind node0.base.input chan0
 ```
 
 **Unbind**   
 Disconnects the port of a component from a channel.
 ```
-unbind comp0.sendMsg chan1
-unbind comp0.sendMsg *
+unbind node0.base.input chan0
 ```
 
 **Attach**   
-Attaches one or several node instances to a synchronization group. The group is always at the last position in the command.
+The last parameter of this command can be an instance of `group`or a `namespace`.
+If the last parameter is a namespace, the list of parameters can be whatever you want. If the last parameter is a group, the elements should be nodes or namespaces.
 ```
 attach node0 sync
-attach node0, node1 sync
+attach node1, node2 sync
 attach * sync
+attach * space42
 ```
 
 **Detach**   
 Disconnects one or several node instances from a synchronization group. The group is always at the last position in the command.
 ```
-detach node0 sync
-detach node0, node1 sync
-detach * sync
+detach node0 sync2
 ```
 
 **Network**   
-NOT IMPLEMENTED YET !
+Specifies the IP address on which a node is reacheable.
 ```
 network node0 192.168.0.1
+network space42.node1 127.0.0.1
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
