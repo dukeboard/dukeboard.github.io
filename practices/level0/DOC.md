@@ -17,7 +17,7 @@ Start the Runtime
 All right, the runtime is ready, let launch an `Editor` !
 
 > [Figure 1: The Kevoree Java Runtime](id:fig-runtime)
-> <img src="img/runtime.pdf" width="80%"/>
+> <img src="img/runtime.png" width="80%"/>
 
 
 Start the Editor
@@ -27,7 +27,7 @@ Launch the `Editor`.    You should get the window presented in [Figure 2](#fig-
 *On the center*, the model edition space.    Here we go. Let first collect the current model of the runtime we just started. In the editor,`File / Open From Node`    By default, the `IP:Port` value is set to collect the model from a group running on the localhost, accessible trough the 9000 port. If you changed the values when you started the runtime, then you have to change this value. Otherwise, proceed.    The Editor will then get the current model of the runtime, and display it. One this operation realized, you should see the synchronization group called ’sync’ (in green), a node called ’node0’ as specified in the runtime startup window, and a green link that indicates that the node0 is part of the ’synch’ group.    In the editor, save the model in XMI then in JSON format, and have a look at these files. This is actually what the runtime and the editor are exchanging.    Ok, you’re ready to create your chat application.
 
 > [Figure 2: The Kevoree Java Editor](id:fig-runtime)
-> <img src="img/editor.pdf" width="80%"/>
+> <img src="img/editor.png" width="80%"/>
 
 
 Create & Deploy the application
