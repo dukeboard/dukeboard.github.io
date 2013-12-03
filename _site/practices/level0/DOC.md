@@ -4,11 +4,11 @@ The Kevoree Environment
 ### ObjectivesThis practice aims at making you familiar with the Kevoree environment and basic mechanisms. To this end, you will make use of the Kevoree Editor and the Java Runtime to create a local chat application. 
 
 ### Setting up your environmentFirst of all, you need to have a **Java Runtime Environment 1.6** at least.    
-Then browse to the [Kevoree Download Section](http://www.kevoree.org/download "Title") and download the last stable version of the `Kevoree Editor` and the `Kevoree JavaSE Runtime GUI`. To launch them, double-click or command ”java -jar org.kevoree.tools.ui.editor.jar”.
+Then browse to the [Kevoree Download Section](http://www.kevoree.org/download "Title") and download the last stable version of the `Kevoree Editor` and the `Kevoree Java Runtime GUI`. To launch them, double-click or command ”java -jar org.kevoree.tools.ui.editor.jar”.
 
 > [Java Runtime w. GUI >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui&v=RELEASE)   
 >
-> [Kevoree Editor >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor.standalone&v=RELEASE)
+> [Kevoree Editor >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor&v=RELEASE)
 
 
 Start the Runtime
