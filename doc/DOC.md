@@ -132,8 +132,10 @@ public boolean askUser(String questionMessage) {
 
 #### Parameters
 
-Parameters are sometimes useful to adapt the behavior of a piece of code. These parameter can be used to set the delay of a timeout, the name of a component, the color of a frame, etc.    
-Kevoree only supports the `Param` annottaion on *Primitive* types and their boxing equivalent.
+Parameters are sometimes useful to adapt the behavior of a piece of code. These parameters can be used to set the delay of a timeout, a display name of a frame, the color of a frame, etc.     
+To declare a parameter, just declare a field in your class, and add to it the `@Param` annotation. The default value of a parameter has to be specified in the annotation as shown on the right.    
+<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span> Kevoree only supports the `Param` annottaion on *Primitive* types and their boxing equivalent.</span>  
+
 
 
 >Java
@@ -143,7 +145,7 @@ Kevoree only supports the `Param` annottaion on *Primitive* types and their boxi
 @Param
 String name;
 
-@Param
+@Param (defaultValue = "2000")
 int delay = 2000;
 ```
 
@@ -151,19 +153,20 @@ int delay = 2000;
 *************
 
 ``` Kotlin
-Param var name : String = "default" ;
+Param(defaultValue = "default") var name : String = "default" ;
 ```
 
 #### Library  
 
 The Library annotation makes it possible for you to organize the components you create into virtual Libraries. It has nothing to do with the deployment, the location of the binaries or the behavior of your component. It can be whatever you want.
+<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span> The Library annotation must always be placed after the type declaration annotation (i.e.: ComponentType, ChannelType, etc.).</span>  
 
 >Java
 *************
 
 ``` Java
-@Library(name = "Java")
 @NodeType
+@Library(name = "Java")
 public class JavaNode implements ModelListener, org.kevoree.api.NodeType {...}
 ```
 >Kotlin
@@ -232,8 +235,8 @@ Update fun updateComponent(){...}
 
 ### The Kevoree Maven Plugin
 
-The Kevoree Maven plugin is used to extract the Component-Model from the annotations placed in your code, and store it into a Kevoree Model packed along with the compiled class files.    
-Also, for teh ease of use, the Kevoree Maven plugin ambeds a Kevoree runner. This runner launches a Kevoree runtime using a KevScript file. This file is supposed to be `src/main/resources/kevs/main.kevs` in the project. If otherwise, you can specify the location of the KevScript file you want to use in the configuration of the plugin.    
+The Kevoree Maven plugin is used to extract the Component-Model from the annotations placed in your code, and store it into a Kevoree Model packed along with the compiled class files.     
+Also, for the ease of use, the Kevoree Maven plugin embeds a Kevoree runner. This runner launches a Kevoree runtime using a KevScript file. This file is supposed to be `src/main/resources/kevs/main.kevs` in the project. If otherwise, you can specify the location of the KevScript file you want to use in the configuration of the plugin.    
 You can also specify the name of the node you want to launch.
 
 ```
