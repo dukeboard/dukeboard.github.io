@@ -257,7 +257,14 @@ You can also specify the name of the node you want to launch.
 	</configuration>
 </plugin>
 ```
+### Kevoree Runtime options
 
+Both Kevoree runtime platform are runnable as classical Java application. In other word `java -jar KevoreeRuntime.jar` . In addition two option system option are available:
+
+	* node.name : allows to associate a node name with the runtime
+	* node.bootstrap : allows to give an initial bootstrap model (.json,.kev.kevs accepted)
+	
+Reminder, bootstrap option must be before the -jar option.
 
 
 Kevoree Script (aka KevScript)
@@ -391,10 +398,9 @@ detach node0 sync2
 ```
 
 **Network**   
-Specifies the IP address on which a node is reacheable.
+Specifies the IP address on which a node is reacheable. In addition give as last parameter an interface face, this must be unique.
 ```
-network node0 192.168.0.1
-network space42.node1 127.0.0.1
+network node0.ip.eth0 192.168.0.1
 ```
 
 
