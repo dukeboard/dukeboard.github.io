@@ -36,7 +36,7 @@ On the *left hand side*, the **library of available component types**. You shoul
 Here we go. Let first collect the current model of the runtime we just started. In the editor,
 `File / Open From Node`    
 By default, the `IP:Port` value is set to collect the model from a group running on the localhost, accessible trough the 9000 port. If you changed the values when you started the runtime, then you have to change this value. Otherwise, proceed.    
-The Editor will then get the current model of the runtime, and display it. Once this operation realized, you should see the synchronization group called ’sync’ (in green), a node called ’node0’ as specified in the runtime startup window, and a green link that indicates that the node0 is part of the ’sync’ group.    
+The Editor will then get the current model of the runtime, and display it. Once this operation realized, you should see the synchronization group called *sync* (in green), a node called ’node0’ as specified in the runtime startup window, and a green link that indicates that the node0 is part of the *sync* group.    
 In the editor, save the model in XMI then in JSON format, and have a look at these files. This is actually what the runtime and the editor are exchanging.    
 Ok, you’re ready to create your chat application.
 
@@ -48,8 +48,8 @@ Create & Deploy the application
 ---------------
 ### Get the current model
 To create the chat application we will use two instances of an existing component. To be able to create an instance, we first need to complete the library of available components. To do so in the Editor,    
-`Model / Load Kevoree Library / JAVA / ORG.KEVORE.{replace by libname}`    
-And select the defaultChannels and ToyComponents. The library of available components, on the left, should fill up with additional components from these libraries.    
+`Model / Load Kevoree Library / JAVA / ORG.KEVOREE.{replace by libname}`    
+And select the *Channels* and *Toys*. The library of available components, on the left, should fill up with additional components from these libraries.    
 
 ### Add two instances
 Drag&Drop a component called ”ToyConsole”, two times, from the library to the `node0`. Doing that, you will create two instances of the ToyConsole component type in the model we previously got from the runtime. The actual creation of ToyConsole instances is made by the runtime, in order to fit the new model it receives. Click on the node, and hit the `Push` button at the bottom of the node property windows that shows-up.   
@@ -74,7 +74,5 @@ Now you can try other communication channels. Let's replace the "SyncBroadcast" 
 Let play a bit
 ---------------
 
-Now that you know how to create instances, connect components and deploy the application, I want you to perform the next task by yourself.    
-I want you to setup an alert system to inform users of the chats that there are unread messages. Make use of whatever you whant :-), or try ToyOnOffStatusDisplay component if you get lost.
-
+Now, I want you to make use of a *ToyOnOffStatusDisplay* to signal that there are answered messages. Make use of one instance of this component per console. The component should display on each time a new message is received in a console; off each time an answer is sent.
 
