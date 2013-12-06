@@ -10,9 +10,22 @@ The Kevoree Editor provides a model authoring tool specialized for Kevoree Model
 It offers a Graphical Editor in which modifications on models are made principally using drag&drop mechanisms.
 It also embeds a Kevoree Scripting engine developed to simplify the modifications.
 
+> [Kevoree Editor >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor&v=RELEASE)
+
 ### Kevoree Runtimes
 Kevoree offers several runtime environments. Among others, the Java runtime of Kevoree wraps a Java Virtual Machine with all the necessary features to handle the deployment of models received from editors or local components.
 
+* Use Kevoree for test purpose, go for Runtime GUI version : 
+
+> [ Java Runtime w. GUI >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui.prompt&v=RELEASE)
+
+* Use Kevoree for command line usage, go for standalone JAR version : 
+
+> [ Java Standalone >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui.prompt&v=RELEASE)
+
+* Use Kevoree as a Service for production deployment, go for the DEB version (for Ubuntu like server, or Raspian OS) with watchdog :
+
+> [Java Watchdog >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.watchdog&a=org.kevoree.watchdog&v=RELEASE)
 
  
 Making a component
@@ -263,6 +276,7 @@ Both Kevoree runtime platform are runnable as classical Java application. In oth
 
 	* node.name : allows to associate a node name with the runtime
 	* node.bootstrap : allows to give an initial bootstrap model (.json,.kev.kevs accepted)
+	* o or offline : allows to put Kevoree in offline mode
 	
 Reminder, bootstrap option must be before the -jar option.
 
@@ -408,9 +422,50 @@ network node0.ip.eth0 192.168.0.1
 Cloud Management with Kevoree
 ---------------
 
+Kevoree can be used as a Cloud management layer, simply by following this idea. If a node is a container, it can as well contains other nodes, which can then host components. In others words, simply by composing Nodes with can manage Cloud virtual infrastructures by mapping Kevoree nodes to virtual machines. 
 
+Again, everything is about manipulating model, KevScript is then the simplest way to dynamically manipulate infrastructures. 
 
+**Add nodes**
+This allows to create a new virtual machine in another container. Here `infra0` is the container, in other words, one of the IaaS (infrastructure) nodes set. `vm0` is then a PaaS (platform) node, ready himself to host components. 
+```
+add infra0.vm0 : JavaNode
+```
 
+**Remove nodes**
+In the same manner, one can delete a now from his container.
+```
+remove infra0.vm0
+```
+
+**Move nodes**
+The move instruction is a migration command. It allows to migrate a virtual machine to another containers.
+```
+move infra0.vm0 infra1
+```
+
+### Sandbox properties
+
+section coming soon...
+
+### Available mappings to infrastructure
+
+Each Kevoree node types can refine the creation of child nodes. Each of them, offer several virtualization capabilities.
+
+**JavaNode**
+The is the default implementation. Basically it create a second process for each child node which run in a separated virtual machine. This light virtualization layer protect for process interation but offer no protection in term of network or disk.
+
+**LXCNode**
+This Node type create each child in a Linux container. This offer a light virtualization but  isolate network and disk from each machine. This prevent network port collisition and allows to define CPU share time between child nodes.
+
+**DockerIO**
+Similar to LXC node, but using docker project as a backend.
+
+**KVMNode**
+soon...
+
+**EC2Node**
+soon...
 
 
 
