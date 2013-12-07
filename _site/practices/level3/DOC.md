@@ -62,7 +62,33 @@ Step 2 WebServer Scaler
 
 #### Understand web <=> component Kevoree mapping
 
+In this tutorial, for sake of simplicity we leverage a simple mapping, one component is exactly one web server. Understand by this sentence that each web server define is own http port. A webserver component can serve static content, or content according to what data has arrvied on an input port.
 
+As a first step you can play with the web toy library include in kevoree.
+
+* Start a runtime and an editor (load from node)
+* Load web library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.web:3.0.2` in the KevScript panel of editor)
+* Drag and drop a NanoBlogServer component
+* Configure the http_port property for `8080`
+* Push your model
+* Open a browser to `http://localhost:8080`
+* You should see a page hello world.
+
+As a second step you can leverage a page update by an input port
+
+* Drag an drop an instance of BufferPage
+* Configure the http_port property for `8081`
+* Load toys library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.toys:3.0.2` in the KevScript panel of editor)
+* Load channels library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.channels:3.0.2` in the KevScript panel of editor)
+* Create a `SyncBroadcast` channel
+* Create a ticker component (set property random to `true` by clicking on the component in editor)
+* Bind the ticker port and input port of both new component to channel, your model should look like the figure 1.
+
+> [Figure 1: Kevoree Web servers first toys](id:fig-webtoys)
+> <img src="figures/webtoys.png" width="100%"/>
+
+* Push your model
+* Open a browser an naviguate `http://localhost:8081` , you normally oberve a web page displaying the content of the data pushed by the ticker. This illustrate how we use Kevoree to display data from sensors for instance.
 
 #### Web elastic manager
 
@@ -80,10 +106,3 @@ In order to reply to an increasing load, web instratructure commonly use a load 
 * Open the model from the node `File / Open from node`
 * Modify the parameter of the scaler
 * Refresh the page of the Load balancer
-
-
-
-
-
-
-
