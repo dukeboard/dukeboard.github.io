@@ -1,6 +1,5 @@
 Polymer Framework
 =======
-     lklllkl
 # Introduction
 This complexity came from different things. Data to manipulate and optimize is often complex and related to technical details.
 In addition optimization algorithms such as evolutionary or constraints programming oftenly rely on a problem encoding which require strong knowledges.
@@ -49,96 +48,75 @@ We focus on performance as a key factor for runtime usage to reach faster accept
 # Polymer Configuration
 The following steps show how to configure a Polymer engine.
 ##  Creating a model
+
+
+> The example below shows an example of model creation:
+***************
+```
 public class CloudPopulationFactory implements PopulationFactory<Cloud> {
-
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-
-    private Integer size = 5;
-
-    public CloudPopulationFactory setSize(Integer nSize) {
-        size = nSize;
-        return this;
-    }
-
     @Override
     public List<Cloud> createPopulation() {
         ArrayList<Cloud> populations = new ArrayList<Cloud>();
         for (int i = 0; i < size; i++) {
-
             Cloud cloud = cloudfactory.createCloud();
             for (int j = 0; j < 50; j++) {
             VirtualNode myAmazonEC2node = cloudfactory.createAmazon();
             VirtualNode myRackspacenode = cloudfactory.createRackspace();
-
             Software web = cloudfactory.createSoftware();
-            web.setName("web");
-            web.setLatency(100.0);
-
-
+            web.setName("web");            
+            web.setLatency(100.0);            
             myAmazonEC2node.setId("EC2_"+j);
             myAmazonEC2node.setPricePerHour(10.0);
             myAmazonEC2node.addSoftwares(web);
-            cloud.addNodes(myAmazonEC2node);
-
-
+            cloud.addNodes(myAmazonEC2node);  
             myRackspacenode.setId("Rack_"+j);
             myRackspacenode.setPricePerHour(5.0);
             myRackspacenode.addSoftwares(web);
-            cloud.addNodes(myRackspacenode);
+            cloud.addNodes(myRackspacenode);          
             }
-
             populations.add(cloud);
         }
         return populations;
     }
 }
+```  
 
 ##  Configuring a Fitness Function
-public class CloudCostFitness implements FitnessFunction<Cloud> {
 
+> The example below shows an example of model creation:
+***************
+```
+public class CloudCostFitness implements FitnessFunction<Cloud> {
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
-
         double pres = 0;
         for(VirtualNode node : model.getNodes())
         {
-
             if ((node instanceof  Amazon) || (node instanceof  Rackspace)  )
-
             {
-
                 //System.out.println(node.getId());
                 pres=pres + node.getPricePerHour();
-
             }
-
         }
-
         return ((pres / (model.getNodes().size()*10)));
     }
-
-
-
-
-   }
-   
-
+   }   
+``` 
 ##  Configuring an operator
-public class AddNodeMutator implements MutationOperator<Cloud> {
 
+> The example below shows an example of model creation:
+***************
+```
+public class AddNodeMutator implements MutationOperator<Cloud> {
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-
     @Override
     public List<MutationVariable> enumerateVariables(Cloud cloud) {
-        return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
+    return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
     }
-
     @Override
     public void mutate(Cloud parent, MutationParameters mutationParameters) {
-
         int i = rand.nextInt(1);
-
         if (i==0)
         {
         VirtualNode node = cloudfactory.createAmazon();
@@ -146,70 +124,97 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
         node.setPricePerHour(10.0);
         parent.addNodes(node);
         }
-
         else
         {
         VirtualNode node = cloudfactory.createRackspace();
         node.setId("Rack_"+Math.abs(rand.nextInt()));
         node.setPricePerHour(5.0);
         parent.addNodes(node);}
-
-
-
-
-
     }
 }
+``` 
 
 ##  Generation Number Setup
 ##  MOEA Algorithm Setup
 The following section demonstrates how to configure an MOEA resolution engine.
 ###  Adding an operator
 We start by configuring the engine with the different operators.
-  
+
+> The example below shows an example of model creation:
+***************
+```
   engine.addOperator(new AddNodeMutator());
+  ```
 
 ###  Adding a fitness function
+***************
+```
+   engine.addFitnessFuntion(new CloudCostFitness());
+  ```
 The engine is configured later with the defined fitness functions
  
- engine.addFitnessFuntion(new CloudCostFitness());
+
 ###  Setting a mutation strategy
 The mutation strategy is defined. 
 The framework supports the following mutation selection strategies: the random muation selection strategy, SPUTNIK_ELITIST selection strategy.
   
-  engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
+ 
+  
+  ***************
+```
+    engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
+  ```
+
 ###  Setting a generation number
 
 The setMaxGeneration method defines the generation number. 
-  engine.setMaxGeneration(300);
+ 
+  
+  
+  ***************
+```
+     engine.setMaxGeneration(300);
+  ```
+
 
 ###  Setting a population size
  The setPopulationFactory method defines the population size. 
+   ***************
+```    
  engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
-
+  ```
 ###  Setting an MOEA Algorithm             
 The setAlgorithm method defines the algorithm considered. 
 
 Polymer framework considers the following algorithms: NSGA II, NSGA II with Hypervolume, epsilon-MOEA
-
-engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+  
+ ***************
+ ```    
+ engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+  ```
              
 ### Launching the resolution
-Th esolve method launches the resolution.
+The solve method launches the resolution.
 
+```    
+ List<Solution<Cloud>> result = engine.solve();
+  ```
   
-List<Solution<Cloud>> result = engine.solve();
+
 ### Putting All together
 
 Once all the parameters that are needed for the resolution are configured, the algorithm looks like the following:
 
-GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
+***************
 
+```     
+        
+        GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
+        engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addOperator(new AddSoftwareMutator());
-
+        
         engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
         engine.addOperator(new AddSmartMutator());
@@ -229,6 +234,9 @@ engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
 
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+  ```
+
+
 
 # Charts Generation
 Polymer enables users to generate output results into CSV files or html files.
@@ -238,16 +246,33 @@ To facilitate results usage, we have defined the following metamodel.
 The metamodel is shown in the Figure below:
 
 To initiate the execution model:
+***************
 
+```   
      ExecutionModel model = engine.getExecutionModel();
+```
 
 To generate CSV files, we add the following methods:
+***************
 
-    ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+```   
+     ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+```
+
+    
 
 To be able to generate html files, we add the following lines:
+***************
 
-    Server.instance$.serveExecutionModel(model);
+```   
+      Server.instance$.serveExecutionModel(model);
+```
+
+
+
+
+
+   
 
 
 
