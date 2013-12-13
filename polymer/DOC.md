@@ -4,7 +4,8 @@ Polymer Framework
 This complexity came from different things. Data to manipulate and optimize is often complex and related to technical details.
 In addition optimization algorithms such as evolutionary or constraints programming oftenly rely on a problem encoding which require strong knowledges.
 However, multi-objective optimization can be very relevant for many case studies. 
-As an example it can be the cornerstone of a cloud reasoning engine which tackles the trade-off between performance and cost of your provisioning...
+As an example it can be the cornerstone of a cloud reasoning engine which tackles the trade-off between performance and cost
+of your provisioning...
 That why we build the polymer framework, in order to allows you to optimize simple your models.
 
 #  Polymer & Models Optimization
@@ -228,11 +229,8 @@ Once all the parameters that are needed for the resolution are configured, the a
 
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
 
-
-
         engine.setMaxGeneration(300);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
-
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
   ```
 
