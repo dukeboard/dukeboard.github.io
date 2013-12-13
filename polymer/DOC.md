@@ -155,6 +155,7 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 
 
    }
+   
 
 ##  Configuring an operator
 public class AddNodeMutator implements MutationOperator<Cloud> {
