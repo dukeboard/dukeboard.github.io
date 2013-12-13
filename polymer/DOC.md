@@ -1,72 +1,12 @@
 Polymer Framework
 =======
-Contents:
-  Introduction
-  Polymer & Models Optimization
-  OPtimization Constraints and run.time constraints
-  Basic Concepts
-           MOEA: Multiobjective evolutionary algorithms (MOEAs)
-           Population 
-           Fitness Functions
-           Operators
-                Mutation Operators
-                Crossover Operators
-                Selection Operators
-           SPUTNIK
- Configuration
-               Creating a model
-               Configuring a Fintess Function
-               Configuring an opertor
-               Generation Number Setup
-               MOEA Algorithm Setup 
-                        Adding an operator
-                        Adding a fitness function
-                        Setting a mutation strategy
-                        Setting a generation number
-                        Setting a population size
-                        Setting an MOEA Algorithm
-                        Launching the resolution
-                        Putting All together
-Charts Generation    
-               Results metamodel
-               CSV files generation
-               HTML files generation
-               
-> [Contents >](http://kevoree.org/doc)   
->
-> [Introduction >](http://kevoree.org/polymer/)
-> 
-> [Polymer & Models Optimization >](http://kevoree.org/polymer/)
-> 
-> [Optimization Constraints and run.time constraints >](http://kevoree.org/polymer/)
-> 
-> [Basic Concepts >](http://kevoree.org/polymer/)
-
->  [MOEA: Multiobjective evolutionary algorithms (MOEAs) >](http://kevoree.org/polymer/)
->   
->   [Population >](http://kevoree.org/polymer/) 
->   
->   [Fitness Functions >](http://kevoree.org/polymer/) 
->   
->   [Operators >](http://kevoree.org/polymer/) 
->   
->   [SPUTNIK >](http://kevoree.org/polymer/) 
-
-
-
-
-
-
-                     
-           
+     
 # Introduction
 This complexity came from different things. Data to manipulate and optimize is often complex and related to technical details.
 In addition optimization algorithms such as evolutionary or constraints programming oftenly rely on a problem encoding which require strong knowledges.
 However, multi-objective optimization can be very relevant for many case studies. 
 As an example it can be the cornerstone of a cloud reasoning engine which tackles the trade-off between performance and cost of your provisioning...
 That why we build the polymer framework, in order to allows you to optimize simple your models.
-
-> Pimp my models!
 
 #  Polymer & Models Optimization
 
