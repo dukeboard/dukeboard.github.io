@@ -50,7 +50,6 @@ We focus on performance as a key factor for runtime usage to reach faster accept
 The following steps show how to configure a Polymer engine.
 ##  Creating a model
 
-
 > The example below shows an example of model creation:
 ***************
 ```
@@ -157,9 +156,7 @@ The engine is configured later with the defined fitness functions
 
 ###  Setting a mutation strategy
 The mutation strategy is defined. 
-The framework supports the following mutation selection strategies: the random muation selection strategy, SPUTNIK_ELITIST selection strategy.
-  
- 
+The framework supports the following mutation selection strategies: the random muation selection strategy, SPUTNIK_ELITIST selection strategy. 
   
   ***************
 ```
@@ -168,10 +165,7 @@ The framework supports the following mutation selection strategies: the random m
 
 ###  Setting a generation number
 
-The setMaxGeneration method defines the generation number. 
- 
-  
-  
+The setMaxGeneration method defines the generation number.   
   ***************
 ```
      engine.setMaxGeneration(300);
@@ -197,7 +191,8 @@ Polymer framework considers the following algorithms: NSGA II, NSGA II with Hype
 ### Launching the resolution
 The solve method launches the resolution.
 
-```    
+ ***************
+ ```    
  List<Solution<Cloud>> result = engine.solve();
   ```
   
@@ -206,33 +201,27 @@ The solve method launches the resolution.
 
 Once all the parameters that are needed for the resolution are configured, the algorithm looks like the following:
 
-***************
-
-```     
-        
-        GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
+ ***************
+ ```    
+ GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
         engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addOperator(new AddSoftwareMutator());
-        
-        engine.addOperator(new CloneNodeMutator());
+          engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
         engine.addOperator(new AddSmartMutator());
         engine.addOperator(new RemoveSmartMutator());
-
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
-
-
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
-
         engine.setMaxGeneration(300);
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
   ```
+
 
 
 
