@@ -221,11 +221,8 @@ Once all the parameters that are needed for the resolution are configured, the a
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
         engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
   ```
-
-
-
-
 # Charts Generation
+
 Polymer enables users to generate output results into CSV files or html files.
 
 To facilitate results usage, we have defined the following metamodel.
@@ -233,14 +230,14 @@ To facilitate results usage, we have defined the following metamodel.
 The metamodel is shown in the Figure below:
 
 To initiate the execution model:
-***************
+
 
 ```   
      ExecutionModel model = engine.getExecutionModel();
 ```
 
 To generate CSV files, we add the following methods:
-***************
+
 
 ```   
      ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
@@ -249,13 +246,14 @@ To generate CSV files, we add the following methods:
     
 
 To be able to generate html files, we add the following lines:
-***************
+
 
 ```   
       Server.instance$.serveExecutionModel(model);
 ```
 
-
+> [Figure 1: Execution Model metamodel](id:metamodel)
+> <img src="metamodel.png" width="100%"/>
 
 
 
