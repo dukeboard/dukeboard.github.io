@@ -14,12 +14,9 @@ The Polymer framework is built upon KMF framework and aims at achieving optimiza
 Polymer supports current MOEA (Multi-objective Evolutionary Algorithms), and proposes a new hyper-heuristic that works on top of MOEA for runtime concerns.
 > Polymer framework is dedicated to perform multi-objective optimization on top of MOF compliant models.
 
-# Optimization Constraints 
-
-# and run.time constraints
+# Optimization Constraints and \ run.time constraints 
 # Basic Concepts
-##  MOEA: Multiobjective Evolutionary 
-## Algorithms (MOEAs)
+##  MOEA: Multiobjective Evolutionary Algorithms (MOEAs)
 Multi-objective evolutionary algorithm (MOEA) are driven by elitism rules that favor the survival of strongest species in analogy to natural selection. 
 Applied to software engineering, species are candidate solutions to complex optimization problem, these solutions constitute what is called a generation.
 MOEA are based on an iterative search in which a set of individuals is selected and mutated in each iteration to constitute a new generation.
