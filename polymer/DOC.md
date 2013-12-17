@@ -16,7 +16,7 @@ Polymer supports current MOEA (Multi-objective Evolutionary Algorithms), and pro
 
 # Optimization Constraints and \ run.time constraints 
 # Basic Concepts
-##  MOEA: Multiobjective Evolutionary Algorithms (MOEAs)
+## MOEA: Multiobjective Evolutionary \ Algorithms (MOEAs)
 Multi-objective evolutionary algorithm (MOEA) are driven by elitism rules that favor the survival of strongest species in analogy to natural selection. 
 Applied to software engineering, species are candidate solutions to complex optimization problem, these solutions constitute what is called a generation.
 MOEA are based on an iterative search in which a set of individuals is selected and mutated in each iteration to constitute a new generation.
