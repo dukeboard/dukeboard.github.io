@@ -1,23 +1,17 @@
 Polymer Framework
 =======
 # Introduction
-This complexity came from different things. Data to manipulate and optimize is often complex and related to technical details.
-In addition optimization algorithms such as evolutionary or constraints programming oftenly rely on a problem encoding which require strong knowledges.
-However, multi-objective optimization can be very relevant for many case studies. 
-As an example it can be the cornerstone of a cloud reasoning engine which tackles the trade-off between performance and cost
-of your provisioning...
-That why we build the polymer framework, in order to allows you to optimize simple your models.
+Multi-objective optimization is applied to several software applications domains to solve problems in which solutions have to achieve trade-offs between conflicting objectives.
+Cloud infrastructure management leaverages multi-objective optimization to solve for example the trade-offs between cost and performance.
+Such problems are complex in terms of data representation and in terms of problem parameters encoding. 
+The polymer framework builds an optimization layer on the top of your models to give you a support for runtime optimization.
 
-#  Polymer & Models Optimization
-
-Data reflect a domain. In order to design a domain people oftenly rely on concepts like schema or modeling.
-Modeling has good properties, like offering a navigation layer on top of data, allowing to navigate into data like any object oriented API.
-Such API is simple to manipulate and perfectly can reflect a concept, it is as well used a lot at design time to draw complex software. Why not using at runtime to write your optimization process?
-However to be super efficient we need effcient tools. That why we build the KMF framework, to have a very efficient modeling layer for runtime usage.
-The Polymer framework aims at perform optimization on any KMF compliant model, expressed in MOF concepts, even it must face several conflicting objectives.
-Polymer offers state of the art multi-objective evolutionary algorithms, and in addition new hyper-heuristic for runtime concerns.
-The basic idea it keep it simple...
-
+#  Polymer & Models Optimization Support
+To design a specific domain, people rely on modeling to represent the different concepts that are pertinent for a given domain.
+Models@runtime enable to reduce the software complexity by providing a layer that permits to represent the system while it is in a running state. Polymer propones an optimization layer on the top of models to optimize systems while they are in a running state.
+We build KMF framework, to have a efficient modeling layer for runtime usage.
+The Polymer framework is built upon KMF framework and aims at achieving optimization on any KMF compliant model, expressed in MOF concepts.
+Polymer supports current MOEA (Multi-objective Evolutionary Algorithms), and proposes a new hyper-heuristic that works on top of MOEA for runtime concerns.
 > Polymer framework is dedicated to perform multi-objective optimization on top of MOF compliant models.
 
 # Optimization Constraints and run.time constraints
@@ -28,7 +22,7 @@ Applied to software engineering, species are candidate solutions to complex opti
 MOEA are based on an iterative search in which a set of individuals is selected and mutated in each iteration to constitute a new generation.
 MOEA algorithms leverage an evolution principle based on Darwinian rules that try to derive from an initial population of solution, solutions combining acceptable trade-offs between objectives. 
 ##  Population
-an evolutionary algorithm maintains a population of candidate solutions. Only one (or a few, with equivalent objectives) of these is "best," but the other members of the population are "sample points" in other regions of the search space, where a better solution may later be found.
+An evolutionary algorithm maintains a set of candidate solutions called a population. 
 ##  Fitness Functions
 Fitness functions are used to evaluate solutions to solve a specific optimization problem, in analogy 
 to natural selection where species qualities are evaluated according to their surrounding context. 
@@ -262,6 +256,10 @@ To be able to generate html files, we add the following lines:
 
 
  
+ * Open the **Scaler** sample project in your IDE.
+* You'll find a `src/main/kevs/main.kevs` which corresponds to the initial model
+*  *Kevoree Runtime*
+
         
                
                 
