@@ -103,7 +103,7 @@ A webserver component can serve static content, or dynamic content using data re
 As a first step you can play with the Web toy library included in kevoree.
 
 * Start a runtime and an editor (load from node)
-* Load web library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.web:3.0.2` in the KevScript panel of editor)
+* Load web library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.web:RELEASE` in the KevScript panel of editor)
 * Drag and drop a NanoBlogServer component
 * Configure the http_port property for `8080`
 * Push your model to a runtime
@@ -114,8 +114,8 @@ As a second step you can try the dynamic content update
 
 * Drag an drop an instance of BufferPage
 * Configure its http_port property for `8081`
-* Load toys library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.toys:3.0.2` in the KevScript panel of editor)
-* Load channels library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.channels:3.0.2` in the KevScript panel of editor)
+* Load toys library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.toys:RELEASE` in the KevScript panel of editor)
+* Load channels library (for instance type `include mvn:org.kevoree.library.java:org.kevoree.library.java.channels:RELEASE` in the KevScript panel of editor)
 * Create a `SyncBroadcast` channel
 * Create a ticker component (set property random to `true` by clicking on the component in editor)
 * Bind the ticker port and input port of both new component to channel, your model should look like the figure 1.
