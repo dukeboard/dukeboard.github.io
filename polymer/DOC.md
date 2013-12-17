@@ -14,9 +14,9 @@ The Polymer framework is built upon KMF framework and aims at achieving optimiza
 Polymer supports current MOEA (Multi-objective Evolutionary Algorithms), and proposes a new hyper-heuristic that works on top of MOEA for runtime concerns.
 > Polymer framework is dedicated to perform multi-objective optimization on top of MOF compliant models.
 
-# Optimization Constraints and \ run.time constraints 
+# Optimization Constraints and run.time constraints 
 # Basic Concepts
-## MOEA: Multiobjective Evolutionary \ Algorithms (MOEAs)
+## MOEA: Multiobjective Evolutionary Algorithms (MOEAs)
 Multi-objective evolutionary algorithm (MOEA) are driven by elitism rules that favor the survival of strongest species in analogy to natural selection. 
 Applied to software engineering, species are candidate solutions to complex optimization problem, these solutions constitute what is called a generation.
 MOEA are based on an iterative search in which a set of individuals is selected and mutated in each iteration to constitute a new generation.
@@ -43,15 +43,17 @@ We focus on performance as a key factor for runtime usage to reach faster accept
 # Polymer Configuration
 The following steps show how to configure a Polymer engine.
 ##  Creating a model
-
-> The example below shows an example of model creation:
+First, you need to create your model. The model is simply a presenatation of a real system.
+> The example below shows an example of model creation that represents a cloud infrastructure.
+> This model contains a population of size n where each individual represents a model that contains 50 nodes.
+> Each node contains a web component.
 ***************
 ```
 public class CloudPopulationFactory implements PopulationFactory<Cloud> {
     @Override
     public List<Cloud> createPopulation() {
         ArrayList<Cloud> populations = new ArrayList<Cloud>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < n; i++) {
             Cloud cloud = cloudfactory.createCloud();
             for (int j = 0; j < 50; j++) {
             VirtualNode myAmazonEC2node = cloudfactory.createAmazon();
