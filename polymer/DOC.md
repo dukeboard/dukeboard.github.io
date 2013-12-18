@@ -78,7 +78,7 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
 ##  Configuring a Fitness Function
 
 After creating your model, you need to create your fitness functions.
-Each fitness function has to implement the interface *FitnessFunction* which defines the evalute method.
+Each fitness function has to implement the interface *FitnessFunction* which defines the *evalute* method.
 The fitness function shown in the example of the class *CloudCostFitness* presents a cost fitness function that evaluates the 
 cost of model that contains Rackspace ou Amazon nodes based on the price per hour of each node. 
 ***************
@@ -100,12 +100,13 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
    }   
 ``` 
 ##  Configuring an operator
-
-
-The example below shows an example of model creation:
+This step consists in defining the mutation operators that are needed to create new individuals.
+Each mutation operator implements the interface *CloudCostFitness* which defines the *mutate* method.
+The following example shows an example of a mutation operator that takes as input a model and adds a cloud node.
+The operator sets the price and the id for the new added node.
 ***************
 ```
-public class AddNodeMutator implements MutationOperator<Cloud> {
+public class AddNodeMutator implements <Cloud> {
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
     @Override
@@ -131,31 +132,34 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
     }
 }
 ``` 
-
-##  Generation Number Setup
 ##  MOEA Algorithm Setup
 The following section demonstrates how to configure an MOEA resolution engine.
+###  Declaring a new resolution engine
+We start by creating an instance of the genetic engine.  GeneticEngine is a generic type that is parameterized over different types. The example that we take in this tutorial is the type *Cloud*.
+***************
+```
+  GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
+  ```
 ###  Adding an operator
-We start by configuring the engine with the different operators.
+We configure the engine with the different operators using the method *addOperator*.
 
-> The example below shows an example of model creation:
 ***************
 ```
   engine.addOperator(new AddNodeMutator());
   ```
 
 ###  Adding a fitness function
+The engine is configured with our defined fitness functions:
+
 ***************
 ```
    engine.addFitnessFuntion(new CloudCostFitness());
-  ```
-The engine is configured later with the defined fitness functions
- 
+   ```
 
 ###  Setting a mutation strategy
-The mutation strategy is defined. 
-The framework supports the following mutation selection strategies: the random muation selection strategy, SPUTNIK_ELITIST selection strategy. 
-  
+We define the mutation strategy supported by our engine.
+Polymer supports the following mutation selection strategies: the *random muation selection strategy*, *SPUTNIK_ELITIST selection strategy*. While the *random muation selection strategy* uses a random selection during the search process, 
+*SPUTNIK_ELITIST selection strategy* selects operators based on their effect to improve fitness function scores during the search process.  
   ***************
 ```
     engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
@@ -167,7 +171,7 @@ The setMaxGeneration method defines the generation number.
   ***************
 ```
      engine.setMaxGeneration(300);
-  ```
+       ```
 
 
 ###  Setting a population size
@@ -179,7 +183,7 @@ The setMaxGeneration method defines the generation number.
 ###  Setting an MOEA Algorithm             
 The setAlgorithm method defines the algorithm considered. 
 
-Polymer framework considers the following algorithms: NSGA II, NSGA II with Hypervolume, epsilon-MOEA
+Polymer framework supports the following algorithms: NSGA II, NSGA II with Hypervolume, epsilon-MOEA
   
  ***************
  ```    
@@ -197,54 +201,50 @@ The solve method launches the resolution.
 
 ### Putting All together
 
-Once all the parameters that are needed for the resolution are configured, the algorithm looks like the following:
+Once all the parameters that are needed for the resolution are configured, you might have a resolution engine that looks like the following code:
 
  ***************
  ```    
- GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
+ GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>(); 
+        /*Setting the MOEA algorithm used for the resolution*/
         engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
+         /*Setting the different operators*/
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addOperator(new AddSoftwareMutator());
-          engine.addOperator(new CloneNodeMutator());
+         engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
-        engine.addOperator(new AddSmartMutator());
-        engine.addOperator(new RemoveSmartMutator());
+        /*Setting the different fitness functions*/
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
+        /*Setting the mutation strategy*/
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
+        /*Setting the generation number*/
         engine.setMaxGeneration(300);
-        engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
-        engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+        /*Setting the population size*/
+        engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));       
   ```
 # Charts Generation
 
 Polymer enables users to generate output results into CSV files or html files.
-
-To facilitate results usage, we have defined the following metamodel.
-
-The metamodel is shown in the Figure below:
-
-To initiate the execution model:
-
+To facilitate results usage, we have defined the following metamodel to ease exploitation of results.
+The metamodel for is shown in the Figure below.
+To initiate the execution model to retrieve results, we use the method *getExecutionModel()*
 
 ```   
      ExecutionModel model = engine.getExecutionModel();
 ```
 
-To generate CSV files, we add the following methods:
+To generate CSV file (named results for instance), we add the following methods:
 
 
 ```   
      ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
-```
+```    
 
-    
-
-To be able to generate html files, we add the following lines:
-
+To be able to visualize the results using html files, we add the following lines:
 
 ```   
       Server.instance$.serveExecutionModel(model);
@@ -252,21 +252,6 @@ To be able to generate html files, we add the following lines:
 
 > [Figure 1: Execution Model metamodel](id:metamodel)
 > <img src="metamodel.png" width="100%"/>
-
-
-
-   
-
-
-
- 
- * Open the **Scaler** sample project in your IDE.
-* You'll find a `src/main/kevs/main.kevs` which corresponds to the initial model
-*  *Kevoree Runtime*
-
-        
-               
-                
 
 
 
