@@ -43,10 +43,8 @@ We focus on performance as a key factor for runtime usage to reach faster accept
 # Polymer Configuration
 The following steps show how to configure a Polymer engine.
 ##  Creating a model
-First, you need to create your model. The model is simply a presenatation of a real system.
-> The example below shows an example of model creation that represents a cloud infrastructure.
-> This model contains a population of size n where each individual represents a model that contains 50 nodes.
-> Each node contains a web component.
+First, you need to create your model. The model is simply a presentation of a real system.
+The example shown in class *CloudPopulationFactory* is an example of model creation that represents a cloud infrastructure. This model contains a population of size n where each individual represents a model that contains 50 nodes. Each node contains a web component.
 ***************
 ```
 public class CloudPopulationFactory implements PopulationFactory<Cloud> {
@@ -79,7 +77,10 @@ public class CloudPopulationFactory implements PopulationFactory<Cloud> {
 
 ##  Configuring a Fitness Function
 
-> The example below shows an example of model creation:
+After creating your model, you need to create your fitness functions.
+Each fitness function has to implement the interface *FitnessFunction* which defines the evalute method.
+The fitness function shown in the example of the class *CloudCostFitness* presents a cost fitness function that evaluates the 
+cost of model that contains Rackspace ou Amazon nodes based on the price per hour of each node. 
 ***************
 ```
 public class CloudCostFitness implements FitnessFunction<Cloud> {
@@ -100,7 +101,8 @@ public class CloudCostFitness implements FitnessFunction<Cloud> {
 ``` 
 ##  Configuring an operator
 
-> The example below shows an example of model creation:
+
+The example below shows an example of model creation:
 ***************
 ```
 public class AddNodeMutator implements MutationOperator<Cloud> {
