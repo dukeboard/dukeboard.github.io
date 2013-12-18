@@ -171,7 +171,7 @@ The setMaxGeneration method defines the generation number.
   ***************
 ```
      engine.setMaxGeneration(300);
-       ```
+```
 
 
 ###  Setting a population size
@@ -180,6 +180,7 @@ The setMaxGeneration method defines the generation number.
 ```    
  engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
   ```
+  
 ###  Setting an MOEA Algorithm             
 The setAlgorithm method defines the algorithm considered. 
 
@@ -226,6 +227,7 @@ Once all the parameters that are needed for the resolution are configured, you m
         /*Setting the population size*/
         engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));       
   ```
+  
 # Charts Generation
 
 Polymer enables users to generate output results into CSV files or html files.
@@ -237,6 +239,7 @@ To initiate the execution model to retrieve results, we use the method *getExecu
      ExecutionModel model = engine.getExecutionModel();
 ```
 
+
 To generate CSV file (named results for instance), we add the following methods:
 
 
@@ -244,11 +247,13 @@ To generate CSV file (named results for instance), we add the following methods:
      ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
 ```    
 
+
 To be able to visualize the results using html files, we add the following lines:
 
 ```   
       Server.instance$.serveExecutionModel(model);
 ```
+
 
 > [Figure 1: Execution Model metamodel](id:metamodel)
 > <img src="metamodel.png" width="100%"/>
