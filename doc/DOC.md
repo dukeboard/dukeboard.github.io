@@ -308,7 +308,7 @@ If you want to use a KevScript to realize an adaptation of your system, you have
 If you want to comment a line in your KevScript, here you go.
 ```
 // this is a comment
-// comments allow any characters ! \ù%*é=^``~&°.:!§,?/#çà][-|
+// comments allow any character ! \ù%*é=^``~&°.:!§,?/#çà][-|
 ```
 
 **Namespace**   
@@ -433,13 +433,13 @@ add infra0.vm0 : JavaNode
 ```
 
 **Remove nodes**
-In the same manner, one can delete a now from his container.
+In the same manner, one can delete a node from his container.
 ```
 remove infra0.vm0
 ```
 
 **Move nodes**
-The move instruction is a migration command. It allows to migrate a virtual machine to another containers.
+The move instruction is a migration command. It allows to migrate a virtual machine to another container.
 ```
 move infra0.vm0 infra1
 ```
@@ -450,10 +450,10 @@ section coming soon...
 
 ### Available mappings to infrastructure
 
-Each Kevoree node types can refine the creation of child nodes. Each of them, offer several virtualization capabilities.
+Each Kevoree node types can refine the creation of child nodes. Each of them, offers several virtualization capabilities.
 
 **JavaNode**
-This is the default implementation. Basically it creates a second process for each child node which runs in a separated virtual machine. This light virtualization layer protect for process interaction but offer no protection in term of network or disk.
+This is the default implementation. Basically it creates a second process for each child node which runs in a separated virtual machine. This light virtualization layer protects for process interaction but offers no protection in term of network or disk.
 
 **LXCNode**
 This Node type creates each child in a Linux container. This offers a light virtualization but isolates network and disk from each machine. This prevents network port collisition and allows to define CPU share time between child nodes.
