@@ -125,7 +125,7 @@ In Kevoree, we have mixed the Message and Service oriented approaches. To this e
 private org.kevoree.api.Port helloProduced;
 
 public void onHelloProduced(String greetingMessage) {
-	helloProduced.call(greetingMessage);
+	helloProduced.send(greetingMessage);
 }
 ```
 > **With callback**    
@@ -135,7 +135,7 @@ public void onHelloProduced(String greetingMessage) {
 private org.kevoree.api.Port userDecision;
 
 public boolean askUser(String questionMessage) {
-	userDecision(greetingMessage, new Callback() {
+	userDecision.call(greetingMessage, new Callback() {
 		public void run(Object result) {
         	return (Boolean)result;
         }
