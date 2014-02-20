@@ -293,16 +293,35 @@ Kevoree framework offer a JUnit extention allowing components, channels, groups 
         </dependency>
 ```
 
-Then add in src/test/java a new class file ending with a name Test. As any JUnit test, each method with a @Test annotation is a unit test.
+Then add in src/test/java a new class file ending with a name Test. 
+As any JUnit test, each method with a @Test annotation is a unit test.
 In addition to traditionnal assert methods, Kevoree Framework offer these followings:
 
-	* bootstrap("node0", "boot.kevs") : will start a platform using a name and a bootfile, bootfile could be in resources folder or absolute path.
-	* waitLog("node0", "node0/Bootstrap completed", 10000): will block until the output of the node0 display a line Bootstrap complete. This output is expect within 10000 milliseconds.
-	* exec("node0", "set child1.started = \"false\""): will block until the execution of the kevScript on the node0
-	* deploy("node0", model): will block until the deployement of the model in node0
-	* getCurrentModel("node0"): will give as result the currentModel of the platform node0
-	* shutdown("node0"): will destroy the platform node0
-	
+
+Start a platform using a name and a bootfile, bootfile could be in resources folder or absolute path.
+
+> bootstrap("node0", "boot.kevs");
+
+Block until the output of the node0 display a line Bootstrap complete. This output is expect within 10000 milliseconds.
+
+> waitLog("node0", "node0/Bootstrap completed", 10000);
+
+Block until the execution of the kevScript on the node0
+
+> exec("node0", "set child1.started = \"false\"");
+
+Block until the deployement of the model in node0
+
+> deploy("node0", model);
+
+Get the currentModel of the platform node0
+
+> getCurrentModel("node0");
+
+Destroy the platform node0
+
+> shutdown("node0");
+		
 Each method throw exception in case of errors, so no need to encapsulate them in a assert method, JUnit will grab the errors. Finally all platforms are automacally cleaner after test execution. So now you have everything to write a complete exemple to test the child management of JavaNode.
 
 ```
