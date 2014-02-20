@@ -280,6 +280,47 @@ Both Kevoree runtime platform are runnable as classical Java application. In oth
 	
 Reminder, bootstrap option must be before the -jar option.
 
+### Write tests for continous validation
+
+Kevoree framework offer a JUnit extention allowing components, channels, groups and nodeTypes developpers to validate their code at the compile time and before the deploy process. In order to use it, add the following dependency as test scope to your project. This framework aims at offering a way to start severals nodes, and interact directly with them to evaluate output stream and traces in order to detect regression.
+
+```
+        <dependency>
+            <groupId>org.kevoree.tools</groupId>
+            <artifactId>org.kevoree.tools.test</artifactId>
+            <version>${kevoree.version}</version>
+            <scope>test</scope>
+        </dependency>
+```
+
+Then add in src/test/java a new class file ending with a name Test. As any JUnit test, each method with a @Test annotation is a unit test.
+In addition to traditionnal assert methods, Kevoree Framework offer these followings:
+
+	* bootstrap("node0", "boot.kevs") : will start a platform using a name and a bootfile, bootfile could be in resources folder or absolute path.
+	* waitLog("node0", "node0/Bootstrap completed", 10000): will block until the output of the node0 display a line Bootstrap complete. This output is expect within 10000 milliseconds.
+	* exec("node0", "set child1.started = \"false\""): will block until the execution of the kevScript on the node0
+	* deploy("node0", model): will block until the deployement of the model in node0
+	* getCurrentModel("node0"): will give as result the currentModel of the platform node0
+	* shutdown("node0"): will destroy the platform node0
+	
+Each method throw exception in case of errors, so no need to encapsulate them in a assert method, JUnit will grab the errors. Finally all platforms are automacally cleaner after test execution. So now you have everything to write a complete exemple to test the child management of JavaNode.
+
+```
+public class SubChildrenTest extends KevoreeTestCase {
+    @Test
+    public void startupChildTest() throws Exception {
+        bootstrap("node0", "oneChild.kevs");
+        waitLog("node0", "node0/child1/* INFO: Bootstrap completed", 10000);
+        exec("node0", "set child1.started = \"false\"");
+        assert (getCurrentModel("node0").findNodesByID("child1").getStarted() == false);
+        waitLog("node0", "node0/* INFO: Stopping nodes[child1]", 5000);
+        exec("node0", "set child1.started = \"true\"");
+        assert (getCurrentModel("node0").findNodesByID("child1").getStarted() == true);
+        waitLog("node0", "node0/child1/* INFO: Bootstrap completed", 10000);
+    }
+}
+```
+
 
 Kevoree Script (aka KevScript)
 ---------------
