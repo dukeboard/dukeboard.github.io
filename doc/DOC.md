@@ -280,9 +280,9 @@ Both Kevoree runtime platform are runnable as classical Java application. In oth
 	
 Reminder, bootstrap option must be before the -jar option.
 
-### Write tests for continous validation
+### Write tests for continuous validation
 
-Kevoree framework offer a JUnit extention allowing components, channels, groups and nodeTypes developpers to validate their code at the compile time and before the deploy process. In order to use it, add the following dependency as test scope to your project. This framework aims at offering a way to start severals nodes, and interact directly with them to evaluate output stream and traces in order to detect regression.
+Kevoree framework offers a JUnit extention to integrate behavioral testing of components, channels, groups and nodeTypes before their deployment. In details, this framework allows to launch a KevoreeRuntime, instanciate a model using the element to validate, and allows some adaptations and assertions on the console result. In order to use it, add the following dependency as test scope to your project. Several nodes can be started and monitored to evaluate the output stream and traces to early detect regressions.
 
 ```
         <dependency>
@@ -295,34 +295,33 @@ Kevoree framework offer a JUnit extention allowing components, channels, groups 
 
 Then add in src/test/java a new class file ending with a name Test. 
 As any JUnit test, each method with a @Test annotation is a unit test.
-In addition to traditionnal assert methods, Kevoree Framework offer these followings:
+In addition to traditionnal assert methods, Kevoree Framework offers the following:
 
-
-Start a platform using a name and a bootfile, bootfile could be in resources folder or absolute path.
+Start a platform using a name and a bootfile, bootfile can be in resources folder or absolute path.
 
 > bootstrap("node0", "boot.kevs");
 
-Block until the output of the node0 display a line Bootstrap complete. This output is expect within 10000 milliseconds.
+Waits until the output of the node0 displays a line "Bootstrap complete". This output is expect within 10000 milliseconds.
 
 > waitLog("node0", "node0/Bootstrap completed", 10000);
 
-Block until the execution of the kevScript on the node0
+Waits the completion of the execution of the kevScript on the node0
 
 > exec("node0", "set child1.started = \"false\"");
 
-Block until the deployement of the model in node0
+Waits the completion of the deployement of the `model` in node0
 
 > deploy("node0", model);
 
-Get the currentModel of the platform node0
+Gets the currentModel of the platform node0
 
 > getCurrentModel("node0");
 
-Destroy the platform node0
+Destroys the platform node0
 
 > shutdown("node0");
 		
-Each method throw exception in case of errors, so no need to encapsulate them in a assert method, JUnit will grab the errors. Finally all platforms are automacally cleaner after test execution. So now you have everything to write a complete exemple to test the child management of JavaNode.
+Each method throw exception in case of errors, so no need to encapsulate them in a assert method, JUnit will grab the errors. Finally all platforms are automacally cleaned after test execution. So now you have everything to write a complete exemple to test the child management of JavaNode.
 
 ```
 public class SubChildrenTest extends KevoreeTestCase {
