@@ -28,7 +28,7 @@ All right, the runtime is ready, let launch an `Editor` !
 
 Start the Editor
 ---------------
-Launch the `Editor`.    
+Launch the `Editor` (if not already done).    
 You should get the window presented in [Figure 2](#fig-editor).    
 On the *left hand side*, the **library of available component types**. You should have nothing in your editor for the moment, that's ok. We will get some component definitions from existing libraries.    
 *On top*, several icons open different panels displaying logs, errors or the Kevoree scripting panel.    
