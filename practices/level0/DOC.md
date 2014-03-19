@@ -6,9 +6,9 @@ This practice aims at making you familiar with the Kevoree environment and basic
 
 ### Setting up your environment
 First of all, you need to have a **Java Runtime Environment 1.7** at least.    
-Then browse to the [Kevoree Download Section](http://www.kevoree.org/download "Title") and download the last stable version of the `Kevoree Editor` and the `Kevoree Java Runtime GUI`. To launch them, double-click or command ”java -jar org.kevoree.tools.ui.editor-x.y.z.jar” (replace x,y,z by the current version).
+Then browse to the [Kevoree Download Section](http://www.kevoree.org/download "Title") and download the last stable version of the `Kevoree Editor` and the `Kevoree Java Runtime GUI`. To launch them, double-click or command ”java -jar org.kevoree.tools.ui.editor-x.y.z.jar” (replace x,y,z by the current version of Kevoree).
 
-> [Java Runtime w. GUI >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui.prompt&v=RELEASE)   
+> [Java Runtime w. GUI >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.platform&a=org.kevoree.platform.standalone.gui&v=RELEASE)   
 >
 > [Kevoree Editor >](http://oss.sonatype.org/service/local/artifact/maven/redirect?r=public&g=org.kevoree.tools&a=org.kevoree.tools.ui.editor&v=RELEASE)
 
