@@ -35,7 +35,7 @@ Making a component
 
 1. Create the business code of the component. Make sure it works by simply adding a main, that creates, starts and stops your component.
 2. Decorate your code with the Kevoree Annotations to specify that your class is a Kevoree Component, which are the Input ports, Required services, the Output ports, the Provided services, the parameters of your component and the services your require from the runtime.
-3. Compile your code using the Kevoree Annotaion plugin, then the code compiler dependent of your implementation language.
+3. Compile your code using the Kevoree Annotation plugin, then the code compiler dependent of your implementation language.
 4. Enjoy !
 
 
@@ -47,7 +47,7 @@ The Annotation API is made to provide a simple and flexible way to decorate your
 **Components**   
 New kind of Component are declared by placing a `@ComponentType` annotation on their implementation class.    
 **Channels**   
-The channels are in charge of the transpot of messages and objects, from output to input ports. Each channel type has a different behavior (sync, async, parallel, sequential, first-answer, etc.) and is declared by putting a `@ChannelType` on its implementation class.   
+The channels are in charge of the transport of messages and objects, from output to input ports. Each channel type has a different behavior (sync, async, parallel, sequential, first-answer, etc.) and is declared by putting a `@ChannelType` on its implementation class.   
 **Groups**   
 The groups are responsible for the dispatch and synchronization of the models between several nodes. Just as the channels, they can have different dispatch and synchronization policies for each type. They are declared by putting a `@GroupType` annotation on their implementation class.   
 **Nodes**   
@@ -125,7 +125,7 @@ In Kevoree, we have mixed the Message and Service oriented approaches. To this e
 private org.kevoree.api.Port helloProduced;
 
 public void onHelloProduced(String greetingMessage) {
-	helloProduced.call(greetingMessage);
+	helloProduced.send(greetingMessage);
 }
 ```
 > **With callback**    
@@ -135,7 +135,7 @@ public void onHelloProduced(String greetingMessage) {
 private org.kevoree.api.Port userDecision;
 
 public boolean askUser(String questionMessage) {
-	userDecision(greetingMessage, new Callback() {
+	userDecision.call(greetingMessage, new Callback() {
 		public void run(Object result) {
         	return (Boolean)result;
         }
@@ -218,9 +218,9 @@ KevoreeInject ChannelContext channelContext;
 #### Life Cycle
 In Kevoree, Components, Channels, Groups and Nodes have a Life Cycle.   
 Thus, the runtime must be able to  start, stop and update these elements when needed.    
-Depending on these elements' implementation, it may sometimes be required to perform some actions when stoping, starting or updating them.
+Depending on these elements' implementation, it may sometimes be required to perform some actions when stopping, starting or updating them.
 Life Cycle annotations are here to allow you to specify the methods to call on start, stop or update.
-There is no constraint on the method you select for these operation.
+There is no constraint on the method you select for these operations.
 <span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span> Be cautious about what you do in these methods, because you can freeze the entire runtime if you create a deadlock !</span>    
 >Java
 *************
@@ -280,6 +280,65 @@ Both Kevoree runtime platform are runnable as classical Java application. In oth
 	
 Reminder, bootstrap option must be before the -jar option.
 
+### Write tests for continuous validation
+
+Kevoree framework offers a JUnit extention to integrate behavioral testing of components, channels, groups and nodeTypes before their deployment. In details, this framework allows to launch a KevoreeRuntime, instanciate a model using the element to validate, and allows some adaptations and assertions on the console result. In order to use it, add the following dependency as test scope to your project. Several nodes can be started and monitored to evaluate the output stream and traces to early detect regressions.
+
+```
+        <dependency>
+            <groupId>org.kevoree.tools</groupId>
+            <artifactId>org.kevoree.tools.test</artifactId>
+            <version>${kevoree.version}</version>
+            <scope>test</scope>
+        </dependency>
+```
+
+Then add in src/test/java a new class file ending with a name Test. 
+As any JUnit test, each method with a @Test annotation is a unit test.
+In addition to traditionnal assert methods, Kevoree Framework offers the following:
+
+Start a platform using a name and a bootfile, bootfile can be in resources folder or absolute path.
+
+> bootstrap("node0", "boot.kevs");
+
+Waits until the output of the node0 displays a line "Bootstrap complete". This output is expect within 10000 milliseconds.
+
+> waitLog("node0", "node0/Bootstrap completed", 10000);
+
+Waits the completion of the execution of the kevScript on the node0
+
+> exec("node0", "set child1.started = \"false\"");
+
+Waits the completion of the deployement of the `model` in node0
+
+> deploy("node0", model);
+
+Gets the currentModel of the platform node0
+
+> getCurrentModel("node0");
+
+Destroys the platform node0
+
+> shutdown("node0");
+		
+Each method throw exception in case of errors, so no need to encapsulate them in a assert method, JUnit will grab the errors. Finally all platforms are automacally cleaned after test execution. So now you have everything to write a complete exemple to test the child management of JavaNode.
+
+```
+public class SubChildrenTest extends KevoreeTestCase {
+    @Test
+    public void startupChildTest() throws Exception {
+        bootstrap("node0", "oneChild.kevs");
+        waitLog("node0", "node0/child1/* INFO: Bootstrap completed", 10000);
+        exec("node0", "set child1.started = \"false\"");
+        assert (getCurrentModel("node0").findNodesByID("child1").getStarted() == false);
+        waitLog("node0", "node0/* INFO: Stopping nodes[child1]", 5000);
+        exec("node0", "set child1.started = \"true\"");
+        assert (getCurrentModel("node0").findNodesByID("child1").getStarted() == true);
+        waitLog("node0", "node0/child1/* INFO: Bootstrap completed", 10000);
+    }
+}
+```
+
 
 Kevoree Script (aka KevScript)
 ---------------
@@ -291,7 +350,7 @@ KevScript is a scripting language developed to simplify the authoring of models 
 1. First, write your adaptation script. Describe the modifications you want to operate on the model.
 1. Then ask for the execution of this script on a model.
 
-<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span>  KevScript is ordered ! It means that, for instance, you have to create an instance BEFORE using it in a bind command.</span>
+<span class="warning-bloc"><span class="fa fa-exclamation-triangle fa-lg orange"></span>  KevScript is sequential! It means that, for instance, you have to create an instance BEFORE using it in a bind command.</span>
 
 
 ### Dynamic adaptation of a Kevoree Runtime
@@ -308,7 +367,7 @@ If you want to use a KevScript to realize an adaptation of your system, you have
 If you want to comment a line in your KevScript, here you go.
 ```
 // this is a comment
-// comments allow any characters ! \ù%*é=^``~&°.:!§,?/#çà][-|
+// comments allow any character ! \ù%*é=^``~&°.:!§,?/#çà][-|
 ```
 
 **Namespace**   
@@ -412,7 +471,7 @@ detach node0 sync2
 ```
 
 **Network**   
-Specifies the IP address on which a node is reacheable. In addition give as last parameter an interface face, this must be unique.
+Specifies the IP address on which a node is reachable. In addition give as last parameter an interface face, this must be unique.
 ```
 network node0.ip.eth0 192.168.0.1
 ```
@@ -433,13 +492,13 @@ add infra0.vm0 : JavaNode
 ```
 
 **Remove nodes**
-In the same manner, one can delete a now from his container.
+In the same manner, one can delete a node from his container.
 ```
 remove infra0.vm0
 ```
 
 **Move nodes**
-The move instruction is a migration command. It allows to migrate a virtual machine to another containers.
+The move instruction is a migration command. It allows to migrate a virtual machine to another container.
 ```
 move infra0.vm0 infra1
 ```
@@ -450,13 +509,13 @@ section coming soon...
 
 ### Available mappings to infrastructure
 
-Each Kevoree node types can refine the creation of child nodes. Each of them, offer several virtualization capabilities.
+Each Kevoree node types can refine the creation of child nodes. Each of them, offers several virtualization capabilities.
 
 **JavaNode**
-The is the default implementation. Basically it create a second process for each child node which run in a separated virtual machine. This light virtualization layer protect for process interation but offer no protection in term of network or disk.
+This is the default implementation. Basically it creates a second process for each child node which runs in a separated virtual machine. This light virtualization layer protects for process interaction but offers no protection in term of network or disk.
 
 **LXCNode**
-This Node type create each child in a Linux container. This offer a light virtualization but  isolate network and disk from each machine. This prevent network port collisition and allows to define CPU share time between child nodes.
+This Node type creates each child in a Linux container. This offers a light virtualization but isolates network and disk from each machine. This prevents network port collisition and allows to define CPU share time between child nodes.
 
 **DockerIO**
 Similar to LXC node, but using docker project as a backend.

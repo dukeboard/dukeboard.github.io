@@ -1,68 +1,28 @@
 Polymer Framework
 =======
-Contents:
-  Introduction
-  Polymer & Models Optimization
-  OPtimization Constraints and run.time constraints
-  Basic Concepts
-           MOEA: Multiobjective evolutionary algorithms (MOEAs)
-           Population 
-           Fitness Functions
-           Operators
-                Mutation Operators
-                Crossover Operators
-                Selection Operators
-           SPUTNIK
- Configuration
-               Creating a model
-               Configuring a Fintess Function
-               Configuring an opertor
-               Generation Number Setup
-               MOEA Algorithm Setup 
-                        Adding an operator
-                        Adding a fitness function
-                        Setting a mutation strategy
-                        Setting a generation number
-                        Setting a population size
-                        Setting an MOEA Algorithm
-                        Launching the resolution
-                        Putting All together
-Charts Generation    
-               Results metamodel
-               CSV files generation
-               HTML files generation
-                     
-           
 # Introduction
-This complexity came from different things. Data to manipulate and optimize is often complex and related to technical details.
-In addition optimization algorithms such as evolutionary or constraints programming oftenly rely on a problem encoding which require strong knowledges.
-However, multi-objective optimization can be very relevant for many case studies. 
-As an example it can be the cornerstone of a cloud reasoning engine which tackles the trade-off between performance and cost of your provisioning...
-That why we build the polymer framework, in order to allows you to optimize simple your models.
+Multi-objective optimization is applied to several software applications domains to solve problems in which solutions have to achieve trade-offs between conflicting objectives.
+Cloud infrastructure management leaverages multi-objective optimization to solve for example the trade-offs between cost and performance.
+Such problems are complex in terms of data representation and in terms of problem parameters encoding. 
+The polymer framework builds an optimization layer on the top of your models to give you a support for runtime optimization.
 
-> Pimp my models!
-
-#  Polymer & Models Optimization
-
-Data reflect a domain. In order to design a domain people oftenly rely on concepts like schema or modeling.
-Modeling has good properties, like offering a navigation layer on top of data, allowing to navigate into data like any object oriented API.
-Such API is simple to manipulate and perfectly can reflect a concept, it is as well used a lot at design time to draw complex software. Why not using at runtime to write your optimization process?
-However to be super efficient we need effcient tools. That why we build the KMF framework, to have a very efficient modeling layer for runtime usage.
-The Polymer framework aims at perform optimization on any KMF compliant model, expressed in MOF concepts, even it must face several conflicting objectives.
-Polymer offers state of the art multi-objective evolutionary algorithms, and in addition new hyper-heuristic for runtime concerns.
-The basic idea it keep it simple...
-
+#  Polymer & Models Optimization Support
+To design a specific domain, people rely on modeling to represent the different concepts that are pertinent for a given domain.
+Models@runtime enable to reduce the software complexity by providing a layer that permits to represent the system while it is in a running state. Polymer propones an optimization layer on the top of models to optimize systems while they are in a running state.
+We build KMF framework, to have a efficient modeling layer for runtime usage.
+The Polymer framework is built upon KMF framework and aims at achieving optimization on any KMF compliant model, expressed in MOF concepts.
+Polymer supports current MOEA (Multi-objective Evolutionary Algorithms), and proposes a new hyper-heuristic that works on top of MOEA for runtime concerns.
 > Polymer framework is dedicated to perform multi-objective optimization on top of MOF compliant models.
 
-# Optimization Constraints and run.time constraints
+# Optimization Constraints and run.time constraints 
 # Basic Concepts
-##  MOEA: Multiobjective evolutionary algorithms (MOEAs)
+## MOEA: Multiobjective Evolutionary Algorithms (MOEAs)
 Multi-objective evolutionary algorithm (MOEA) are driven by elitism rules that favor the survival of strongest species in analogy to natural selection. 
 Applied to software engineering, species are candidate solutions to complex optimization problem, these solutions constitute what is called a generation.
 MOEA are based on an iterative search in which a set of individuals is selected and mutated in each iteration to constitute a new generation.
 MOEA algorithms leverage an evolution principle based on Darwinian rules that try to derive from an initial population of solution, solutions combining acceptable trade-offs between objectives. 
 ##  Population
-an evolutionary algorithm maintains a population of candidate solutions. Only one (or a few, with equivalent objectives) of these is "best," but the other members of the population are "sample points" in other regions of the search space, where a better solution may later be found.
+An evolutionary algorithm maintains a set of candidate solutions called a population. 
 ##  Fitness Functions
 Fitness functions are used to evaluate solutions to solve a specific optimization problem, in analogy 
 to natural selection where species qualities are evaluated according to their surrounding context. 
@@ -83,95 +43,79 @@ We focus on performance as a key factor for runtime usage to reach faster accept
 # Polymer Configuration
 The following steps show how to configure a Polymer engine.
 ##  Creating a model
+First, you need to create your model. The model is simply a presentation of a real system.
+The example shown in class *CloudPopulationFactory* is an example of model creation that represents a cloud infrastructure. This model contains a population of size n where each individual represents a model that contains 50 nodes. Each node contains a web component.
+***************
+```
 public class CloudPopulationFactory implements PopulationFactory<Cloud> {
-
-    private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-
-    private Integer size = 5;
-
-    public CloudPopulationFactory setSize(Integer nSize) {
-        size = nSize;
-        return this;
-    }
-
     @Override
     public List<Cloud> createPopulation() {
         ArrayList<Cloud> populations = new ArrayList<Cloud>();
-        for (int i = 0; i < size; i++) {
-
+        for (int i = 0; i < n; i++) {
             Cloud cloud = cloudfactory.createCloud();
             for (int j = 0; j < 50; j++) {
             VirtualNode myAmazonEC2node = cloudfactory.createAmazon();
             VirtualNode myRackspacenode = cloudfactory.createRackspace();
-
             Software web = cloudfactory.createSoftware();
-            web.setName("web");
-            web.setLatency(100.0);
-
-
+            web.setName("web");            
+            web.setLatency(100.0);            
             myAmazonEC2node.setId("EC2_"+j);
             myAmazonEC2node.setPricePerHour(10.0);
             myAmazonEC2node.addSoftwares(web);
-            cloud.addNodes(myAmazonEC2node);
-
-
+            cloud.addNodes(myAmazonEC2node);  
             myRackspacenode.setId("Rack_"+j);
             myRackspacenode.setPricePerHour(5.0);
             myRackspacenode.addSoftwares(web);
-            cloud.addNodes(myRackspacenode);
+            cloud.addNodes(myRackspacenode);          
             }
-
             populations.add(cloud);
         }
         return populations;
     }
 }
+```  
 
 ##  Configuring a Fitness Function
-public class CloudCostFitness implements FitnessFunction<Cloud> {
 
+After creating your model, you need to create your fitness functions.
+Each fitness function has to implement the interface *FitnessFunction* which defines the *evalute* method.
+The fitness function shown in the example of the class *CloudCostFitness* presents a cost fitness function that evaluates the 
+cost of model that contains Rackspace ou Amazon nodes based on the price per hour of each node. 
+***************
+```
+public class CloudCostFitness implements FitnessFunction<Cloud> {
     @Override
     public double evaluate(Cloud model, GenerationContext<Cloud> cloudGenerationContext) {
-
         double pres = 0;
         for(VirtualNode node : model.getNodes())
         {
-
             if ((node instanceof  Amazon) || (node instanceof  Rackspace)  )
-
             {
-
                 //System.out.println(node.getId());
                 pres=pres + node.getPricePerHour();
-
             }
-
         }
-
         return ((pres / (model.getNodes().size()*10)));
     }
-
-
-
-
-   }
-
+   }   
+``` 
 ##  Configuring an operator
-public class AddNodeMutator implements MutationOperator<Cloud> {
-
+This step consists in defining the mutation operators that are needed to create new individuals.
+Each mutation operator implements the interface *CloudCostFitness* which defines the *mutate* method.
+The following example shows an example of a mutation operator that takes as input a model and adds a cloud node.
+The operator sets the price and the id for the new added node.
+***************
+```
+public class AddNodeMutator implements <Cloud> {
     private Random rand = new Random();
     private DefaultCloudFactory cloudfactory = new DefaultCloudFactory();
-
     @Override
     public List<MutationVariable> enumerateVariables(Cloud cloud) {
-        return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
+    return Arrays.asList((MutationVariable) new QueryVar("target", "nodes[*]"));
     }
-
     @Override
     public void mutate(Cloud parent, MutationParameters mutationParameters) {
-
         int i = rand.nextInt(1);
-
         if (i==0)
         {
         VirtualNode node = cloudfactory.createAmazon();
@@ -179,115 +123,140 @@ public class AddNodeMutator implements MutationOperator<Cloud> {
         node.setPricePerHour(10.0);
         parent.addNodes(node);
         }
-
         else
         {
         VirtualNode node = cloudfactory.createRackspace();
         node.setId("Rack_"+Math.abs(rand.nextInt()));
         node.setPricePerHour(5.0);
         parent.addNodes(node);}
-
-
-
-
-
     }
 }
-
-##  Generation Number Setup
+``` 
 ##  MOEA Algorithm Setup
 The following section demonstrates how to configure an MOEA resolution engine.
+###  Declaring a new resolution engine
+We start by creating an instance of the genetic engine.  GeneticEngine is a generic type that is parameterized over different types. The example that we take in this tutorial is the type *Cloud*.
+***************
+```
+  GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
+  ```
 ###  Adding an operator
-We start by configuring the engine with the different operators.
-  
+We configure the engine with the different operators using the method *addOperator*.
+
+***************
+```
   engine.addOperator(new AddNodeMutator());
+  ```
 
 ###  Adding a fitness function
-The engine is configured later with the defined fitness functions
- 
- engine.addFitnessFuntion(new CloudCostFitness());
+The engine is configured with our defined fitness functions:
+
+***************
+```
+   engine.addFitnessFuntion(new CloudCostFitness());
+   ```
+
 ###  Setting a mutation strategy
-The mutation strategy is defined. 
-The framework supports the following mutation selection strategies: the random muation selection strategy, SPUTNIK_ELITIST selection strategy.
-  
-  engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
+We define the mutation strategy supported by our engine.
+Polymer supports the following mutation selection strategies: the *random muation selection strategy*, *SPUTNIK_ELITIST selection strategy*. While the *random muation selection strategy* uses a random selection during the search process, 
+*SPUTNIK_ELITIST selection strategy* selects operators based on their effect to improve fitness function scores during the search process.  
+  ***************
+```
+    engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
+  ```
+
 ###  Setting a generation number
 
-The setMaxGeneration method defines the generation number. 
-  engine.setMaxGeneration(300);
+The setMaxGeneration method defines the generation number.   
+  ***************
+```
+     engine.setMaxGeneration(300);
+```
+
 
 ###  Setting a population size
  The setPopulationFactory method defines the population size. 
+   ***************
+```    
  engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
-
+  ```
+  
 ###  Setting an MOEA Algorithm             
 The setAlgorithm method defines the algorithm considered. 
 
-Polymer framework considers the following algorithms: NSGA II, NSGA II with Hypervolume, epsilon-MOEA
-
-engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+Polymer framework supports the following algorithms: NSGA II, NSGA II with Hypervolume, epsilon-MOEA
+  
+ ***************
+ ```    
+ engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
+  ```
              
 ### Launching the resolution
-Th esolve method launches the resolution.
+The solve method launches the resolution.
 
+ ***************
+ ```    
+ List<Solution<Cloud>> result = engine.solve();
+  ```
   
-List<Solution<Cloud>> result = engine.solve();
+
 ### Putting All together
 
-Once all the parameters that are needed for the resolution are configured, the algorithm looks like the following:
+Once all the parameters that are needed for the resolution are configured, you might have a resolution engine that looks like the following code:
 
-GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>();
-engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
-
+ ***************
+ ```    
+ GeneticEngine<Cloud> engine = new GeneticEngine<Cloud>(); 
+        /*Setting the MOEA algorithm used for the resolution*/
+        engine.setAlgorithm(GeneticAlgorithm.EpsilonCrowdingNSGII);
+         /*Setting the different operators*/
         engine.addOperator(new AddNodeMutator());
         engine.addOperator(new RemoveNodeMutator());
         engine.addOperator(new AddSoftwareMutator());
-
-        engine.addOperator(new CloneNodeMutator());
+         engine.addOperator(new CloneNodeMutator());
         engine.addOperator(new RemoveSoftwareMutator());
-        engine.addOperator(new AddSmartMutator());
-        engine.addOperator(new RemoveSmartMutator());
-
+        /*Setting the different fitness functions*/
         engine.addFitnessFuntion(new CloudCostFitness());
         engine.addFitnessFuntion(new CloudSimilarityFitness());
         engine.addFitnessFuntion(new CloudLatencyFitness());
         engine.addFitnessFuntion(new CloudRedundancyFitness());
-
-
+        /*Setting the mutation strategy*/
         engine.setMutationSelectionStrategy(MutationSelectionStrategy.SPUTNIK_ELITIST);
-
-
-
+        /*Setting the generation number*/
         engine.setMaxGeneration(300);
-        engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));
-
-        engine.setAlgorithm(GeneticAlgorithm.HypervolumeMOEA);
-
+        /*Setting the population size*/
+        engine.setPopulationFactory(new CloudPopulationFactory().setSize(10));       
+  ```
+  
 # Charts Generation
+
 Polymer enables users to generate output results into CSV files or html files.
+To facilitate results usage, we have defined the following metamodel to ease exploitation of results.
+The metamodel for is shown in the Figure below.
+To initiate the execution model to retrieve results, we use the method *getExecutionModel()*
 
-To facilitate results usage, we have defined the following metamodel.
-
-The metamodel is shown in the Figure below:
-
-To initiate the execution model:
-
+```   
      ExecutionModel model = engine.getExecutionModel();
-
-To generate CSV files, we add the following methods:
-
-    ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
-
-To be able to generate html files, we add the following lines:
-
-    Server.instance$.serveExecutionModel(model);
+```
 
 
+To generate CSV file (named results for instance), we add the following methods:
 
- 
-        
-               
-                
+
+```   
+     ExecutionModelExporter.instance$.exportMetrics(model,new File("results"));
+```    
+
+
+To be able to visualize the results using html files, we add the following lines:
+
+```   
+      Server.instance$.serveExecutionModel(model);
+```
+
+
+> [Figure 1: Execution Model metamodel](id:metamodel)
+> <img src="metamodel.png" width="100%"/>
 
 
 
