@@ -1,0 +1,203 @@
+<link rel="import" href="../polymer/polymer.html">
+
+    <polymer-element name="timedemo-smartgrid-timeline">
+        <script src="vis.js"></script>
+
+        <template>
+        <style>
+            @import 'vis.css';
+
+            :host {
+                display: block;
+                position: relative;
+                background-color: white;
+                /*padding: 20px;*/
+                /*width: 50%;*/
+                font-size: 1.2rem;
+                font-weight: 300;
+            }
+
+            #mytimeline {
+                width: 100%;
+                height: 300px;
+                display: block;
+                margin: auto;
+            }
+
+            /*x-axis*/
+            .vis.timeline .timeaxis .text {
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            /*y-axis*/
+            .vis.timeline .labelset .vlabel {
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            /*item labels*/
+            .vis.timeline .foreground .group {
+                font-size: 10px;
+            }
+
+            .container {
+                width: 80%;
+                margin: 50px auto;
+            }
+
+            @media (min-width: 481px) {
+                #tabs {
+                    width: 200px;
+                }
+
+                .container {
+                    width: 400px;
+                }
+            }
+
+        </style>
+
+        <div id="mytimeline">
+        </div>
+    </template>
+
+    <script>
+        Polymer('timedemo-smartgrid-timeline', {
+            timeline: null,
+            groups: null,
+            items: null,
+
+            // lifecycle methods
+            ready: function () {
+                this.globals = document.querySelector('timedemo-smartgrid-app-globals');
+
+                this.draw();
+            },
+
+            setCurrentTime: function (time) {
+                var currentTimeObject = this.timeline.currentTime;
+
+                currentTimeObject.redraw = function () {
+                    if (this.options.showCurrentTime) {
+                        var parent = this.body.dom.backgroundVertical;
+                        if (this.bar.parentNode != parent) {
+                            // attach to the dom
+                            if (this.bar.parentNode) {
+                                this.bar.parentNode.removeChild(this.bar);
+                            }
+                            parent.appendChild(this.bar);
+
+                            this.start();
+                        }
+
+                        var x = this.body.util.toScreen(time);
+
+                        this.bar.style.left = x + 'px';
+                        this.bar.title = 'Current time: ' + time;
+                    }
+                    else {
+                        // remove the line from the DOM
+                        if (this.bar.parentNode) {
+                            this.bar.parentNode.removeChild(this.bar);
+                        }
+                        this.stop();
+                    }
+
+                    return false;
+                };
+            },
+
+            moveTo: function (d) {
+                var diff = d.getTime() - this.timeline.range.end;
+                this.timeline.range.end = d.getTime();
+                this.timeline.range.start = this.timeline.range.start + diff;
+
+                this.timeline.redraw();
+            },
+
+            setCustomTime: function (time) {
+                this.timeline.setCustomTime(time);
+                this.fire('customTime-changed', {customTime: time});
+            },
+
+            redraw: function () {
+                this.timeline.redraw();
+            },
+
+            // custom methods
+            draw: function () {
+                this.timeline = null;
+
+                // create a data set with groups
+                this.groups = new vis.DataSet();
+                for (var i = 0; i < this.globals.NUM_METERS; i++) {
+                    this.groups.add({id: i, content: 'meter_' + i});
+                }
+
+                // create a dataset with items
+                this.items = new vis.DataSet();
+                for (var j = 0; j < this.globals.NUM_METERS; j++) {
+                    for (var i = 0; i < this.globals.timepoints.length; i++) {
+                        var start = this.globals.timepoints[i];
+
+                        var timeView = this.globals.factory.time(start.getTime() + "");
+                        var model = timeView.lookup("/");
+                        var meter = model.findMetersByID("meter_" + j);
+
+                        var d = new Date();
+                        d.setTime(meter.now.timestamp)
+
+                        if (meter.now.timestamp == start.getTime()) {
+                            var consumptionText = meter.consumption + " wH";
+                            this.items.add({
+                                id: j + '_' + i,
+                                group: j,
+                                content: consumptionText,
+                                start: start,
+                                type: 'point'
+                            });
+                        }
+                    }
+                }
+
+                // create visualization
+                var options = {
+                    groupOrder: 'content',
+                    orientation: 'top',
+                    stack: false,
+                    margin: {
+                        axis: 5,
+                        item: 10
+                    },
+                    showCurrentTime: true,
+                    showCustomTime: true,
+                    editable: false,
+                    selectable: false,
+                    showMajorLabels: true,
+                    showMinorLabels: true,
+                    start: this.globals.START_DATE
+//                    end: this.globals.timepoints[this.globals.timepoints.length - 1]
+                };
+
+                this.timeline = new vis.Timeline(this.$.mytimeline);
+                this.timeline.setOptions(options);
+                this.timeline.setGroups(this.groups);
+                this.timeline.setItems(this.items);
+
+                this.timeline.setCustomTime(this.globals.START_DATE);
+
+                var elementScope = this;
+                this.timeline.on('timechange', function (properties) {
+                    elementScope.fire('customTime-changed', {customTime: properties.time});
+                });
+
+            }
+
+
+
+        });
+
+    </script>
+
+</polymer-element>

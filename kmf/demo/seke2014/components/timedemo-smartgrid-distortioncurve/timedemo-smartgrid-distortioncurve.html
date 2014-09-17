@@ -1,0 +1,161 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="timedemo-smartgrid-distortioncurve">
+    <script src="../../lib/jquery-2.0.3.min.js"></script>
+    <script src="highcharts.js"></script>
+
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+                /*background-color: white;*/
+                font-size: 1.2rem;
+                font-weight: 300;
+            }
+
+            #distortioncurve {
+                height: 300px;
+                display: block;
+                margin: auto;
+            }
+
+            .highcharts-container {
+                position: inherit !important;
+            }
+
+        </style>
+
+        <div id="distortioncurve">
+        </div>
+    </template>
+
+    <script>
+        Polymer('timedemo-smartgrid-distortioncurve', {
+
+            ready: function () {
+
+                this.globals = document.querySelector('timedemo-smartgrid-app-globals');
+                this.draw();
+            },
+
+            // custom methods
+            draw: function () {
+                var labels = new Array();
+                for (var i = 0; i < this.globals.NUM_METERS; i++) {
+                    labels.push("m_" + i);
+                }
+
+                var dataset = this._createTimeChartData();
+
+                Highcharts.setOptions({
+                    global: {
+                        useUTC: false
+                    }
+                });
+
+
+                this.timeChart = new Highcharts.Chart({
+                    chart: {
+                        renderTo: this.$.distortioncurve,
+                        type: 'scatter',
+                        height: 300
+
+                    },
+                    title: {
+                        text: 'Time Distortion'
+//                    x: -20 //center
+                    },
+//            subtitle: {
+//                text: '',
+//                x: -20
+//            },
+          
+
+                    credits: {
+                        enabled: false
+                    },
+                    xAxis: {
+                        categories: labels
+                    },
+                    yAxis: {
+                        type: 'datetime',
+                        title: {
+                            text: 'Resolved Timepoint'
+                        },
+                        plotLines: [
+                            {
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }
+                        ]
+                    },
+                    tooltip: {
+                        hideDelay: 1500,
+
+                        formatter: function () {
+                            var date = new Date();
+                            date.setTime(this.y);
+                            var id = 'meter_' + this.x.substring(2, this.x.length);
+                            var elementScope = document.querySelector('timedemo-smartgrid-distortioncurve');
+                            var value = elementScope.globals.smartGridModel.findMetersByID(id);
+                            return  '<b>' + this.x + '</b>:' + ' ' + date + '<br>' + '<b>consumption:</b> ' + value.consumption + ' wH';
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        borderWidth: 0
+                    },
+                    series: [
+                        {
+                            name: 'Distortion Curve',
+                            color: '#EB1523',
+                            data: dataset,
+                            lineWidth: 2
+                        },
+                        {
+                            name: 'Selected Time',
+                            color: '#6e94ff',
+                            data: dataset,
+                            lineWidth: 2
+                        }
+                    ]
+
+                });
+            },
+
+            update: function () {
+                this.timeChart.series[0].setData(this._createTimeChartData());
+                this.timeChart.series[1].setData(this._createSelectedTimeData());
+            },
+
+            _createTimeChartData: function () {
+                var dataset = new Array();
+                for (var i = 0; i < this.globals.NUM_METERS; i++) {
+                    var meter = this.globals.smartGridModel.findMetersByID("meter_" + i);
+                    var d = new Date();
+                    d.setTime(meter.now.timestamp);
+                    dataset.push(d.getTime());
+                }
+
+                return dataset;
+            },
+
+            _createSelectedTimeData: function () {
+                var dataset = new Array();
+                for (var i = 0; i < this.globals.NUM_METERS; i++) {
+                    var d = new Date();
+                    d.setTime(this.globals.customTime.getTime());
+                    dataset.push(d.getTime());
+                }
+                return dataset;
+            }
+
+        });
+
+    </script>
+
+</polymer-element>

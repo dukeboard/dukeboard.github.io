@@ -1,0 +1,732 @@
+<html>
+<head>
+    <style type="text/css">
+        body {
+            /* to make the container go all the way to the bottom of the topbar */
+            padding-top: 70px;
+        }
+
+        /* top */
+        #timeline {
+            color: #4D4D4D;
+            font: 10pt arial;
+
+            width: 100%;
+            height: 50%;
+            float: left;
+
+            /*overflow: scroll;*/
+
+        }
+
+        /* bottom */
+        #domain {
+            width: 49%;
+            height: 50%;
+            float: left;
+        }
+
+        #reasoning {
+            /*font: 10pt arial;*/
+
+            width: 40%;
+            height: 50%;
+            float: left;
+        }
+
+        #output {
+            font: 8pt arial;
+
+            width: 10%;
+            height: 50%;
+            float: left;
+        }
+
+        .timeline-customtime div {
+            /*-moz-box-sizing: border-box;*/
+            /*background-color: #ff7f6e;*/
+            /*box-sizing: border-box;*/
+            /*width: 2px;*/
+
+        }
+
+        #seperator_1 {
+            background: lightgray;
+            height: 2px;
+            width: 100%;
+            float: left;
+        }
+
+        #seperator_2 {
+            background: lightgray;
+            height: 50%;
+            width: 2px;
+            float: left;
+        }
+
+        svg {
+            width: 600px;
+            height: 300px;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Model-based time-distorted Contexts for efficient temporal Reasoning</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a id="start_reasoning" href="#">Start Reasoning</a></li>
+                <!--<li><a href="#about">About</a></li>-->
+                <!--<li><a href="#contact">Contact</a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="timeline"></div>
+
+<div id="seperator_1"></div>
+
+<div id="domain"></div>
+<div id="seperator_2"></div>
+<div id="reasoning"></div>
+<div id="output">
+    <textarea id="output_1" name="" cols="25" rows="2"></textarea>
+    <textarea id="output_2" name="" cols="25" rows="2"></textarea>
+</div>
+
+<link rel="stylesheet" type="text/css" href="css/timeline.css">
+<link rel="stylesheet" type="text/css" href="css/graph.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+
+<!--<script src="lib/model/lu.snt.timedemo.model.js.merged.js"></script>-->
+<script src="lib/model/lu.snt.timedemo.model.js.min.js"></script>
+<script src="lib/jquery-2.0.3.min.js"></script>
+<script src="lib/underscore-min.js"></script>
+<script src="lib/vivagraph.min.js"></script>
+<script src="lib/bootstrap.js"></script>
+<!--<script src="lib/googlejsapi.js"></script>-->
+
+<script src="lib/jsapi.js"></script>
+<!--<script src="lib/uds_api_contents.js"></script>-->
+
+<script src="lib/timeline-min.js"></script>
+<script src="lib/highcharts.js"></script>
+
+<script>
+
+// load SmartGrid module
+var smartGridModule = Kotlin.modules['lu.snt.timedemo.model.js'];
+var saver = new smartGridModule.lu.snt.timedemo.smartgrid.serializer.JSONModelSerializer();
+var loader = new smartGridModule.lu.snt.timedemo.smartgrid.loader.JSONModelLoader();
+var cloner = new smartGridModule.lu.snt.timedemo.smartgrid.cloner.DefaultModelCloner();
+var compare = new smartGridModule.lu.snt.timedemo.smartgrid.compare.DefaultModelCompare();
+var factory = new smartGridModule.lu.snt.timedemo.smartgrid.impl.DefaultSmartgridFactory();
+var datastore = new smartGridModule.org.kevoree.modeling.api.persistence.MemoryDataStore();
+factory.datastore = datastore;
+
+var NUM_METERS = 8;
+var NUM_TIME_WINDOWS = 10;
+var TIME_WINDOW_SIZE = 900000; // 15 secs
+var START_DATE = new Date(2014, 6, 2, 0, 0, 0, 0);
+var NUM_PREDICTION_WINDOWS = 10;
+
+// smartgrid model
+var smartGridModel = null;
+
+// document load
+var timepoints = new Array();
+// timeline
+var timeline = null;
+var data = null;
+var timelineOptions = null;
+// domain graph
+var graph = null;
+var graphGraphics = null;
+// time chart
+var timeChart = null;
+
+createDomainModel();
+
+drawDomainGraph();
+
+drawTimeChart();
+
+google.load("visualization", "1");
+google.setOnLoadCallback(drawTimeline);
+
+//Web Socket connection to server
+var ws = new WebSocket('ws://' + document.location.host + '/ws');
+ws.onopen = function () {
+};
+
+ws.onclose = function () {
+};
+
+ws.onmessage = function (msg) {
+
+};
+
+$('#start_reasoning').click(function () {
+    doPrediction();
+});
+
+
+// create the model
+function createDomainModel() {
+    // create model
+    var tp0 = factory.time(START_DATE.getTime() + "");
+    var grid = tp0.factory().createSmartGridModel();
+    factory.setRoot(grid);
+
+    var concentrator = tp0.factory().createConcentrator();
+    concentrator.name = "concentrator";
+    grid.addConcentrators(concentrator);
+
+    for (var i = 0; i < NUM_METERS; i++) {
+        var meter = tp0.factory().createSmartMeter();
+        meter.name = "meter_" + i;
+        meter.consumption = 0;
+        meter.concentrator = concentrator;
+        grid.addMeters(meter);
+    }
+
+    tp0.commit();
+
+    timepoints.push(START_DATE);
+    // add consumption history
+    for (var i = 0; i < NUM_METERS; i++) {
+        var lastTime = START_DATE.getTime();
+        for (var j = 1; j < NUM_TIME_WINDOWS; j++) {
+
+            var randomMax = (2 * TIME_WINDOW_SIZE);
+            var randomMin = (TIME_WINDOW_SIZE);
+            var random = Math.floor((Math.random() * randomMax) + randomMin);
+            var newTime = random + lastTime;
+
+            var d = new Date();
+            d.setTime(newTime);
+            if (timepoints.indexOf(d) != null) {
+                timepoints.push(d);
+            }
+            lastTime = newTime;
+
+            var tp_i = factory.time(newTime + "");
+            var model_tp_i = tp_i.lookup("/");
+
+            var meter_tp_i = model_tp_i.findMetersByID("meter_" + i);
+            var newConsumption = createConsumption(meter_tp_i.consumption);
+            if (newConsumption != null) {
+                meter_tp_i.consumption = newConsumption;
+            }
+            tp_i.commit();
+        }
+    }
+
+    smartGridModel = grid;
+}
+
+
+function createConsumption(oldConsumption) {
+//    var random = Math.floor((Math.random() * 100) + 1);
+//    var newConsumption = parseInt(oldConsumption) + parseInt(random);
+
+    var random = Math.floor((Math.random() * 500) + 1);
+    var newConsumption = random;
+
+
+    var error = Math.floor((Math.random() * 5)) % 5 == 0;
+
+    if (error) {
+        random = null;
+    }
+    return newConsumption;
+}
+
+// Called when the Visualization API is loaded.
+function drawTimeline() {
+
+    // specify options
+    timelineOptions = {
+        stackEvents: false,
+        start: START_DATE,
+        end: timepoints[timepoints.length - 1],
+        editable: false,
+        animate: false,
+        eventMargin: 10,  // minimal margin between events
+        eventMarginAxis: 5, // minimal margin between events and the axis
+        showMajorLabels: true,
+        cluster: true,
+        axisOnTop: true,
+        snapEvents: true,
+        dragAreaWidth: 20,
+        showCustomTime: true,
+        showCurrentTime: true,
+        'style': 'dot'
+    };
+
+    // Instantiate our timeline object.
+    timeline = new links.Timeline(document.getElementById('timeline'), timelineOptions);
+
+    // Create and populate a data table.
+    data = new google.visualization.DataTable();
+    data.addColumn('datetime', 'start');
+    data.addColumn('datetime', 'end');
+    data.addColumn('string', 'content');
+    data.addColumn('string', 'group');
+
+    addTimelineData();
+
+    // Draw our timeline with the created data and options
+    timeline.draw(data);
+
+//    // set a custom range from -2 minute to +3 minutes current time
+//    var start = new Date(time_windows[0].getTime() - 2 * 60 * 1000);
+//    var end = new Date(time_windows[NUM_TIME_WINDOWS - 1].getTime() + 3 * 60 * 1000);
+//    timeline.setVisibleChartRange(start, end);
+
+//    timeline.setCurrentTime(START_DATE);
+    timeline.setCustomTime(START_DATE);
+
+    google.visualization.events.addListener(timeline, 'select',
+            function () {
+//                console.log('select')
+            }
+    );
+
+    google.visualization.events.addListener(timeline, 'edit',
+            function () {
+//                console.log('edit')
+            }
+    );
+
+    google.visualization.events.addListener(timeline, 'change',
+            function () {
+//                console.log('change')
+                //timeline.cancelChange();
+            }
+    );
+
+    google.visualization.events.addListener(timeline, 'add',
+            function () {
+//                console.log('add')
+                //timeline.cancelAdd();
+            }
+    );
+
+    google.visualization.events.addListener(timeline, 'timechange', onTimeChange);
+
+
+}
+
+function onTimeChange(event) {
+    var viewPoint = factory.time(event.time.getTime() + "");
+    smartGridModel = viewPoint.lookup("/");
+
+    updateDomainGraph();
+
+    updateTimeChart(event.time);
+
+}
+
+function updateTimeChart(customTime) {
+    timeChart.series[0].setData(createTimeChartData());
+    timeChart.series[1].setData(createSelectedTimeData(customTime));
+
+}
+
+function createSelectedTimeData(customTime) {
+    var dataset = new Array();
+    for (var i = 0; i < NUM_METERS; i++) {
+        var d = new Date();
+        d.setTime(customTime.getTime());
+        dataset.push(d.getTime());
+    }
+    return dataset;
+}
+
+function updateDomainGraph() {
+    graph.beginUpdate();
+    // all smart meters: update consumption
+    for (var i = 0; i < smartGridModel.meters.array.length; i++) {
+        var meter = smartGridModel.meters.array[i];
+        var nodeUI = graphGraphics.getNodeUI(meter.name);
+
+        var svgText = nodeUI.childNodes[1];
+        svgText.text(meter.name + ": " + meter.consumption + " wH");
+
+    }
+
+    graph.endUpdate();
+
+}
+
+function addTimelineData() {
+
+    for (var j = 0; j < NUM_METERS; j++) {
+        for (var i = 0; i < timepoints.length; i++) {
+            var start = timepoints[i];
+//            var end = new Date(start.getTime() + TIME_WINDOW_SIZE / 2);
+            var end = new Date(start.getTime() + 1);
+
+            var timeView = factory.time(start.getTime() + "");
+            var model = timeView.lookup("/");
+            var meter = model.findMetersByID("meter_" + j);
+
+            var d = new Date();
+            d.setTime(meter.now.timestamp)
+
+            var elemText = meter.name;
+            var consumptionText = "<span style='font-size:10px;'>" + meter.consumption + " wH" + '</span>';
+//            var consumptionText = "";
+
+            if (meter.now.timestamp == start.getTime()) {
+                data.addRow([start, , consumptionText, elemText]);
+            }
+        }
+    }
+}
+
+
+function drawDomainGraph() {
+    var meterClassName = "lu.snt.timedemo.smartgrid.SmartMeter";
+    var concentratorClassName = "lu.snt.timedemo.smartgrid.Concentrator";
+
+    graph = Viva.Graph.graph();
+    var layout = Viva.Graph.Layout.forceDirected(graph, {
+        springLength: 80,
+        springCoeff: 0.0005,
+        dragCoeff: 0.02,
+        gravity: -1.0
+    });
+
+    graphGraphics = Viva.Graph.View.svgGraphics();
+    graphGraphics.node(function (node) {
+        var ui = Viva.Graph.svg('g');
+
+        var url = null;
+        var t = null;
+        if (node.data.metaClassName() == meterClassName) {
+            url = 'meter_icon.png';
+            t = node.data.name + ": " + node.data.consumption + " wH";
+
+        } else if (node.data.metaClassName() == concentratorClassName) {
+            url = 'laptop_icon.png';
+            t = node.data.name;
+        }
+
+        var image = Viva.Graph.svg('image')
+                .attr('width', 30)
+                .attr('height', 30)
+                .link(url);
+
+        var text = Viva.Graph.svg('text')
+                .attr('y', '-4px')
+                .attr('font-size', '8')
+                .text(t);
+
+        var ui = Viva.Graph.svg('g');
+        ui.append(image);
+        ui.append(text);
+
+        return ui;
+    });
+
+    graphGraphics.placeNode(function (nodeUI, pos) {
+        // nodeUI - is exactly the same object that we returned from
+        //   node() callback above.
+        // pos - is calculated position for this node.
+        nodeUI.attr('x', pos.x - 15).attr('y', pos.y - 15);
+        nodeUI.attr('transform',
+                        'translate(' +
+                        (pos.x - 15) + ',' + (pos.y - 15) +
+                        ')');
+    });
+
+
+    var renderer = Viva.Graph.View.renderer(graph, {
+        layout: layout,
+        graphics: graphGraphics,
+        container: document.getElementById("domain"),
+        renderLinks: true
+    });
+
+
+    graph.beginUpdate();
+
+    var visitor = new smartGridModule.org.kevoree.modeling.api.util.ModelVisitor();
+    // nodes
+    Object.getPrototypeOf(visitor).visit = function (elem) {
+        var node = graph.addNode(elem.name);
+        node.data = elem;
+    }
+    smartGridModel.visit(visitor, true, true, false);
+
+    // edges
+    var concentratorNode = graph.getNode("concentrator");
+    concentratorNode.isPinned = true;
+    var concentratorElem = concentratorNode.data;
+    for (var i = 0; i < concentratorElem.meters.array.length; i++) {
+        var meterElem = concentratorElem.meters.array[i];
+
+        graph.addLink(meterElem.name, concentratorElem.name);
+    }
+
+
+    graph.endUpdate();
+    renderer.run();
+    for (var i = 0; i < 4; i++) {
+        renderer.zoomIn();
+    }
+}
+
+
+function createTimeChartData() {
+    var dataset = new Array();
+    for (var i = 0; i < NUM_METERS; i++) {
+        var meter = smartGridModel.findMetersByID("meter_" + i);
+        var d = new Date();
+        d.setTime(meter.now.timestamp);
+        dataset.push(d.getTime());
+    }
+
+    return dataset;
+}
+
+function drawTimeChart() {
+    var labels = new Array();
+    for (var i = 0; i < NUM_METERS; i++) {
+        labels.push("m_" + i);
+
+    }
+
+    var dataset = createTimeChartData();
+
+    Highcharts.setOptions({
+        global: {
+            useUTC: false
+        }
+    });
+
+    timeChart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'reasoning'
+        },
+        title: {
+            text: 'Time Distortion',
+            x: -20 //center
+        },
+//            subtitle: {
+//                text: '',
+//                x: -20
+//            },
+        credits: {
+            enabled: false
+        },
+        xAxis: {
+            categories: labels
+        },
+        yAxis: {
+            type: 'datetime',
+            title: {
+                text: 'Resolved Timepoint'
+            },
+            plotLines: [
+                {
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }
+            ]
+        },
+        tooltip: {
+            formatter: function () {
+                var date = new Date();
+                date.setTime(this.y);
+                var id = 'meter_' + this.x.substring(2, this.x.length);
+                var value = smartGridModel.findMetersByID(id);
+                return  '<b>' + this.x + '</b>:' + ' ' + date + '<br>' + '<b>consumption:</b> ' + value.consumption + ' wH';
+
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [
+            {
+                name: 'Distortion Curve',
+                color: '#EB1523',
+                data: dataset
+            },
+            {
+                name: 'Selected Time',
+                color: '#6e94ff',
+                data: dataset
+            }
+
+        ]
+
+    });
+}
+
+function doPrediction() {
+    var i = 0;
+
+    var array = _.clone(timepoints);
+    array = _.sortBy(array, function (t) {
+        return t.getTime();
+    });
+
+    var index = 1;
+    var max = array[array.length - index];
+    timeline.setCurrentTime(max);
+
+    // periodically add new values
+    var lastTime = max;
+    var lastTimepoints = new Array();
+    var addValueInterval = setInterval(function () {
+
+        for (var i = 0; i < NUM_METERS; i++) {
+
+            var randomMax = (2 * TIME_WINDOW_SIZE);
+            var randomMin = (TIME_WINDOW_SIZE);
+            var random = Math.floor((Math.random() * randomMax) + randomMin);
+            var newTime = random + lastTime.getTime();
+
+            var d = new Date();
+            d.setTime(newTime);
+
+            var tp = factory.time(d.getTime() + "");
+            var grid = tp.factory().lookup("/");
+            var meter = grid.findMetersByID("meter_" + i);
+            var c = createConsumption(meter.consumption);
+            if (c != null) {
+                meter.consumption = c;
+            }
+
+            tp.commit();
+            var elemText = meter.name;
+            var consumptionText = "<span style='font-size:10px;'>" + meter.consumption + " wH" + '</span>';
+            if (c != null) {
+                data.addRow([d, , consumptionText, elemText]);
+            }
+            timeline.redraw();
+            array.push(d);
+        }
+        lastTime = d;
+
+
+    }, 3000);
+
+
+    //
+
+    var avg = 0;
+    lastTimepoints = _.clone(array);
+    lastTimepoints = _.sortBy(lastTimepoints, function (t) {
+        return t.getTime();
+    });
+    timeline.setCurrentTime(lastTime);
+    timeline.setCustomTime(lastTime);
+//    timeline.move(lastTime);
+//    timeline.trigger("rangechange");
+//    timeline.trigger("rangechanged");
+
+    var interval = setInterval(function () {
+
+        if (i == NUM_PREDICTION_WINDOWS) {
+
+//            clearInterval(interval);
+            lastTimepoints = _.clone(array);
+            lastTimepoints = _.sortBy(lastTimepoints, function (t) {
+                return t.getTime();
+            });
+            timeline.setCurrentTime(lastTimepoints[lastTimepoints.length - 1]);
+            timeline.setCustomTime(lastTimepoints[lastTimepoints.length - 1]);
+            timeline.move(0.10);
+//            timeline.trigger("rangechange");
+//            timeline.trigger("rangechanged");
+
+
+            avg = parseInt(avg) / NUM_PREDICTION_WINDOWS;
+            var maxIndex = array[array.length - index];
+            var currentLoad = computeLoad(maxIndex);
+
+            if (currentLoad > avg) {
+                document.getElementById("output_2").value = "WARNING, AVG: " + avg + " NOW: " + currentLoad
+
+            } else {
+                document.getElementById("output_2").value = "OK, AVG: " + avg + " NOW: " + currentLoad
+
+            }
+
+            //
+            avg = 0;
+            i = 0;
+            index = 0;
+
+        } else {
+            index = index + 1;
+            var prev = lastTimepoints[lastTimepoints.length - index];
+            var event = {
+                time: prev
+            };
+            document.getElementById("output_1").value = event.time;
+            onTimeChange(event);
+            timeline.setCustomTime(prev);
+
+            avg = parseInt(avg) + parseInt(computeLoad(prev));
+
+            i++;
+
+        }
+
+    }, 300);
+}
+
+function computeLoad(date) {
+    var tp = factory.time(date.getTime() + "");
+    var grid = tp.factory().lookup("/");
+
+    var c = 0;
+    for (var j = 0; j < NUM_METERS; j++) {
+        var meter = grid.findMetersByID("meter_" + j);
+        c = parseInt(c) + parseInt(meter.consumption);
+    }
+
+    return c;
+
+}
+
+//function maxTimePoint(array) {
+//    var max = null;
+//    for (var i = 0; i < array.length; i++) {
+//        var e = timepoints[i];
+//        if (max == null) {
+//            max = e;
+//        } else {
+//            if (max.getTime() < e.getTime()) {
+//                max = e;
+//            }
+//        }
+//    }
+//    return max;
+//}
+
+</script>
+</body>
+</html>

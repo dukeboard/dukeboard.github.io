@@ -1,0 +1,326 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Time Demo</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="components/platform/platform.js"></script>
+
+    <script src="lib/model/lu.snt.timedemo.model.js.min.js"></script>
+    <script src="lib/jquery-2.0.3.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+
+    <link rel="import" href="components/font-roboto/roboto.html">
+
+    <link rel="import" href="components/core-header-panel/core-header-panel.html">
+
+    <link rel="import" href="components/core-toolbar/core-toolbar.html">
+
+    <link rel="import" href="components/core-icon-button/core-icon-button.html">
+
+    <link rel="import" href="components/core-item/core-item.html">
+
+    <link rel="import" href="components/paper-elements/paper-elements.html">
+
+    <link rel="import"
+          href="components/timedemo-smartgrid-app-globals/timedemo-smartgrid-app-globals.html">
+
+    <link rel="import"
+          href="components/timedemo-smartgrid-domaingraph/timedemo-smartgrid-domaingraph.html">
+
+    <link rel="import"
+          href="components/timedemo-smartgrid-timeline/timedemo-smartgrid-timeline.html">
+
+    <link rel="import"
+          href="components/timedemo-smartgrid-distortioncurve/timedemo-smartgrid-distortioncurve.html">
+
+    <link rel="import"
+          href="components/timedemo-smartgrid-reasoningoutput/timedemo-smartgrid-reasoningoutput.html">
+
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: lightgrey;
+            font-family: 'RobotoDraft', sans-serif;
+        }
+
+        core-header-panel {
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        core-toolbar {
+            background: #03a9f4;
+            color: white;
+        }
+
+        paper-item {
+            font-size: 14px;
+            color: black;
+        }
+
+        timedemo-smartgrid-timeline {
+            padding: 15px;
+            background-clip: content-box, padding-box;
+
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        timedemo-smartgrid-domaingraph {
+            width: 30%;
+            float: left;
+
+            padding-top: 0px;
+            padding-left: 15px;
+            padding-right: 7.5px;
+            background-clip: content-box, padding-box;
+
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        timedemo-smartgrid-distortioncurve {
+            width: 50%;
+            float: left;
+
+            padding-top: 0px;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+
+            background-clip: content-box, padding-box;
+
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        timedemo-smartgrid-reasoningoutput {
+            width: 20%;
+            float: left;
+
+            padding-top: 0px;
+            padding-left: 7.5px;
+            padding-right: 15px;
+
+            background-clip: content-box, padding-box;
+
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+    </style>
+</head>
+
+<body unresolved touch-action="auto">
+<core-header-panel>
+    <core-toolbar>
+        <paper-menu-button icon="menu" halign="left">
+            <paper-item label="Start Reasoning" onclick="startReasoning()"></paper-item>
+            <paper-item label="Stop Reasoning" onclick="stopReasoning()"></paper-item>
+
+        </paper-menu-button>
+        <span flex>Time Demo</span>
+    </core-toolbar>
+
+    <!-- main page content will go here -->
+    <timedemo-smartgrid-app-globals></timedemo-smartgrid-app-globals>
+
+    <timedemo-smartgrid-timeline></timedemo-smartgrid-timeline>
+    <timedemo-smartgrid-domaingraph></timedemo-smartgrid-domaingraph>
+    <timedemo-smartgrid-distortioncurve></timedemo-smartgrid-distortioncurve>
+    <timedemo-smartgrid-reasoningoutput></timedemo-smartgrid-reasoningoutput>
+
+
+</core-header-panel>
+
+<script>
+
+    document.querySelector('timedemo-smartgrid-timeline').addEventListener('customTime-changed', function (e) {
+        var customTime = e.detail.customTime;
+
+        var globals = document.querySelector('timedemo-smartgrid-app-globals');
+        globals.customTime = customTime;
+
+        var viewPoint = globals.factory.time(customTime.getTime() + "");
+        var smartGridModel = viewPoint.lookup("/");
+
+        globals.smartGridModel = smartGridModel;
+
+        var domainGraph = document.querySelector('timedemo-smartgrid-domaingraph')
+        domainGraph.update();
+
+        var distortionCurve = document.querySelector('timedemo-smartgrid-distortioncurve');
+        distortionCurve.update();
+    });
+
+
+    var addValueInterval;
+    var reasoningInterval;
+    function startReasoning() {
+        var globals = document.querySelector('timedemo-smartgrid-app-globals');
+        var timeline = document.querySelector('timedemo-smartgrid-timeline');
+        var reasoningOutput = document.querySelector('timedemo-smartgrid-reasoningoutput');
+
+        var i = 0;
+        var array = _.clone(globals.timepoints);
+        array = _.sortBy(array, function (t) {
+            return t.getTime();
+        });
+
+        var index = 1;
+        var max = array[array.length - index];
+//        timeline.setCurrentTime(max);
+
+        // periodically add new values
+        var lastTime = max;
+        var lastTimepoints = new Array();
+        addValueInterval = setInterval(function () {
+            for (var i = 0; i < globals.NUM_METERS; i++) {
+
+                var randomMax = (2 * globals.TIME_WINDOW_SIZE);
+                var randomMin = (globals.TIME_WINDOW_SIZE);
+                var random = Math.floor((Math.random() * randomMax) + randomMin);
+                var newTime = random + lastTime.getTime();
+
+                var d = new Date();
+                d.setTime(newTime);
+
+                var tp = globals.factory.time(d.getTime() + "");
+                var grid = tp.factory().lookup("/");
+                var meter = grid.findMetersByID("meter_" + i);
+                var c = globals.createConsumption(meter.consumption);
+                if (c != null) {
+                    meter.consumption = c;
+                }
+
+                tp.commit();
+
+                if (c != null) {
+                    var elemText = meter.name;
+                    elemText = elemText.replace('meter_', '');
+                    var consumptionText = meter.consumption + " wH";
+                    var id = elemText + '_' + (array.length - 1);
+                    timeline.items.add({
+                        id: id,
+                        group: elemText,
+                        content: consumptionText,
+                        start: d,
+                        type: 'point'
+                    });
+                }
+                array.push(d);
+//                timeline.redraw(); // redraw can be delayed after everything is added
+            }
+//            lastTime = d;
+            array = _.sortBy(array, function (t) {
+                return t.getTime();
+            });
+
+            timeline.redraw(); // update timeline view
+            globals.timepoints = array; // update globals
+
+            lastTime = array[array.length - 1];
+        }, 3000);
+
+        var avg = 0;
+        lastTimepoints = _.clone(array);
+        lastTimepoints = _.sortBy(lastTimepoints, function (t) {
+            return t.getTime();
+        });
+
+        timeline.setCurrentTime(lastTime);
+        timeline.setCustomTime(lastTime);
+
+        reasoningInterval = setInterval(function () {
+            if (i == globals.NUM_PREDICTION_WINDOWS) {
+
+                lastTimepoints = _.clone(array);
+                lastTimepoints = _.sortBy(lastTimepoints, function (t) {
+                    return t.getTime();
+                });
+
+                var newFocus = lastTimepoints[lastTimepoints.length - 1];
+                timeline.setCurrentTime(newFocus);
+                timeline.setCustomTime(newFocus);
+
+                var moveToTime = new Date();
+                moveToTime.setTime(newFocus.getTime() + 5 * globals.TIME_WINDOW_SIZE);
+                timeline.moveTo(moveToTime);
+
+                avg = parseInt(avg) / globals.NUM_PREDICTION_WINDOWS;
+                var maxIndex = array[array.length - index];
+                var currentLoad = computeLoad(maxIndex);
+
+                if (currentLoad > avg) {
+                    reasoningOutput.setResult("WARNING, AVG: " + avg + " NOW: " + currentLoad, true);
+
+                } else {
+                    reasoningOutput.setResult("OK, AVG: " + avg + " NOW: " + currentLoad, false);
+                }
+
+                avg = 0;
+                i = 0;
+                index = 0;
+
+            } else {
+                index = index + 1;
+                var prev = lastTimepoints[lastTimepoints.length - index];
+                reasoningOutput.setTime(prev);
+
+                timeline.setCustomTime(prev);
+                avg = parseInt(avg) + parseInt(computeLoad(prev));
+                i++;
+            }
+        }, 300);
+
+
+        function computeLoad(date) {
+            var globalsElement = document.querySelector('timedemo-smartgrid-app-globals');
+
+            var tp = globalsElement.factory.time(date.getTime() + "");
+            var grid = tp.factory().lookup("/");
+
+            var c = 0;
+            for (var j = 0; j < globalsElement.NUM_METERS; j++) {
+                var meter = grid.findMetersByID("meter_" + j);
+                c = parseInt(c) + parseInt(meter.consumption);
+            }
+
+            return c;
+
+        }
+    }
+
+    function stopReasoning() {
+        var globals = document.querySelector('timedemo-smartgrid-app-globals');
+        var timeline = document.querySelector('timedemo-smartgrid-timeline');
+
+        var array = _.clone(globals.timepoints);
+        array = _.sortBy(array, function (t) {
+            return t.getTime();
+        });
+
+        var max = array[array.length - 1];
+
+        timeline.setCurrentTime(max);
+        timeline.setCustomTime(max);
+
+        clearInterval(addValueInterval);
+
+        clearInterval(reasoningInterval);
+
+    }
+
+
+</script>
+</body>
+
+</html>

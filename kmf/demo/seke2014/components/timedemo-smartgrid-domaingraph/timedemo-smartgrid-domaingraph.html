@@ -1,0 +1,169 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="timedemo-smartgrid-domaingraph" noscript>
+    <script src="vivagraph.min.js"></script>
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+                background-color: white;
+                /*padding: 20px;*/
+                /*width: 50%;*/
+                font-size: 1.2rem;
+                font-weight: 300;
+            }
+
+            #domain {
+                width: 300px;
+                height: 300px;
+                margin: auto;
+
+            }
+
+            #heading {
+                padding-top: 5px;
+            }
+
+            svg {
+                width: 300px;
+                height: 300px;
+            }
+
+
+        </style>
+
+        <div id="domain">
+            <div id="heading" align="center">
+                Domain
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer('timedemo-smartgrid-domaingraph', {
+            // lifecycle methods
+            ready: function () {
+                this.globals = document.querySelector('timedemo-smartgrid-app-globals');
+
+                this.graph = null;
+                this.graphGraphics = null;
+
+                this.draw()
+            },
+
+            // custom methods
+            draw: function () {
+                var meterClassName = "lu.snt.timedemo.smartgrid.SmartMeter";
+                var concentratorClassName = "lu.snt.timedemo.smartgrid.Concentrator";
+
+                this.graph = Viva.Graph.graph();
+                var layout = Viva.Graph.Layout.forceDirected(this.graph, {
+                    springLength: 80,
+                    springCoeff: 0.0005,
+                    dragCoeff: 0.02,
+                    gravity: -1.0
+                });
+
+                this.graphGraphics = Viva.Graph.View.svgGraphics();
+                this.graphGraphics.node(function (node) {
+                    var ui = Viva.Graph.svg('g');
+
+                    var url = null;
+                    var t = null;
+                    if (node.data.metaClassName() == meterClassName) {
+                        url = 'meter_icon.png';
+                        t = node.data.name + ": " + node.data.consumption + " wH";
+
+                    } else if (node.data.metaClassName() == concentratorClassName) {
+                        url = 'laptop_icon.png';
+                        t = node.data.name;
+                    }
+
+                    var image = Viva.Graph.svg('image')
+                            .attr('width', 30)
+                            .attr('height', 30)
+                            .link(url);
+
+
+                    var text = Viva.Graph.svg('text')
+                            .attr('y', '-4px')
+                            .attr('font-size', '10')
+                            .attr('font-weight', 'bold')
+                            .text(t);
+
+                    var ui = Viva.Graph.svg('g');
+                    ui.append(image);
+                    ui.append(text);
+
+                    return ui;
+                });
+
+                this.graphGraphics.placeNode(function (nodeUI, pos) {
+                    // nodeUI - is exactly the same object that we returned from
+                    //   node() callback above.
+                    // pos - is calculated position for this node.
+                    nodeUI.attr('x', pos.x - 15).attr('y', pos.y - 15);
+                    nodeUI.attr('transform',
+                                    'translate(' +
+                                    (pos.x - 15) + ',' + (pos.y - 15) +
+                                    ')');
+                });
+
+
+                var renderer = Viva.Graph.View.renderer(this.graph, {
+                    layout: layout,
+                    graphics: this.graphGraphics,
+                    container: this.$.domain,
+                    renderLinks: true
+                });
+
+                this.graph.beginUpdate();
+
+                var visitor = this.globals.newVisitor();
+                // nodes
+                var g = this.graph;
+                Object.getPrototypeOf(visitor).visit = function (elem) {
+                    var node = g.addNode(elem.name);
+                    node.data = elem;
+                }
+                this.globals.smartGridModel.visit(visitor, true, true, false);
+
+                // edges
+                var concentratorNode = this.graph.getNode("concentrator");
+                concentratorNode.isPinned = true;
+                var concentratorElem = concentratorNode.data;
+                for (var i = 0; i < concentratorElem.meters.array.length; i++) {
+                    var meterElem = concentratorElem.meters.array[i];
+
+                    this.graph.addLink(meterElem.name, concentratorElem.name);
+                }
+
+                this.graph.endUpdate();
+                renderer.run();
+//            for (var i = 0; i < 4; i++) {
+//                renderer.zoomIn();
+//            }
+            },
+
+            update: function () {
+                this.graph.beginUpdate();
+                // all smart meters: update consumption
+                for (var i = 0; i < this.globals.smartGridModel.meters.array.length; i++) {
+                    var meter = this.globals.smartGridModel.meters.array[i];
+                    var nodeUI = this.graphGraphics.getNodeUI(meter.name);
+
+                    var svgText = nodeUI.childNodes[1];
+                    svgText.text(meter.name + ": " + meter.consumption + " wH");
+
+                }
+
+                this.graph.endUpdate();
+            }
+
+        })
+        ;
+
+    </script>
+
+</polymer-element>
